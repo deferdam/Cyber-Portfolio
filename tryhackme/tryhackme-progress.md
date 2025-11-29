@@ -1,3 +1,8 @@
+---
+layout: default
+title: "TryHackMe Progress"
+---
+
 # TryHackMe — Progression SOC / Blue Team
 
 ## SOC Level 1 (THM)

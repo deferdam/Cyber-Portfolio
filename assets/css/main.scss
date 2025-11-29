@@ -1,0 +1,54 @@
+---
+---
+
+@import "minima";
+
+/* Global dark theme */
+body {
+  background: #0b0b0b;
+  color: #e5e5e5;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               sans-serif;
+}
+
+/* Links */
+a {
+  color: #ff3b3b;
+  text-decoration: none;
+}
+a:hover {
+  color: #ff6b6b;
+  text-decoration: underline;
+}
+
+/* Headers */
+h1, h2, h3, h4 {
+  color: #ff3b3b;
+}
+
+/* Code blocks */
+pre, code {
+  background: #151515;
+  color: #f0f0f0;
+}
+
+/* Top bar */
+.nav-bar {
+  border-bottom: 1px solid #ff3b3b;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+}
+
+/* Category / project boxes */
+.category-box {
+  border: 1px solid #ff3b3b;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 6px;
+  background: #141414;
+}
+
+/* Content width */
+.wrapper {
+  max-width: 960px;
+}

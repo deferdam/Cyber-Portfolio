@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Learning Resources"
+---
+
 # Ressources — YARA / Sigma / Malware Analysis
 
 ## YARA
