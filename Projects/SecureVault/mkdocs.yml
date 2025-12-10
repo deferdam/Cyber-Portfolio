@@ -1,0 +1,18 @@
+site_name: Secure File Vault
+site_description: Local file encryption tool using password-based security.
+site_author: Team Project
+
+theme:
+  name: mkdocs
+
+nav:
+  - Home: index.md
+  - Project:
+      - Overview: project_docs.md
+      - Architecture: architecture.md
+      - Threat Model: threat_model.md
+      - Security Guidelines: security_guidelines.md
+      - Usage Examples: usage_examples.md
+      - Tests Policy: tests_policy.md
+
+docs_dir: docs

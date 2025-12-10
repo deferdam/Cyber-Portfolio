@@ -1,0 +1,7 @@
+role-strategy
+credentials
+matrix-auth
+workflow-job
+pipeline-stage-view
+junit
+configuration-as-code

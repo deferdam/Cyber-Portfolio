@@ -1,0 +1,14 @@
+.env
+jenkins_home/
+jenkins_home/*
+jenkins_home/**
+jenkins_home/**/**
+jenkins_home/**/**/**
+jenkins_home/**/**/**/**
+*.env
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+*.mp4
+

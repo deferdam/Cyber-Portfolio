@@ -1,0 +1,25 @@
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+      - "8070:8080"
+      - "50000:50000"
+    env_file:
+      - .env
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./plugins.txt:/usr/share/jenkins/ref/plugins.txt:ro
+      - ./:/var/jenkins_home/repo:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./jenkins/jobs:/var/jenkins_home/jobs
+      - ./jenkins/init.groovy.d:/var/jenkins_home/init.groovy.d:ro
+    user: "1000:1000"
+
+volumes:
+  jenkins_home:

@@ -1,0 +1,25 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3 \
+        python3-pip \
+        python3-venv && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+ENV VENV_PATH=/opt/venv
+RUN python3 -m venv $VENV_PATH
+
+ENV PATH="$VENV_PATH/bin:$PATH"
+
+COPY requirements.txt /tmp/requirements.txt
+
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir pytest && \
+    pip install --no-cache-dir -r /tmp/requirements.txt
+
+USER jenkins
