@@ -1,0 +1,612 @@
+{
+  "generated_at": "2025-12-07T07:25:34.636608Z",
+  "burst_window_seconds": 60,
+  "burst_min_unique_files": 40,
+  "long_window_minutes": 10,
+  "long_min_unique_files": 200,
+  "min_risk_score": 0.0,
+  "suspicious_processes": [
+    {
+      "process_name": "slowcryptor.exe",
+      "pid": 5003,
+      "first_seen": "2025-01-01T10:10:00",
+      "last_seen": "2025-01-01T10:18:38",
+      "max_burst_unique_files_in_window": 31,
+      "total_unique_files_touched": 260,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 260,
+      "directory_spread": 4,
+      "suspicious_extensions": [
+        {
+          "extension": "encrypted",
+          "count": 145,
+          "ratio": 0.5576923076923077
+        },
+        {
+          "extension": "enc",
+          "count": 115,
+          "ratio": 0.4423076923076923
+        }
+      ],
+      "outbound_external_connections": [],
+      "process_path": "C:\\Users\\victim\\AppData\\Local\\slowcryptor.exe",
+      "integrity_level": "High",
+      "abnormal_location": true,
+      "elevated_integrity": true,
+      "risk_factors": [
+        "slow_mass_encryption_pattern",
+        "suspicious_extensions_pattern",
+        "abnormal_process_location_for_mass_file_access",
+        "elevated_integrity_with_non_system_path",
+        "wide_directory_spread"
+      ],
+      "risk_score": 0.7142857142857143,
+      "recommended_actions": [
+        "alert_human",
+        "increase_monitoring",
+        "collect_additional_logs"
+      ],
+      "ml_ransomware_probability": 0.84,
+      "ml_predicted_label": true
+    },
+    {
+      "process_name": "weirdencryptor.exe",
+      "pid": 5001,
+      "first_seen": "2025-01-01T10:00:00",
+      "last_seen": "2025-01-01T10:00:49",
+      "max_burst_unique_files_in_window": 120,
+      "total_unique_files_touched": 120,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 120,
+      "directory_spread": 4,
+      "suspicious_extensions": [
+        {
+          "extension": "locked",
+          "count": 46,
+          "ratio": 0.38333333333333336
+        },
+        {
+          "extension": "enc",
+          "count": 40,
+          "ratio": 0.3333333333333333
+        },
+        {
+          "extension": "encrypted",
+          "count": 34,
+          "ratio": 0.2833333333333333
+        }
+      ],
+      "outbound_external_connections": [
+        {
+          "timestamp": "2025-01-01T10:01:00",
+          "dest_ip": "45.76.23.50",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:01:05",
+          "dest_ip": "45.76.23.51",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:01:10",
+          "dest_ip": "45.76.23.52",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:01:15",
+          "dest_ip": "45.76.23.53",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:01:20",
+          "dest_ip": "45.76.23.54",
+          "dest_port": 443,
+          "protocol": "TCP"
+        }
+      ],
+      "process_path": "C:\\Users\\victim\\AppData\\Local\\Temp\\weirdencryptor.exe",
+      "integrity_level": "High",
+      "abnormal_location": true,
+      "elevated_integrity": true,
+      "risk_factors": [
+        "high_burst_file_activity",
+        "suspicious_extensions_pattern",
+        "external_network_activity_during_encryption",
+        "abnormal_process_location_for_mass_file_access",
+        "elevated_integrity_with_non_system_path",
+        "wide_directory_spread"
+      ],
+      "risk_score": 0.8571428571428571,
+      "recommended_actions": [
+        "kill_process",
+        "isolate_host",
+        "block_network",
+        "alert_human",
+        "preserve_forensics"
+      ],
+      "ml_ransomware_probability": 0.785,
+      "ml_predicted_label": true
+    },
+    {
+      "process_name": "blackcrypt.exe",
+      "pid": 5002,
+      "first_seen": "2025-01-01T10:05:00",
+      "last_seen": "2025-01-01T10:05:39",
+      "max_burst_unique_files_in_window": 90,
+      "total_unique_files_touched": 90,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 90,
+      "directory_spread": 3,
+      "suspicious_extensions": [
+        {
+          "extension": "enc",
+          "count": 35,
+          "ratio": 0.3888888888888889
+        },
+        {
+          "extension": "encrypted",
+          "count": 33,
+          "ratio": 0.36666666666666664
+        },
+        {
+          "extension": "crypt",
+          "count": 22,
+          "ratio": 0.24444444444444444
+        }
+      ],
+      "outbound_external_connections": [],
+      "process_path": "C:\\Users\\victim\\AppData\\Roaming\\blackcrypt.exe",
+      "integrity_level": "High",
+      "abnormal_location": true,
+      "elevated_integrity": true,
+      "risk_factors": [
+        "high_burst_file_activity",
+        "suspicious_extensions_pattern",
+        "abnormal_process_location_for_mass_file_access",
+        "elevated_integrity_with_non_system_path",
+        "wide_directory_spread"
+      ],
+      "risk_score": 0.7142857142857143,
+      "recommended_actions": [
+        "alert_human",
+        "increase_monitoring",
+        "collect_additional_logs"
+      ],
+      "ml_ransomware_probability": 0.775,
+      "ml_predicted_label": true
+    },
+    {
+      "process_name": "backup.exe",
+      "pid": 4002,
+      "first_seen": "2025-01-01T10:02:00",
+      "last_seen": "2025-01-01T10:09:27",
+      "max_burst_unique_files_in_window": 21,
+      "total_unique_files_touched": 150,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 150,
+      "directory_spread": 3,
+      "suspicious_extensions": [],
+      "outbound_external_connections": [],
+      "process_path": "C:\\Program Files\\Backup\\backup.exe",
+      "integrity_level": "High",
+      "abnormal_location": false,
+      "elevated_integrity": false,
+      "risk_factors": [
+        "wide_directory_spread"
+      ],
+      "risk_score": 0.14285714285714285,
+      "recommended_actions": [
+        "log_suspicious"
+      ],
+      "ml_ransomware_probability": 0.075,
+      "ml_predicted_label": false
+    },
+    {
+      "process_name": "chrome.exe",
+      "pid": 4004,
+      "first_seen": "2025-01-01T10:06:00",
+      "last_seen": "2025-01-01T10:06:36",
+      "max_burst_unique_files_in_window": 10,
+      "total_unique_files_touched": 10,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 10,
+      "directory_spread": 1,
+      "suspicious_extensions": [],
+      "outbound_external_connections": [
+        {
+          "timestamp": "2025-01-01T10:04:00",
+          "dest_ip": "172.217.16.0",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:03",
+          "dest_ip": "172.217.16.1",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:06",
+          "dest_ip": "172.217.16.2",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:09",
+          "dest_ip": "172.217.16.3",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:12",
+          "dest_ip": "172.217.16.4",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:15",
+          "dest_ip": "172.217.16.5",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:18",
+          "dest_ip": "172.217.16.6",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:21",
+          "dest_ip": "172.217.16.7",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:24",
+          "dest_ip": "172.217.16.8",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:27",
+          "dest_ip": "172.217.16.9",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:30",
+          "dest_ip": "172.217.16.0",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:33",
+          "dest_ip": "172.217.16.1",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:36",
+          "dest_ip": "172.217.16.2",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:39",
+          "dest_ip": "172.217.16.3",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:42",
+          "dest_ip": "172.217.16.4",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:45",
+          "dest_ip": "172.217.16.5",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:48",
+          "dest_ip": "172.217.16.6",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:51",
+          "dest_ip": "172.217.16.7",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:54",
+          "dest_ip": "172.217.16.8",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:04:57",
+          "dest_ip": "172.217.16.9",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:00",
+          "dest_ip": "172.217.16.0",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:03",
+          "dest_ip": "172.217.16.1",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:06",
+          "dest_ip": "172.217.16.2",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:09",
+          "dest_ip": "172.217.16.3",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:12",
+          "dest_ip": "172.217.16.4",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:15",
+          "dest_ip": "172.217.16.5",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:18",
+          "dest_ip": "172.217.16.6",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:21",
+          "dest_ip": "172.217.16.7",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:24",
+          "dest_ip": "172.217.16.8",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:27",
+          "dest_ip": "172.217.16.9",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:30",
+          "dest_ip": "172.217.16.0",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:33",
+          "dest_ip": "172.217.16.1",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:36",
+          "dest_ip": "172.217.16.2",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:39",
+          "dest_ip": "172.217.16.3",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:42",
+          "dest_ip": "172.217.16.4",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:45",
+          "dest_ip": "172.217.16.5",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:48",
+          "dest_ip": "172.217.16.6",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:51",
+          "dest_ip": "172.217.16.7",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:54",
+          "dest_ip": "172.217.16.8",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:05:57",
+          "dest_ip": "172.217.16.9",
+          "dest_port": 443,
+          "protocol": "TCP"
+        }
+      ],
+      "process_path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "integrity_level": "Medium",
+      "abnormal_location": false,
+      "elevated_integrity": false,
+      "risk_factors": [
+        "external_network_activity_during_encryption"
+      ],
+      "risk_score": 0.14285714285714285,
+      "recommended_actions": [
+        "log_suspicious"
+      ],
+      "ml_ransomware_probability": 0.015,
+      "ml_predicted_label": false
+    },
+    {
+      "process_name": "securityscan.exe",
+      "pid": 4006,
+      "first_seen": "2025-01-01T10:08:00",
+      "last_seen": "2025-01-01T10:13:58",
+      "max_burst_unique_files_in_window": 1,
+      "total_unique_files_touched": 190,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 10,
+      "directory_spread": 4,
+      "suspicious_extensions": [],
+      "outbound_external_connections": [],
+      "process_path": "C:\\Program Files\\SecurityVendor\\SecurityScan.exe",
+      "integrity_level": "High",
+      "abnormal_location": false,
+      "elevated_integrity": false,
+      "risk_factors": [
+        "wide_directory_spread"
+      ],
+      "risk_score": 0.14285714285714285,
+      "recommended_actions": [
+        "log_suspicious"
+      ],
+      "ml_ransomware_probability": 0.015,
+      "ml_predicted_label": false
+    },
+    {
+      "process_name": "explorer.exe",
+      "pid": 4001,
+      "first_seen": "2025-01-01T10:01:00",
+      "last_seen": "2025-01-01T10:03:25",
+      "max_burst_unique_files_in_window": 12,
+      "total_unique_files_touched": 30,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 22,
+      "directory_spread": 2,
+      "suspicious_extensions": [],
+      "outbound_external_connections": [],
+      "process_path": "C:\\Windows\\explorer.exe",
+      "integrity_level": "Medium",
+      "abnormal_location": false,
+      "elevated_integrity": false,
+      "risk_factors": [],
+      "risk_score": 0.0,
+      "recommended_actions": [
+        "log_suspicious"
+      ],
+      "ml_ransomware_probability": 0.0,
+      "ml_predicted_label": false
+    },
+    {
+      "process_name": "winword.exe",
+      "pid": 4003,
+      "first_seen": "2025-01-01T10:03:00",
+      "last_seen": "2025-01-01T10:05:48",
+      "max_burst_unique_files_in_window": 6,
+      "total_unique_files_touched": 25,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 20,
+      "directory_spread": 1,
+      "suspicious_extensions": [],
+      "outbound_external_connections": [],
+      "process_path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE",
+      "integrity_level": "Medium",
+      "abnormal_location": false,
+      "elevated_integrity": false,
+      "risk_factors": [],
+      "risk_score": 0.0,
+      "recommended_actions": [
+        "log_suspicious"
+      ],
+      "ml_ransomware_probability": 0.0,
+      "ml_predicted_label": false
+    },
+    {
+      "process_name": "onedrive.exe",
+      "pid": 4005,
+      "first_seen": "2025-01-01T10:06:00",
+      "last_seen": "2025-01-01T10:09:54",
+      "max_burst_unique_files_in_window": 7,
+      "total_unique_files_touched": 40,
+      "long_window_minutes": 10,
+      "unique_files_in_long_window": 28,
+      "directory_spread": 1,
+      "suspicious_extensions": [],
+      "outbound_external_connections": [
+        {
+          "timestamp": "2025-01-01T10:07:00",
+          "dest_ip": "13.107.42.10",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:07:10",
+          "dest_ip": "13.107.42.11",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:07:20",
+          "dest_ip": "13.107.42.12",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:07:30",
+          "dest_ip": "13.107.42.13",
+          "dest_port": 443,
+          "protocol": "TCP"
+        },
+        {
+          "timestamp": "2025-01-01T10:07:40",
+          "dest_ip": "13.107.42.14",
+          "dest_port": 443,
+          "protocol": "TCP"
+        }
+      ],
+      "process_path": "C:\\Users\\victim\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe",
+      "integrity_level": "Medium",
+      "abnormal_location": false,
+      "elevated_integrity": false,
+      "risk_factors": [
+        "external_network_activity_during_encryption"
+      ],
+      "risk_score": 0.14285714285714285,
+      "recommended_actions": [
+        "log_suspicious"
+      ],
+      "ml_ransomware_probability": 0.0,
+      "ml_predicted_label": false
+    }
+  ],
+  "top_candidate_ml": {
+    "process_name": "slowcryptor.exe",
+    "pid": 5003,
+    "ml_ransomware_probability": 0.84
+  }
+}

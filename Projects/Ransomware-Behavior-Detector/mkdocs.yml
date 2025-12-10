@@ -1,0 +1,10 @@
+site_name: Ransomware Behavior Detector
+theme:
+  name: material
+
+nav:
+  - Accueil: index.md
+  - Documentation:
+      - Architecture & Core Logic: architecture.md
+      - Heuristics Engine: system_overview.md
+      - Machine Learning Pipeline: version_history.md

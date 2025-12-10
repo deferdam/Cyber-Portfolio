@@ -1,0 +1,47 @@
+[
+  {
+    "process_name": "weirdencryptor.exe",
+    "pid": 5001,
+    "label": 1
+  },
+  {
+    "process_name": "blackcrypt.exe",
+    "pid": 5002,
+    "label": 1
+  },
+  {
+    "process_name": "slowcryptor.exe",
+    "pid": 5003,
+    "label": 1
+  },
+  {
+    "process_name": "explorer.exe",
+    "pid": 4001,
+    "label": 0
+  },
+  {
+    "process_name": "backup.exe",
+    "pid": 4002,
+    "label": 0
+  },
+  {
+    "process_name": "winword.exe",
+    "pid": 4003,
+    "label": 0
+  },
+  {
+    "process_name": "chrome.exe",
+    "pid": 4004,
+    "label": 0
+  },
+  {
+    "process_name": "onedrive.exe",
+    "pid": 4005,
+    "label": 0
+  },
+  {
+    "process_name": "securityscan.exe",
+    "pid": 4006,
+    "label": 0
+  }
+]

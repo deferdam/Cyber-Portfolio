@@ -1,0 +1,6 @@
+[
+  { "process_name": "weirdencryptor.exe", "pid": 2009, "label": 1 },
+  { "process_name": "explorer.exe", "pid": 2002, "label": 0 },
+  { "process_name": "winword.exe", "pid": 2008, "label": 0 },
+  { "process_name": "chrome.exe", "pid": 2005, "label": 0 }
+]

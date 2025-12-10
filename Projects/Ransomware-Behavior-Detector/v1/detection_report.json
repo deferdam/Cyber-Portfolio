@@ -1,0 +1,14 @@
+{
+  "generated_at": "2025-12-01T01:55:32.406102Z",
+  "time_window_seconds": 60,
+  "min_unique_files_threshold": 40,
+  "suspicious_processes": [
+    {
+      "process_name": "weirdencryptor.exe",
+      "pid": 2009,
+      "first_seen": "2025-01-01T12:10:00.178000",
+      "last_seen": "2025-01-01T12:10:25.589000",
+      "max_unique_files_in_window": 150
+    }
+  ]
+}
