@@ -1,12 +1,4 @@
-#  — Junior Malware / Blue Team
-
-## Liens
-
-- CV (PDF) : ``
-- Projets clés : `malware-analysis/`, `soc-labs/`, `tryhackme-writeups/`
-- Contact :  | LinkedIn : 
-
----
+# Junior Malware / Blue Team
 
 ## Pitch
 

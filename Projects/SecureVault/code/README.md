@@ -104,44 +104,6 @@ It must be installed before using the software.
 
 ---
 
-## Team and Roles
-
-- Security Lead & Architect  
-  
-  Responsible for:
-  - Security decisions  
-  - System architecture  
-  - Threat modeling  
-  - Overall technical coherence
-
-- Dev Key Management & Password Flow  
-    
-  Responsible for:
-  - Password handling  
-  - Key derivation logic  
-  - Salt management
-
-- Dev Crypto  
-    
-  Responsible for:
-  - Encryption and decryption implementation  
-  - Cryptographic algorithms integration
-
-- Interface Utilisateur (CLI) + Gestion Fichiers  
-    
-  Responsible for:
-  - Command Line Interface  
-  - File selection and user interaction
-
-- Tests, Qualité, Documentation & Démo  
-    
-  Responsible for:
-  - Automated tests  
-  - Documentation structure  
-  - Final demonstration and validation
-
----
-
 ## Technical Direction
 
 The project follows these principles:

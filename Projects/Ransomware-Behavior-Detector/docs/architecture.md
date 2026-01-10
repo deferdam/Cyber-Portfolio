@@ -3,10 +3,6 @@
 ## Project Title & Team Members
 
 - **Project Name:** Ransomware Behavior Detection System (Hybrid Heuristic + Machine Learning)
-- **Team Members:** _To complete_
--  — Machine Learning Engineer / logic developper / security developper / documentation / tests
--  — Demo
----
 
 ## Overview
 

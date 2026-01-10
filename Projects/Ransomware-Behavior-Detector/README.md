@@ -5,16 +5,6 @@ It supports detection of both fast and slow ransomware patterns.
 
 ---
 
-## Team Members
-
-
-```
--  — Machine Learning Engineer / logic developper / security developper / documentation / tests
--  — Demo
-```
-
----
-
 ## Requirements
 
 Python 3.10 or newer is recommended.
