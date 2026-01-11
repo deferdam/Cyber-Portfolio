@@ -1,9 +1,11 @@
-# Junior Malware / Blue Team
+# Blue Team / Malware Analysis — Junior Cybersecurity Profile
 
 ## Pitch
 
-Étudiant en 5ᵉ année à Epitech, orienté cybersécurité (malware, SOC et blue team).  
-Je monte un lab perso (Windows / Linux / Parrot) pour analyser des samples, écrire des règles de détection et documenter mes investigations de façon propre et éthique.
+Étudiant en 5ᵉ année à Epitech, orienté cybersécurité avec un focus Blue Team (SOC, analyse de malwares, détection).
+Je monte un lab personnel (Windows / Linux / Parrot) pour analyser des samples, reproduire des scénarios SOC,
+écrire des règles de détection et documenter mes investigations de manière structurée et éthique.
+
 
 ---
 
@@ -13,7 +15,10 @@ Je monte un lab perso (Windows / Linux / Parrot) pour analyser des samples, écr
 - Mise en place d’un **lab d’analyse malware** isolé (VM Windows, Ubuntu, Parrot).
 - Première série de rapports publics :  
   - 1 writeup SOC / réseau (DNS, WHOIS, pings, couches réseau TCP/IP).  
-  - 1 analyse guidée d’un vieux malware (Zeus / WannaCry-like) dans `malware-analysis/`.  
+  - 1 analyse guidée de malware basée sur un sample pédagogique public, reproduite dans un lab isolé avec une lecture orientée détection (SOC / Blue Team).
+
+Mon travail consiste à reproduire l’analyse dans un lab isolé, documenter la méthodologie,
+extraire les IOCs et produire une lecture orientée détection (SOC / Blue Team), dans `malware-analysis/`.
 
 _(Le dépôt va évoluer au fur et à mesure de ma progression.)_
 
@@ -23,7 +28,7 @@ _(Le dépôt va évoluer au fur et à mesure de ma progression.)_
 
 - **Langages :** Python, C (lecture), Bash, Dart (projet mobile), Go (backend).
 - **Systèmes & réseau :** Linux (Debian/Ubuntu), Windows, notions de réseaux (TCP/IP, DNS, WHOIS, ICMP).
-- **Outils sécurité :** Wireshark, VirtualBox, Parrot/Kali, premiers labs Ghidra & Procmon.
+- **Outils sécurité :** Wireshark, VirtualBox, Parrot/Kali, premiers usages de Ghidra (lecture statique basique) et Procmon (analyse comportementale).
 - **Détection (en cours d’apprentissage) :** YARA, Sigma, MITRE ATT&CK.
 - **Dev & projet :** Flutter, Firebase, APIs REST, bonnes pratiques de base (CORS, auth, stockage).
 
@@ -51,7 +56,7 @@ Exemples :
 
 - Analyse de logs réseau ou Windows.
 - Mini playbooks : “que faire si je vois X dans les logs ?”.
-- Idées de détections : premières règles Sigma / requêtes SIEM (pseudo-Splunk).
+- Idées de détections : premières règles Sigma / requêtes SIEM inspirées de Splunk (logique de filtrage et corrélation).
 
 ### 3. `tryhackme-writeups/`
 
@@ -97,3 +102,10 @@ Mes projets d’école et projets systèmes restent privés, mais en voici un ap
 - **Gomoku** — IA pour jeu de stratégie, heuristiques, algorithmes de recherche (minimax).
 
 Ces projets sont conservés en **privé** (code complet disponible en entretien).
+
+## Crédits & références
+
+- Certains samples ou analyses guidées s’appuient sur des supports pédagogiques publics.
+- Les analyses consistent en une reproduction méthodologique dans un lab isolé,
+  avec une lecture orientée détection (SOC / Blue Team).
+- Les sources pédagogiques sont publiques ou anonymisées lorsque nécessaire.
