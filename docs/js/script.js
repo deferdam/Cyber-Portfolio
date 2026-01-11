@@ -49,8 +49,13 @@ const I18N = {
     open: "Ouvrir",
     back: "Retour",
     legal: "Contenu défensif et éducatif uniquement. Aucun binaire malveillant n’est hébergé.",
+    doc_open_github: "Ouvrir sur GitHub",
+    doc_open_raw: "Ouvrir en brut",
+    btn_open_progress: "Ouvrir les notes de progression",
+    btn_back: "Retour",
 
     // leads / headers
+    overview_lead: "Je me concentre sur les fondamentaux Blue Team : triage malware, analyse orientée détection et workflows SOC. Je maintiens un lab isolé (Windows/Linux/Parrot) et publie des write-ups structurés et des notes sur les outils.",
     projects_lead: "Sélection organisée. Tout est défensif et documenté. Aucun binaire malveillant n’est hébergé.",
     malware_lead: "Reproduit dans un lab isolé, avec une approche orientée détection : IOCs, comportements, et conclusions défensives.",
     soc_lead: "Exercices type SOC : bases réseau, approche triage de logs, playbooks simples et idées de détection.",
@@ -120,15 +125,21 @@ const I18N = {
 
   en: {
     // global
-    open: "Open",
-    back: "Back",
+    btn_back: "Open",
+    btn_open: "Back",
     legal: "Defensive & educational content only. No malware binaries hosted.",
+    doc_open_github: "Open on GitHub",
+    doc_open_raw: "Open raw",
+    btn_open_progress: "Open progress notes",
+    btn_back: "Back",
+    btn_open: "Open",
 
     // leads / headers
     projects_lead: "Curated selection. Everything is defensive and documented. No malicious binaries are hosted.",
     malware_lead: "Reproduced in an isolated lab, with a detection-oriented mindset: IOCs, behaviours, and defensive takeaways.",
     soc_lead: "SOC-style exercises: network basics, log triage mindset, simple playbooks, and detection ideas.",
     thm_lead: "Training progress and defensive notes. No full spoilers.",
+    overview_lead: "I focus on Blue Team fundamentals: malware triage, detection-oriented analysis, and SOC workflows. I maintain an isolated lab (Windows/Linux/Parrot) and publish structured write-ups and tooling notes.",
 
     // projects
     projects_title: "Projects",
