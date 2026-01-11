@@ -3,6 +3,15 @@
 
 @import "minima";
 
+.site-header {
+  border-top: none;
+  border-bottom: 1px solid #ff3b3b;
+}
+
+.site-title, .site-nav .page-link {
+  color: #ff3b3b !important;
+}
+
 /* Global dark theme */
 body {
   background: #0b0b0b;

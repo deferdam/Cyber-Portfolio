@@ -1,8 +1,0 @@
-title: "Cybersecurity Portfolio"
-description: "Blue Team | Malware Analysis | Detection Engineering"
-theme: minima
-
-markdown: kramdown
-
-plugins:
-  - jekyll-seo-tag
