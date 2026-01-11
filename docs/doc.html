@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Document</title>
+
+  <!-- keep your site styling -->
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <main class="main">
+    <div class="doc-shell">
+      <a class="btn" href="./index.html" id="backBtn">Back</a>
+
+      <div class="doc-box">
+        <div class="doc-title" id="docTitle">Document</div>
+        <div class="doc-sub" id="docSub"></div>
+
+        <div class="doc-actions">
+          <a class="btn" id="openGithub" target="_blank" rel="noopener">Open on GitHub</a>
+          <a class="btn btn-ghost" id="openRaw" target="_blank" rel="noopener">Open raw</a>
+        </div>
+
+        <p class="doc-note">
+          This page links to the corresponding Markdown in the repository. No binaries are hosted.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // expects:
+    //  - ?doc=PATH (e.g. tryhackme/tryhackme-progress.md)
+    //  - optional ?lang=en|fr
+    //
+    // FR default: .md
+    // EN: same file name + ".en.md" instead of ".md"
+
+    const params = new URLSearchParams(location.search);
+    const doc = params.get("doc");
+    const lang = (params.get("lang") || localStorage.getItem("lang") || "fr").toLowerCase();
+
+    const title = document.getElementById("docTitle");
+    const sub = document.getElementById("docSub");
+    const openGithub = document.getElementById("openGithub");
+    const openRaw = document.getElementById("openRaw");
+    const backBtn = document.getElementById("backBtn");
+
+    function withLang(path, lang) {
+      // if EN requested and path ends with ".md" but not ".en.md", convert.
+      if (lang === "en") {
+        if (path.endsWith(".en.md")) return path;
+        if (path.endsWith(".md")) return path.replace(/\.md$/, ".en.md");
+        // if it doesn't end with .md, we leave it (your docs might be html)
+        return path;
+      }
+      // FR: ensure we are not forcing .en.md
+      if (path.endsWith(".en.md")) return path.replace(/\.en\.md$/, ".md");
+      return path;
+    }
+
+    if (!doc) {
+      title.textContent = "Missing doc parameter.";
+      sub.textContent = "Use: doc.html?doc=path/to/file.md";
+      openGithub.removeAttribute("href");
+      openRaw.removeAttribute("href");
+    } else {
+      const resolved = withLang(doc, lang);
+
+      // IMPORTANT: These URLs are from your examples: you store docs at repo root paths (not under /docs/)
+      // So we build URLs as: .../blob/main/<resolved>
+      const githubUrl = `https://github.com/deferdam/Cyber-Portfolio/blob/main/${resolved}`;
+      const rawUrl = `https://raw.githubusercontent.com/deferdam/Cyber-Portfolio/main/${resolved}`;
+
+      title.textContent = resolved.split("/").pop();
+      sub.textContent = resolved;
+
+      openGithub.href = githubUrl;
+      openRaw.href = rawUrl;
+
+      // back keeps the language
+      backBtn.href = `./index.html`;
+    }
+  </script>
+</body>
+</html>

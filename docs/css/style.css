@@ -190,7 +190,7 @@ h1::after{
   box-shadow: var(--shadow);
   display:flex;
   flex-direction:column;
-  min-height: 260px;
+  min-height: 170px;
 }
 .thumb{
   width:100%;
@@ -199,9 +199,9 @@ h1::after{
   display:block;
   background: #0c0f15;
 }
-.card-body{padding: 12px}
+.card-body{ padding: 14px;}
 .card-title{font-weight: 800; margin-bottom: 6px}
-.card-desc{color: var(--muted); font-size: 13px; line-height:1.55; min-height: 64px}
+.card-desc{color: var(--muted); font-size: 13px; line-height:1.55; min-height: 0px}
 .card-link{
   display:inline-flex;
   margin-top: 10px;
@@ -371,3 +371,111 @@ h1::after{
 
 .callout .btn { margin-top: 10px; }
 .callout .muted { color: var(--muted); margin: 10px 0 0 0; line-height: 1.6; }
+
+.profile-header{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-meta{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.badges{
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  margin-top: 8px;
+}
+
+.doc-shell{
+  max-width: 980px;
+}
+
+.doc-box{
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.02);
+  padding: 16px;
+}
+
+.doc-title{
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.doc-sub{
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  word-break: break-word;
+  margin-bottom: 14px;
+}
+
+.doc-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-ghost{
+  background: transparent;
+  border-color: rgba(255,255,255,.08);
+}
+
+.doc-note{
+  margin-top: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.lang-float{
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: 10px;
+  z-index: 10000;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(10,10,12,.70);
+  backdrop-filter: blur(10px);
+}
+
+.lang-btn{
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.02);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .08s ease, border-color .2s ease, background .2s ease;
+}
+
+.lang-btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(200,48,48,.45);
+  background: rgba(200,48,48,.10);
+}
+
+.lang-btn.is-active{
+  border-color: rgba(200,48,48,.70);
+  background: rgba(200,48,48,.16);
+  box-shadow: 0 0 0 2px rgba(200,48,48,.12) inset;
+}
+
+.lang-btn img{
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  object-fit: cover;
+}

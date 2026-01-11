@@ -1,23 +1,20 @@
-# Secure File Vault – Overview
+# Secure File Vault – Présentation
 
-Secure File Vault is a local application that lets a user encrypt and decrypt
-files using a password. The main goal is to protect the confidentiality of
-sensitive files if someone gains access to the computer or backups.
+Secure File Vault est une application locale permettant à un utilisateur de chiffrer et déchiffrer des fichiers à l’aide d’un mot de passe. L’objectif principal est de protéger la confidentialité des fichiers sensibles en cas d’accès non autorisé à l’ordinateur ou aux sauvegardes.
 
-The user:
-- chooses whether to encrypt or decrypt,
-- selects a file (either manually or through a file explorer),
-- enters a strong password.
+L’utilisateur :
+- choisit s’il souhaite chiffrer ou déchiffrer,
+- sélectionne un fichier (manuellement ou via un explorateur de fichiers),
+- saisit un mot de passe fort.
 
-Internally:
-- a key is derived from the password using PBKDF2-HMAC-SHA256 with a random salt,
-- the file content is encrypted using a secure algorithm (Fernet) with that key,
-- the salt and ciphertext are stored together so the file can be decrypted later.
+Fonctionnement interne :
+- une clé est dérivée du mot de passe à l’aide de PBKDF2-HMAC-SHA256 avec un sel aléatoire,
+- le contenu du fichier est chiffré à l’aide d’un algorithme sécurisé (Fernet) utilisant cette clé,
+- le sel et le texte chiffré sont stockés ensemble afin de permettre le déchiffrement ultérieur.
 
-The application does not keep the key anywhere. The only secret the user must
-remember is the password.
+L’application ne conserve jamais la clé. Le seul secret que l’utilisateur doit retenir est le mot de passe.
 
-This repository currently contains:
-- core security module: `key_management.py`
-- command-line interface: `cli.py`
-- documentation and configuration for a simple documentation site (MkDocs).
+Ce dépôt contient actuellement :
+- le module de sécurité principal : `key_management.py`
+- l’interface en ligne de commande : `cli.py`
+- la documentation et la configuration pour un site de documentation simple (MkDocs).
