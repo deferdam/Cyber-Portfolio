@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Damien D. — Cybersecurity Portfolio</title>
+
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="profile">
+        <img class="avatar" src="./img/avatar.jpg" alt="Damien D." />
+        <div class="who">
+          <div class="name">Damien D.</div>
+          <div class="role">Cybersecurity Student — Blue Team & Malware Analysis</div>
+        </div>
+
+        <div class="badges">
+          <span class="badge badge-red">SOC-oriented</span>
+          <span class="badge badge-green">TryHackMe top 7%</span>
+        </div>
+      </div>
+
+      <nav class="menu" aria-label="Main navigation">
+        <button class="menu-item is-active" data-nav="overview">Overview</button>
+        <button class="menu-item" data-nav="projects">Projects</button>
+        <button class="menu-item" data-nav="malware">Malware Analysis</button>
+        <button class="menu-item" data-nav="soc">SOC Labs</button>
+        <button class="menu-item" data-nav="tryhackme">TryHackMe</button>
+        <button class="menu-item" data-nav="contact">Contact</button>
+      </nav>
+
+      <div class="contacts">
+      <div class="contacts-title">Links</div>
+
+      <div class="contacts-icons">
+          <a class="icon-link" href="https://github.com/deferdam" target="_blank" rel="noopener" aria-label="GitHub">
+          <img src="./img/icons/github.webp" alt="">
+          </a>
+
+          <a class="icon-link" href="https://www.linkedin.com/in/damien-defer/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <img src="./img/icons/linkedin.webp" alt="">
+          </a>
+
+          <a class="icon-link" href="mailto:damien.defer@proton.me" aria-label="Email">
+          <img src="./img/icons/mail.webp" alt="">
+          </a>
+      </div>
+      </div>
+
+
+      <div class="legal">
+        Defensive & educational content only. No malware binaries hosted.
+      </div>
+      <div class="sidebar-footer">
+        <img class="footer-mark" src="./img/icons/bluehat.webp" alt="Blue Team">
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- OVERVIEW -->
+      <section class="page is-active" data-page="overview">
+        <header class="hero">
+          <h1>Cybersecurity Portfolio</h1>
+          <p class="lead">
+            I focus on Blue Team fundamentals: malware triage, detection-oriented analysis, and SOC workflows.
+            I maintain an isolated lab (Windows/Linux/Parrot) and publish structured write-ups and tooling notes.
+          </p>
+
+          <div class="hero-cards">
+            <div class="mini-card">
+              <div class="mini-title">Current focus</div>
+              <div class="mini-text">Detection mindset, malware analysis basics, SOC scenarios</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-title">Lab</div>
+              <div class="mini-text">VM-only, isolated, no public network; defensive scope</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-title">Output</div>
+              <div class="mini-text">Write-ups, IOCs, YARA/Sigma learning artefacts</div>
+            </div>
+          </div>
+        </header>
+
+        <h2>Featured projects</h2>
+        <div class="grid">
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-malware-reverse-shell.webp" alt="Malware reverse shell analysis thumbnail">
+            <div class="card-body">
+              <div class="card-title">Linux ELF Reverse Shell — analysis</div>
+              <div class="card-desc">Static + basic dynamic notes, IOC extraction, detection-oriented conclusions.</div>
+              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/">Open</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-ransomware-behavior-detector.webp" alt="Ransomware behavior detector thumbnail">
+            <div class="card-body">
+              <div class="card-title">Ransomware Behavior Detector</div>
+              <div class="card-desc">Behavior-based detection idea + documentation (defensive scope).</div>
+              <a class="card-link" href="./Projects/Ransomware-Behavior-Detector/">Open</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-secure-file-vault.webp" alt="Secure file vault thumbnail">
+            <div class="card-body">
+              <div class="card-title">Secure File Vault</div>
+              <div class="card-desc">File encryption/decryption tool + threat model + security guidelines.</div>
+              <a class="card-link" href="./Projects/SecureVault/">Open</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="page" data-page="projects">
+        <h1>Projects</h1>
+        <p class="lead">
+          Curated selection. Everything is defensive and documented. No malicious binaries are hosted.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-malware-reverse-shell.webp" alt="">
+            <div class="card-body">
+              <div class="card-title">Malware analysis: Linux ELF reverse shell</div>
+              <div class="card-desc">Encrypted C2 config, XOR decryption notes, basic YARA learning.</div>
+              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/">Open</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-yara.webp" alt="">
+            <div class="card-body">
+              <div class="card-title">YARA rules (learning)</div>
+              <div class="card-desc">Small defensive signatures built from analysis notes.</div>
+              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/yara/">Open</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-mini-siem.webp" alt="">
+            <div class="card-body">
+              <div class="card-title">Mini SIEM (planned)</div>
+              <div class="card-desc">In progress: log ingestion + basic detection views.</div>
+              <span class="card-link card-link-disabled">In progress</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- MALWARE -->
+      <section class="page" data-page="malware">
+        <h1>Malware Analysis</h1>
+        <p class="lead">
+          Reproduced in an isolated lab, with a detection-oriented mindset: IOCs, behaviours, and defensive takeaways.
+        </p>
+
+        <div class="callout">
+          <div class="callout-title">Scope</div>
+          <ul>
+            <li>No malware binaries published.</li>
+            <li>Text, screenshots, notes, and pseudocode only.</li>
+            <li>Defensive intent only.</li>
+          </ul>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-malware-reverse-shell.webp" alt="">
+            <div class="card-body">
+              <div class="card-title">Linux ELF reverse shell — write-up</div>
+              <div class="card-desc">Reverse engineering notes + decryption script + YARA learning.</div>
+              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/">Open</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- SOC -->
+      <section class="page" data-page="soc">
+        <h1>SOC Labs</h1>
+        <p class="lead">
+          SOC-style exercises: network basics, log triage mindset, simple playbooks, and detection ideas.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <img class="thumb" src="./img/projects/thumb-tryhackme.webp" alt="">
+            <div class="card-body">
+              <div class="card-title">SOC / network write-up</div>
+              <div class="card-desc">DNS, WHOIS, ICMP, TCP/IP layers — structured notes.</div>
+              <a class="card-link" href="./tryhackme/">Open</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- TRYHACKME -->
+      <section class="page" data-page="tryhackme">
+        <h1>TryHackMe</h1>
+        <p class="lead">
+          Training progress and defensive notes. No full spoilers.
+        </p>
+
+        <div class="callout">
+          <div class="callout-title">Status</div>
+          <ul>
+            <li>SOC Level 1: completed</li>
+            <li>Ranking: top 7%</li>
+          </ul>
+        </div>
+
+        <a class="btn" href="./tryhackme/tryhackme-progress.md">Open progress notes</a>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="page" data-page="contact">
+        <h1>Contact</h1>
+        <div class="contact-box">
+          <div class="contact-row">
+            <div class="label">Email</div>
+            <a href="mailto:damien.defer@epitech.eu">damien.defer@epitech.eu</a>
+          </div>
+          <div class="contact-row">
+            <div class="label">GitHub</div>
+            <a href="https://github.com/deferdam" target="_blank" rel="noopener">github.com/deferdam</a>
+          </div>
+          <div class="contact-row">
+            <div class="label">LinkedIn</div>
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn profile</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+</html>
