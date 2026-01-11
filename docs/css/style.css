@@ -479,3 +479,23 @@ h1::after{
   border-radius: 999px;
   object-fit: cover;
 }
+
+/* Cards: force CTA to bottom */
+.card{
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-desc{
+  flex: 1; /* takes remaining space */
+}
+
+.card-actions{
+  margin-top: 14px;
+}
