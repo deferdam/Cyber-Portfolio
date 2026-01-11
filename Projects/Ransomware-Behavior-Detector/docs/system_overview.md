@@ -1,33 +1,33 @@
-# System Overview
+# Vue d’ensemble du système
 
-## 1. Executive Summary
+## 1. Résumé exécutif
 
-The Ransomware Behavior Detector is a hybrid detection engine using behavioral heuristics and machine learning.  
-It monitors system logs and detects both fast-acting ransomware and slow encryption attempts.
+Le **Ransomware Behavior Detector** est un moteur de détection hybride combinant heuristiques comportementales et apprentissage automatique.  
+Il surveille les journaux système et détecte aussi bien les ransomwares à chiffrement rapide que les tentatives de chiffrement lentes.
 
-The system analyzes:
-- File system operations
-- Process metadata (privilege level, execution path)
-- File extension patterns
-- High-frequency file modification bursts
-- Suspicious network behavior
+Le système analyse notamment :
+- Les opérations sur le système de fichiers
+- Les métadonnées des processus (niveau de privilèges, chemin d’exécution)
+- Les schémas d’extensions de fichiers
+- Les rafales de modifications de fichiers à haute fréquence
+- Les comportements réseau suspects
 
-Machine learning improves accuracy and reduces false positive alerts by learning from labeled reports.
+L’apprentissage automatique améliore la précision globale et réduit les faux positifs en apprenant à partir de rapports étiquetés.
 
 ---------------------------------------------
 
-## 2. Technical Design and Architecture
+## 2. Conception technique et architecture
 
-### Architecture Diagram
+### Schéma d’architecture
 
 ```
-Raw logs (.jsonl)
+Journaux bruts (.jsonl)
     ↓
-Heuristic Detector (ransomware_detector.py)
+Détecteur heuristique (ransomware_detector.py)
     ↓
 detection_report.json
     ↓
-Machine Learning Training (train.py, ml_pipeline.py)
+Entraînement Machine Learning (train.py, ml_pipeline.py)
     ↓
 ransomware_model.joblib
     ↓
@@ -36,72 +36,73 @@ apply_model.py
 detection_report_with_ml.json
 ```
 
-### Major Modules
+### Modules principaux
 
-| Module | Purpose |
-|--------|---------|
-| ransomware_detector.py | Extracts behavioral indicators and creates a structured detection report |
-| ml_pipeline.py | Converts the detection report into ML feature vectors |
-| train.py | Trains the RandomForest model from labeled examples |
-| apply_model.py | Scores processes based on ransomware probability using the trained model |
+| Module | Rôle |
+|-------|------|
+| ransomware_detector.py | Extrait les indicateurs comportementaux et génère un rapport de détection structuré |
+| ml_pipeline.py | Transforme le rapport de détection en vecteurs de caractéristiques pour le ML |
+| train.py | Entraîne le modèle RandomForest à partir d’exemples étiquetés |
+| apply_model.py | Évalue les processus selon une probabilité de comportement ransomware |
 
 ---------------------------------------------
 
-## 3. Security Analysis
+## 3. Analyse de sécurité
 
-### Threat Model
+### Modèle de menace
 
-| Behavior Type | Detection Supported |
-|---------------|---------------------|
-| Fast encryption ransomware | Yes |
-| Slow encryption ransomware | Yes |
-| Abnormal execution paths | Yes |
-| Privilege escalation detection | Yes |
-| Suspicious outbound connections | Yes |
+| Type de comportement | Détection prise en charge |
+|---------------------|---------------------------|
+| Ransomware à chiffrement rapide | Oui |
+| Ransomware à chiffrement lent | Oui |
+| Chemins d’exécution anormaux | Oui |
+| Détection d’élévation de privilèges | Oui |
+| Connexions sortantes suspectes | Oui |
 
-### Assumptions
+### Hypothèses
 
-- Logging is reliable and includes timestamps and file metadata.
-- Process names and PIDs stay consistent during logging.
-- Labeled examples exist for machine learning training.
+- Les journaux sont fiables et contiennent des horodatages et métadonnées de fichiers corrects.
+- Les noms de processus et PID restent cohérents durant la journalisation.
+- Des exemples étiquetés sont disponibles pour l’entraînement du modèle.
 
 ### Limitations
 
-- Evasion is still theoretically possible.
-- Real-world performance depends on data quality.
-- The system issues alerts but does not block execution.
+- L’évasion reste théoriquement possible.
+- Les performances réelles dépendent fortement de la qualité des données.
+- Le système génère des alertes mais ne bloque pas l’exécution.
 
 ---------------------------------------------
 
-## 4. Testing Methodology and Results
+## 4. Méthodologie de test et résultats
 
-A synthetic dataset was created to simulate ransomware behavior and normal system usage.
+Un jeu de données synthétique a été créé afin de simuler des comportements ransomware et une activité système normale.
 
-Evaluation metrics produced by the trained model:
+Métriques d’évaluation produites par le modèle entraîné :
 
-| Metric | Value |
-|--------|-------|
-| Precision | 1.00 |
-| Recall | 1.00 |
-| Accuracy | 1.00 |
+| Métrique | Valeur |
+|---------|--------|
+| Précision | 1.00 |
+| Rappel | 1.00 |
+| Exactitude | 1.00 |
 
-These results were obtained in a synthetic testing environment. Real-world datasets will produce lower accuracy and require periodic retraining.
-
----------------------------------------------
-
-## 5. Team Roles and Contributions
-
-Format will be completed later:
-
-- Member 1 – Responsibilities TBD
-- Member 2 – Responsibilities TBD
-- Member 3 – Responsibilities TBD
+Ces résultats ont été obtenus dans un environnement de test synthétique.  
+Des jeux de données réels produiront des scores plus faibles et nécessiteront un réentraînement périodique.
 
 ---------------------------------------------
 
-## 6. References and Dataset Sources
+## 5. Rôles et contributions de l’équipe
 
-- MITRE ATT&CK Framework: T1486 Encryption for Impact
-- Sysinternals Sysmon Logging Format
-- Research papers on ransomware behavioral classification
-- Dataset Type: Synthetic simulated intrusion and ransomware logs
+Format à compléter ultérieurement :
+
+- Membre 1 – Responsabilités à définir
+- Membre 2 – Responsabilités à définir
+- Membre 3 – Responsabilités à définir
+
+---------------------------------------------
+
+## 6. Références et sources de données
+
+- Framework MITRE ATT&CK : T1486 – Encryption for Impact
+- Format de journalisation Sysinternals Sysmon
+- Articles de recherche sur la classification comportementale des ransomwares
+- Type de jeu de données : journaux synthétiques simulant des intrusions et ransomwares

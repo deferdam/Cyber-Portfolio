@@ -6,5 +6,5 @@ nav:
   - Accueil: index.md
   - Documentation:
       - Architecture & Core Logic: architecture.md
-      - Heuristics Engine: system_overview.md
+      - Heuristics Engine: system_overview.en.md
       - Machine Learning Pipeline: version_history.md
