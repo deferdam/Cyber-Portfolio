@@ -45,8 +45,19 @@ document.addEventListener("click", (e) => {
 
 const I18N = {
   fr: {
-    projects_lead: "Sélection organisée. Tout est défensif et documenté. Aucun binaire malveillant n’est hébergé.",
+    // global
+    open: "Ouvrir",
+    back: "Retour",
+    legal: "Contenu défensif et éducatif uniquement. Aucun binaire malveillant n’est hébergé.",
 
+    // leads / headers
+    projects_lead: "Sélection organisée. Tout est défensif et documenté. Aucun binaire malveillant n’est hébergé.",
+    malware_lead: "Reproduit dans un lab isolé, avec une approche orientée détection : IOCs, comportements, et conclusions défensives.",
+    soc_lead: "Exercices type SOC : bases réseau, approche triage de logs, playbooks simples et idées de détection.",
+    thm_lead: "Progression et notes défensives. Pas de spoilers complets.",
+
+    // projects
+    projects_title: "Projets",
     proj_malware_title: "Analyse malware : reverse shell Linux ELF",
     proj_malware_desc: "Configuration C2 chiffrée, notes de déchiffrement XOR, apprentissage YARA basique.",
     proj_yara_title: "Règles YARA (apprentissage)",
@@ -54,7 +65,7 @@ const I18N = {
     proj_siem_title: "Mini SIEM (prévu)",
     proj_siem_desc: "En cours : ingestion de logs + vues de détection basiques.",
 
-    malware_lead: "Reproduit dans un lab isolé, avec une approche orientée détection : IOCs, comportements, et conclusions défensives.",
+    // malware section
     scope_title: "Périmètre",
     scope_b1: "Aucun binaire malware publié.",
     scope_b2: "Uniquement texte, captures, notes et pseudocode.",
@@ -62,18 +73,22 @@ const I18N = {
     malware_writeup_title: "Reverse shell Linux ELF — write-up",
     malware_writeup_desc: "Notes de reverse + script de déchiffrement + apprentissage YARA.",
 
-    soc_lead: "Exercices type SOC : bases réseau, approche triage de logs, playbooks simples et idées de détection.",
+    // SOC
+    soc_labs_title: "SOC Labs",
+    soc_labs_desc: "Exercices style SOC : bases réseau, triage de logs, playbooks simples et idées de détection.",
     soc_writeup_title: "Write-up SOC / réseau",
     soc_writeup_desc: "DNS, WHOIS, ICMP, couches TCP/IP — notes structurées.",
 
-    thm_lead: "Progression et notes défensives. Pas de spoilers complets.",
+    // TryHackMe
     thm_status_title: "Statut",
     thm_status_b1: "SOC Level 1 : terminé",
     thm_status_b2: "SOC Level 2 : en cours",
     thm_status_b3: "Classement : top 7%",
     thm_about: "TryHackMe est une plateforme pratique avec des labs guidés et des scénarios type SOC. Je l’utilise pour m’entraîner au triage d’alertes, aux fondamentaux réseau et aux workflows défensifs.",
 
+    // featured
     featured_title: "Projets mis en avant",
+    featured_projects_title: "Projets mis en avant",
     feat_vault_title: "Secure File Vault",
     feat_vault_desc: "Outil chiffrement/déchiffrement + threat model + guidelines sécurité.",
     feat_rbd_title: "Ransomware Behavior Detector",
@@ -81,21 +96,42 @@ const I18N = {
     feat_elf_title: "Reverse Shell Linux ELF — analyse",
     feat_elf_desc: "Notes statiques + dynamique basique, extraction d’IOC, conclusions orientées détection.",
 
+    // mini blocks
+    current_focus_title: "Focus actuel",
     mini_focus_title: "Focus actuel",
     mini_focus_text: "Approche détection, bases d’analyse malware, scénarios SOC",
+    lab_title: "Lab",
     mini_lab_title: "Lab",
     mini_lab_text: "VM uniquement, isolé, pas de réseau public ; périmètre défensif",
+    output_title: "Livrables",
     mini_output_title: "Livrables",
     mini_output_text: "Write-ups, IOCs, apprentissages YARA/Sigma",
 
+    // sidebar / badges
     sidebar_role: "Étudiant cybersécurité — Blue Team & Analyse malware",
     badge_soc: "Orienté SOC",
-    badge_thm: "TryHackMe top 7%"
+    badge_thm: "TryHackMe top 7%",
+
+    // doc page
+    doc_open_github: "Ouvrir sur GitHub",
+    doc_open_raw: "Ouvrir en brut",
+    doc_note: "Cette page pointe vers le Markdown correspondant dans le dépôt. Aucun binaire n’est hébergé."
   },
 
   en: {
-    projects_lead: "Curated selection. Everything is defensive and documented. No malicious binaries are hosted.",
+    // global
+    open: "Open",
+    back: "Back",
+    legal: "Defensive & educational content only. No malware binaries hosted.",
 
+    // leads / headers
+    projects_lead: "Curated selection. Everything is defensive and documented. No malicious binaries are hosted.",
+    malware_lead: "Reproduced in an isolated lab, with a detection-oriented mindset: IOCs, behaviours, and defensive takeaways.",
+    soc_lead: "SOC-style exercises: network basics, log triage mindset, simple playbooks, and detection ideas.",
+    thm_lead: "Training progress and defensive notes. No full spoilers.",
+
+    // projects
+    projects_title: "Projects",
     proj_malware_title: "Malware analysis: Linux ELF reverse shell",
     proj_malware_desc: "Encrypted C2 config, XOR decryption notes, basic YARA learning.",
     proj_yara_title: "YARA rules (learning)",
@@ -103,7 +139,7 @@ const I18N = {
     proj_siem_title: "Mini SIEM (planned)",
     proj_siem_desc: "In progress: log ingestion + basic detection views.",
 
-    malware_lead: "Reproduced in an isolated lab, with a detection-oriented mindset: IOCs, behaviours, and defensive takeaways.",
+    // malware section
     scope_title: "Scope",
     scope_b1: "No malware binaries published.",
     scope_b2: "Text, screenshots, notes, and pseudocode only.",
@@ -111,18 +147,22 @@ const I18N = {
     malware_writeup_title: "Linux ELF reverse shell — write-up",
     malware_writeup_desc: "Reverse engineering notes + decryption script + YARA learning.",
 
-    soc_lead: "SOC-style exercises: network basics, log triage mindset, simple playbooks, and detection ideas.",
+    // SOC
+    soc_labs_title: "SOC Labs",
+    soc_labs_desc: "SOC-style exercises: network basics, log triage mindset, simple playbooks, and detection ideas.",
     soc_writeup_title: "SOC / network write-up",
     soc_writeup_desc: "DNS, WHOIS, ICMP, TCP/IP layers — structured notes.",
 
-    thm_lead: "Training progress and defensive notes. No full spoilers.",
+    // TryHackMe
     thm_status_title: "Status",
     thm_status_b1: "SOC Level 1: completed",
     thm_status_b2: "SOC Level 2: in progress",
     thm_status_b3: "Ranking: top 7%",
     thm_about: "TryHackMe is a hands-on platform with guided labs and SOC-style scenarios. I use it to practice alert triage, network fundamentals, and defensive workflows.",
 
+    // featured
     featured_title: "Featured projects",
+    featured_projects_title: "Featured projects",
     feat_vault_title: "Secure File Vault",
     feat_vault_desc: "File encryption/decryption tool + threat model + security guidelines.",
     feat_rbd_title: "Ransomware Behavior Detector",
@@ -130,19 +170,28 @@ const I18N = {
     feat_elf_title: "Linux ELF Reverse Shell — analysis",
     feat_elf_desc: "Static + basic dynamic notes, IOC extraction, detection-oriented conclusions.",
 
+    // mini blocks
+    current_focus_title: "Current focus",
     mini_focus_title: "Current focus",
     mini_focus_text: "Detection mindset, malware analysis basics, SOC scenarios",
+    lab_title: "Lab",
     mini_lab_title: "Lab",
     mini_lab_text: "VM-only, isolated, no public network; defensive scope",
+    output_title: "Output",
     mini_output_title: "Output",
     mini_output_text: "Write-ups, IOCs, YARA/Sigma learning artefacts",
 
+    // sidebar / badges
     sidebar_role: "Cybersecurity Student — Blue Team & Malware Analysis",
     badge_soc: "SOC-oriented",
-    badge_thm: "TryHackMe top 7%"
+    badge_thm: "TryHackMe top 7%",
+
+    // doc page
+    doc_open_github: "Open on GitHub",
+    doc_open_raw: "Open raw",
+    doc_note: "This page links to the corresponding Markdown in the repository. No binaries are hosted."
   }
 };
-
 
 function applyLang(lang) {
   lang = (lang === "en") ? "en" : "fr"; // force only fr/en
