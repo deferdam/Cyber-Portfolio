@@ -52,7 +52,9 @@ const I18N = {
     doc_open_github: "Ouvrir sur GitHub",
     doc_open_raw: "Ouvrir en brut",
     btn_open_progress: "Ouvrir les notes de progression",
+    open_progress: "Ouvrir les notes de progression",
     btn_back: "Retour",
+    btn_open: "Ouvrir",
 
     // leads / headers
     overview_lead: "Je me concentre sur les fondamentaux Blue Team : triage malware, analyse orientée détection et workflows SOC. Je maintiens un lab isolé (Windows/Linux/Parrot) et publie des write-ups structurés et des notes sur les outils.",
@@ -60,6 +62,14 @@ const I18N = {
     malware_lead: "Reproduit dans un lab isolé, avec une approche orientée détection : IOCs, comportements, et conclusions défensives.",
     soc_lead: "Exercices type SOC : bases réseau, approche triage de logs, playbooks simples et idées de détection.",
     thm_lead: "Progression et notes défensives. Pas de spoilers complets.",
+
+    // sidebar
+    nav_overview: "Vue d’ensemble",
+    nav_projects: "Projets",
+    nav_malware: "Analyse malware",
+    nav_soc: "SOC Labs",
+    nav_thm: "TryHackMe",
+    nav_contact: "Contact",
 
     // projects
     projects_title: "Projets",
@@ -125,12 +135,13 @@ const I18N = {
 
   en: {
     // global
-    btn_back: "Open",
-    btn_open: "Back",
+    open: "Open",
+    back: "Back",
     legal: "Defensive & educational content only. No malware binaries hosted.",
     doc_open_github: "Open on GitHub",
     doc_open_raw: "Open raw",
     btn_open_progress: "Open progress notes",
+    open_progress: "Open progress notes",
     btn_back: "Back",
     btn_open: "Open",
 
@@ -140,6 +151,14 @@ const I18N = {
     soc_lead: "SOC-style exercises: network basics, log triage mindset, simple playbooks, and detection ideas.",
     thm_lead: "Training progress and defensive notes. No full spoilers.",
     overview_lead: "I focus on Blue Team fundamentals: malware triage, detection-oriented analysis, and SOC workflows. I maintain an isolated lab (Windows/Linux/Parrot) and publish structured write-ups and tooling notes.",
+
+    // sidebar
+    nav_overview: "Overview",
+    nav_projects: "Projects",
+    nav_malware: "Malware Analysis",
+    nav_soc: "SOC Labs",
+    nav_thm: "TryHackMe",
+    nav_contact: "Contact",
 
     // projects
     projects_title: "Projects",
@@ -240,7 +259,7 @@ function applyLang(lang) {
 }
 
 
-const savedLang = localStorage.getItem("lang") || "en";
+const savedLang = localStorage.getItem("lang") || "fr";
 applyLang(savedLang);
 
 document.querySelectorAll(".lang-btn").forEach(btn => {

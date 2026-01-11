@@ -83,5 +83,33 @@
       backBtn.href = `./index.html`;
     }
   </script>
+
+  <script>
+  const I18N_DOC = {
+      fr: {
+      back: "Retour",
+      doc_open_github: "Ouvrir sur GitHub",
+      doc_open_raw: "Ouvrir en brut",
+      doc_note: "Cette page pointe vers le Markdown correspondant dans le dépôt. Aucun binaire n’est hébergé."
+      },
+      en: {
+      back: "Back",
+      doc_open_github: "Open on GitHub",
+      doc_open_raw: "Open raw",
+      doc_note: "This page links to the corresponding Markdown in the repository. No binaries are hosted."
+      }
+  };
+
+  (function applyDocLang() {
+      const lang = (new URLSearchParams(location.search).get("lang") || localStorage.getItem("lang") || "fr").toLowerCase();
+      const dict = (lang === "en") ? I18N_DOC.en : I18N_DOC.fr;
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key]) el.textContent = dict[key];
+      });
+  })();
+  </script>
+
 </body>
 </html>
