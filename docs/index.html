@@ -64,6 +64,9 @@
 
     <!-- MAIN -->
     <main class="main">
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
 
       <!-- OVERVIEW -->
       <section class="page is-active" data-page="overview">
@@ -92,30 +95,27 @@
 
         <h2>Featured projects</h2>
         <div class="grid">
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-malware-reverse-shell.webp" alt="Malware reverse shell analysis thumbnail">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">Linux ELF Reverse Shell — analysis</div>
               <div class="card-desc">Static + basic dynamic notes, IOC extraction, detection-oriented conclusions.</div>
-              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/">Open</a>
+              <a class="card-link" href="./malware-reverse-shell.html">Open</a>
             </div>
           </article>
 
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-ransomware-behavior-detector.webp" alt="Ransomware behavior detector thumbnail">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">Ransomware Behavior Detector</div>
               <div class="card-desc">Behavior-based detection idea + documentation (defensive scope).</div>
-              <a class="card-link" href="./Projects/Ransomware-Behavior-Detector/">Open</a>
+              <a class="card-link" href="./ransomware-behavior-detector copy.html">Open</a>
             </div>
           </article>
 
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-secure-file-vault.webp" alt="Secure file vault thumbnail">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">Secure File Vault</div>
               <div class="card-desc">File encryption/decryption tool + threat model + security guidelines.</div>
-              <a class="card-link" href="./Projects/SecureVault/">Open</a>
+              <a class="card-link" href="./secure-vault.html">Open</a>
             </div>
           </article>
         </div>
@@ -129,26 +129,23 @@
         </p>
 
         <div class="grid">
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-malware-reverse-shell.webp" alt="">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">Malware analysis: Linux ELF reverse shell</div>
               <div class="card-desc">Encrypted C2 config, XOR decryption notes, basic YARA learning.</div>
-              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/">Open</a>
+              <a class="card-link" href="./malware-reverse-shell.html">Open</a>
             </div>
           </article>
 
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-yara.webp" alt="">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">YARA rules (learning)</div>
               <div class="card-desc">Small defensive signatures built from analysis notes.</div>
-              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/yara/">Open</a>
+              <a class="card-link" href="./yara-malware.html">Open</a>
             </div>
           </article>
 
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-mini-siem.webp" alt="">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">Mini SIEM (planned)</div>
               <div class="card-desc">In progress: log ingestion + basic detection views.</div>
@@ -175,12 +172,11 @@
         </div>
 
         <div class="grid">
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-malware-reverse-shell.webp" alt="">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">Linux ELF reverse shell — write-up</div>
               <div class="card-desc">Reverse engineering notes + decryption script + YARA learning.</div>
-              <a class="card-link" href="./malware-analysis/malware-reverse-shell/PIDYkln/">Open</a>
+              <a class="card-link" href="./malware-reverse-shell.html">Open</a>
             </div>
           </article>
         </div>
@@ -194,12 +190,11 @@
         </p>
 
         <div class="grid">
-          <article class="card">
-            <img class="thumb" src="./img/projects/thumb-tryhackme.webp" alt="">
+          <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title">SOC / network write-up</div>
               <div class="card-desc">DNS, WHOIS, ICMP, TCP/IP layers — structured notes.</div>
-              <a class="card-link" href="./tryhackme/">Open</a>
+              <a class="card-link" href="./tryhackme-progress.html">Open</a>
             </div>
           </article>
         </div>
@@ -213,14 +208,20 @@
         </p>
 
         <div class="callout">
-          <div class="callout-title">Status</div>
-          <ul>
+        <div class="callout-title">Status</div>
+        <ul>
             <li>SOC Level 1: completed</li>
+            <li>SOC Level 2: in progress</li>
             <li>Ranking: top 7%</li>
-          </ul>
-        </div>
+        </ul>
 
-        <a class="btn" href="./tryhackme/tryhackme-progress.md">Open progress notes</a>
+        <p class="muted">
+            TryHackMe is a hands-on platform with guided labs and SOC-style scenarios.
+            I use it to practice alert triage, network fundamentals, and defensive workflows.
+        </p>
+
+        <a class="btn" href="./tryhackme-progress.html">Open progress notes</a>
+        </div>
       </section>
 
       <!-- CONTACT -->
@@ -229,7 +230,7 @@
         <div class="contact-box">
           <div class="contact-row">
             <div class="label">Email</div>
-            <a href="mailto:damien.defer@epitech.eu">damien.defer@epitech.eu</a>
+            <a href="mailto:damien.defer@proton.me">damien.defer@proton.me</a>
           </div>
           <div class="contact-row">
             <div class="label">GitHub</div>
@@ -237,7 +238,7 @@
           </div>
           <div class="contact-row">
             <div class="label">LinkedIn</div>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn profile</a>
+            <a href="https://www.linkedin.com/in/damien-defer/" target="_blank" rel="noopener">LinkedIn profile</a>
           </div>
         </div>
       </section>
