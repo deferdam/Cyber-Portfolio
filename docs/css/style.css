@@ -202,7 +202,19 @@ h1::after{
   background: #0c0f15;
 }
 .card-body{ padding: 14px;}
-.card-title{font-weight: 800; margin-bottom: 6px}
+.doc-title {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+.card-title{
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 6px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
 .card-desc{color: var(--muted); font-size: 13px; line-height:1.55; min-height: 0px}
 .card-link{
   display:inline-flex;
@@ -516,4 +528,16 @@ body.menu-open {
   inset: 0;
   background: rgba(0,0,0,0.6);
   z-index: 900;
+}
+
+/* Mobile header offset */
+@media (max-width: 768px) {
+  .main {
+    padding-top: 88px;
+  }
+}
+@media (max-width: 480px) {
+  .card-title {
+    font-size: 0.95rem;
+  }
 }
