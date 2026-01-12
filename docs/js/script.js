@@ -10,6 +10,7 @@ function showPage(key) {
 
   // Close sidebar on mobile after navigation
   document.body.classList.remove("sidebar-open");
+  document.body.classList.toggle("menu-open", isMenuOpen);
   const hb = document.getElementById("hamburger");
   if (hb) hb.setAttribute("aria-expanded", "false");
 }
