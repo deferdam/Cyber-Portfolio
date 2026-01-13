@@ -428,6 +428,7 @@ h1::after{
 .doc-sub{
   overflow-wrap:anywhere;
   word-break:break-word;
+  white-space: normal;
 }
 
 .doc-sub{
@@ -539,14 +540,12 @@ body.menu-open {
   z-index: 900;
 }
 
-/* Mobile header offset */
-@media (max-width: 768px) {
-  .main {
-    padding-top: 88px;
-  }
-}
 @media (max-width: 480px) {
   .card-title {
     font-size: 0.95rem;
   }
+}
+
+@media (max-width: 820px) {
+  .main { padding-top: 110px; }
 }

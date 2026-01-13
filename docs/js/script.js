@@ -238,15 +238,21 @@ function applyLang(lang) {
   document.querySelectorAll("[data-doc-en][data-doc-fr]").forEach(a => {
     const doc = (lang === "fr") ? a.getAttribute("data-doc-fr") : a.getAttribute("data-doc-en");
     const title = (lang === "fr") ? a.getAttribute("data-title-fr") : a.getAttribute("data-title-en");
-    const proj = a.getAttribute("data-proj") || "";
+    const proj = a.getAttribute("data-proj");
 
-    const url = new URL("./doc.html", location.href);
-    url.searchParams.set("doc", doc);
-    if (title) url.searchParams.set("title", decodeURIComponent(title)); // title est encodé dans ton HTML
-    if (proj) url.searchParams.set("proj", proj);
-    url.searchParams.set("lang", lang);
+    const qs = new URLSearchParams();
+    qs.set("doc", doc);
+    qs.set("lang", lang);
 
-    a.setAttribute("href", url.toString().replace(location.origin + location.pathname.replace(/\/[^/]*$/, "/"), "./"));
+    if (title) qs.set("title", title);   // title is already URL-encoded in your HTML
+    if (proj) qs.set("proj", proj);
+
+    // IMPORTANT: title already encoded -> avoid double-encoding
+    const href = `./doc.html?doc=${encodeURIComponent(doc)}&lang=${encodeURIComponent(lang)}`
+      + (title ? `&title=${title}` : "")
+      + (proj ? `&proj=${encodeURIComponent(proj)}` : "");
+
+    a.setAttribute("href", href);
   });
 
 
