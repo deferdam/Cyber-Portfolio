@@ -218,7 +218,8 @@ h1::after{
 .card-desc{color: var(--muted); font-size: 13px; line-height:1.55; min-height: 0px}
 .card-link{
   display:inline-flex;
-  margin-top: 10px;
+  margin-top: 16px;
+  align-self:flex-start;
   padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid rgba(200,48,48,.35);
@@ -423,6 +424,12 @@ h1::after{
   margin-bottom: 6px;
 }
 
+.doc-title,
+.doc-sub{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
 .doc-sub{
   color: var(--muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -504,6 +511,7 @@ h1::after{
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 180px;
 }
 
 .card-desc{
@@ -512,6 +520,7 @@ h1::after{
 
 .card-actions{
   margin-top: 14px;
+  margin-top:auto;
 }
 
 .tryhackme-actions {

@@ -234,22 +234,21 @@ function applyLang(lang) {
     if (dict[key]) el.textContent = dict[key];
   });
 
-  // update doc links based on language
+// update doc links based on language (+ title + proj)
   document.querySelectorAll("[data-doc-en][data-doc-fr]").forEach(a => {
-    const doc = (lang === "en")
-      ? a.getAttribute("data-doc-en")
-      : a.getAttribute("data-doc-fr");
+    const doc = (lang === "fr") ? a.getAttribute("data-doc-fr") : a.getAttribute("data-doc-en");
+    const title = (lang === "fr") ? a.getAttribute("data-title-fr") : a.getAttribute("data-title-en");
+    const proj = a.getAttribute("data-proj") || "";
 
-    const t = (lang === "en")
-      ? (a.getAttribute("data-title-en") || "")
-      : (a.getAttribute("data-title-fr") || "");
+    const url = new URL("./doc.html", location.href);
+    url.searchParams.set("doc", doc);
+    if (title) url.searchParams.set("title", decodeURIComponent(title)); // title est encodé dans ton HTML
+    if (proj) url.searchParams.set("proj", proj);
+    url.searchParams.set("lang", lang);
 
-    const qs = new URLSearchParams();
-    qs.set("doc", doc);
-    if (t) qs.set("title", decodeURIComponent(t)); // note: we store encoded strings, then decode here
-
-    a.setAttribute("href", `./doc.html?${qs.toString()}`);
+    a.setAttribute("href", url.toString().replace(location.origin + location.pathname.replace(/\/[^/]*$/, "/"), "./"));
   });
+
 
   // highlight selected flag
   document.querySelectorAll(".lang-btn").forEach(btn => {
