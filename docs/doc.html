@@ -12,6 +12,26 @@
   <main class="main">
     <div class="doc-shell">
       <a class="btn" href="./index.html" id="backBtn" data-i18n="back">Back</a>
+      <div class="callout project-brief" id="projBrief" hidden>
+        <div class="callout-title" data-i18n="proj_brief_title">Project brief (SOC format)</div>
+
+        <div class="brief-grid">
+          <div class="brief-item">
+            <div class="brief-h" data-i18n="brief_threat">Threat scenario</div>
+            <div class="brief-t" id="briefThreat"></div>
+          </div>
+
+          <div class="brief-item">
+            <div class="brief-h" data-i18n="brief_detect">Detection & investigation</div>
+            <div class="brief-t" id="briefDetect"></div>
+          </div>
+
+          <div class="brief-item">
+            <div class="brief-h" data-i18n="brief_response">Response & mitigation</div>
+            <div class="brief-t" id="briefResponse"></div>
+          </div>
+        </div>
+      </div>
 
       <div class="doc-box">
         <div class="doc-title" id="docTitle">Document</div>
@@ -47,6 +67,64 @@
     const openRaw = document.getElementById("openRaw");
     const backBtn = document.getElementById("backBtn");
 
+    const proj = params.get("proj") || "";
+
+// SOC-format briefs (FR + EN)
+const PROJECT_BRIEFS = {
+  rev_shell: {
+    fr: {
+      threat: "Exécution d’un binaire ELF implantant une communication sortante (reverse shell) sur une machine Linux de labo isolée.",
+      detect: "Analyse statique (strings, sections, imports) + observations dynamiques basiques. Extraction d’artefacts (IP/port, chemins, commandes, patterns) et formalisation d’IOCs + idées de détection.",
+      response: "Confinement (isolation VM), collecte d’artefacts, rédaction de règles/heuristiques (ex: YARA learning) et recommandations de durcissement et de monitoring."
+    },
+    en: {
+      threat: "Execution of an ELF binary establishing outbound communication (reverse shell) in an isolated Linux lab VM.",
+      detect: "Static analysis (strings, sections, imports) plus basic dynamic observations. Artifact extraction (IP/port, paths, commands, patterns) and conversion into IOCs + detection ideas.",
+      response: "Containment (VM isolation), artifact collection, drafting rules/heuristics (e.g., YARA learning) and hardening + monitoring recommendations."
+    }
+  },
+
+  rbd: {
+    fr: {
+      threat: "Scénario de ransomware simulé : comportement de chiffrement, accès fichiers anormal, activités suspectes côté processus/FS.",
+      detect: "Définition de signaux comportementaux (pics d’I/O, patterns d’accès, extensions, séquences d’API). Structuration d’une logique de détection et validation sur jeux de tests contrôlés.",
+      response: "Stratégies de mitigation : arrêt/isolement du processus, sauvegardes, contrôles d’accès, détection précoce + limites connues (faux positifs, contournements)."
+    },
+    en: {
+      threat: "Simulated ransomware scenario: encryption-like behavior, abnormal file access, suspicious process/FS activity.",
+      detect: "Design of behavioral signals (I/O spikes, access patterns, extensions, API sequences). Structured detection logic and validation on controlled test cases.",
+      response: "Mitigation strategy: stop/isolate process, backups, access controls, early detection, plus known limits (false positives, evasion)."
+    }
+  },
+
+  securevault: {
+    fr: {
+      threat: "Risque de compromission/vol de fichiers sensibles : besoin d’un coffre chiffré et d’un modèle de menace clair.",
+      detect: "Identification des surfaces d’attaque (mauvaise gestion de clés, permissions, faiblesses crypto, erreurs d’UX). Vérifications et tests basiques sur flux de chiffrement/déchiffrement.",
+      response: "Mesures : chiffrement robuste, gestion de clés, restrictions d’accès, procédures de rotation/recovery, et guidelines d’utilisation sécurisée."
+    },
+    en: {
+      threat: "Risk of sensitive file theft/compromise: need for an encrypted vault and a clear threat model.",
+      detect: "Attack surface review (key handling, permissions, crypto misuse, UX pitfalls). Basic verification/testing of encryption/decryption flows.",
+      response: "Controls: strong encryption, key management, access restrictions, rotation/recovery procedures, and secure usage guidelines."
+    }
+  },
+
+  tryhackme: {
+    fr: {
+      threat: "Exercices SOC guidés : triage d’alertes, scénarios réseau, investigation de signaux faibles dans un environnement contrôlé.",
+      detect: "Approche méthodique : collecte d’indices, hypothèses, validation via logs et étapes d’investigation reproductibles (sans spoilers complets).",
+      response: "Formalisation en playbooks simples : quoi vérifier, dans quel ordre, et quelles actions défensives appliquer pour réduire la récidive."
+    },
+    en: {
+      threat: "Guided SOC exercises: alert triage, network scenarios, weak-signal investigation in a controlled environment.",
+      detect: "Methodical workflow: evidence collection, hypothesis-driven analysis, validation with logs and reproducible investigation steps (no full spoilers).",
+      response: "Translation into simple playbooks: what to check, in what order, and which defensive actions reduce recurrence."
+    }
+  }
+};
+
+
     function withLang(path, lang) {
       // if EN requested and path ends with ".md" but not ".en.md", convert.
       if (lang === "en") {
@@ -58,6 +136,19 @@
       // FR: ensure we are not forcing .en.md
       if (path.endsWith(".en.md")) return path.replace(/\.en\.md$/, ".md");
       return path;
+    }
+    
+    const briefBox = document.getElementById("projBrief");
+    const briefThreat = document.getElementById("briefThreat");
+    const briefDetect = document.getElementById("briefDetect");
+    const briefResponse = document.getElementById("briefResponse");
+
+    if (proj && PROJECT_BRIEFS[proj]) {
+      const b = PROJECT_BRIEFS[proj][lang] || PROJECT_BRIEFS[proj].en;
+      briefThreat.textContent = b.threat;
+      briefDetect.textContent = b.detect;
+      briefResponse.textContent = b.response;
+      briefBox.hidden = false;
     }
 
     if (!doc) {
