@@ -136,7 +136,21 @@ const PROJECT_BRIEFS = {
       detect: "Select robust indicators (strings, patterns, sections), write readable rules, test to reduce false positives. Rules organized by context (reverse shell, etc.).",
       response: "Defensive use only: support triage, classification, and learning. Iterate on conditions and add comments to document the reasoning."
     }
+  },
+  siem_v1: {
+  fr: {
+    title: "Mini SIEM — v1",
+    threat: "Détection comportementale sur logs Windows : exécution PowerShell suspecte et activité ransomware simulée en environnement lab isolé.",
+    detect: "Ingestion de logs Sysmon / PowerShell Script Block (Event ID 4104). Matching sur règles Sigma. Score de risque 0–100 par agrégation pondérée d'indicateurs comportementaux.",
+    response: "Sortie JSON structurée avec classification (Execution / Persistence / Privilege Escalation). Limitations assumées : condition 1 of selection*, faux positifs connus sur scripts admin légitimes."
+  },
+  en: {
+    title: "Mini SIEM — v1",
+    threat: "Behavioral detection on Windows logs: suspicious PowerShell execution and simulated ransomware activity in an isolated lab environment.",
+    detect: "Log ingestion from Sysmon / PowerShell Script Block (Event ID 4104). Sigma rule matching. Risk score 0–100 via weighted behavioral indicator aggregation.",
+    response: "Structured JSON output with classification (Execution / Persistence / Privilege Escalation). Known limits: 1 of selection* condition, false positives on legitimate admin scripts."
   }
+  },
 };
 
 
