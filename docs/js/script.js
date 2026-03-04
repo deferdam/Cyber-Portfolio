@@ -101,7 +101,7 @@ const I18N = {
     thm_status_title: "Statut",
     thm_status_b1: "SOC Level 1 : terminé",
     thm_status_b2: "SOC Level 2 : en cours",
-    thm_status_b3: "Classement : top 7%",
+    thm_status_b3: "Classement : top 4%",
     thm_about: "TryHackMe est une plateforme pratique avec des labs guidés et des scénarios type SOC. Je l’utilise pour m’entraîner au triage d’alertes, aux fondamentaux réseau et aux workflows défensifs.",
 
     // featured
@@ -128,7 +128,7 @@ const I18N = {
     // sidebar / badges
     sidebar_role: "Étudiant cybersécurité — Blue Team & Analyse malware",
     badge_soc: "Orienté SOC",
-    badge_thm: "TryHackMe top 7%",
+    badge_thm: "TryHackMe top 4%",
 
     // doc page
     doc_open_github: "Ouvrir sur GitHub",
@@ -191,7 +191,7 @@ const I18N = {
     thm_status_title: "Status",
     thm_status_b1: "SOC Level 1: completed",
     thm_status_b2: "SOC Level 2: in progress",
-    thm_status_b3: "Ranking: top 7%",
+    thm_status_b3: "Ranking: top 4%",
     thm_about: "TryHackMe is a hands-on platform with guided labs and SOC-style scenarios. I use it to practice alert triage, network fundamentals, and defensive workflows.",
 
     // featured
@@ -218,7 +218,7 @@ const I18N = {
     // sidebar / badges
     sidebar_role: "Cybersecurity Student — Blue Team & Malware Analysis",
     badge_soc: "SOC-oriented",
-    badge_thm: "TryHackMe top 7%",
+    badge_thm: "TryHackMe top 4%",
 
     // doc page
     doc_open_github: "Open on GitHub",
