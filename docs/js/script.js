@@ -78,8 +78,10 @@ const I18N = {
     proj_malware_desc: "Configuration C2 chiffrée, notes de déchiffrement XOR, apprentissage YARA basique.",
     proj_yara_title: "Règles YARA (apprentissage)",
     proj_yara_desc: "Petites signatures défensives construites à partir des notes d’analyse.",
-    proj_siem_title: "Mini SIEM (prévu)",
-    proj_siem_desc: "En cours : ingestion de logs + vues de détection basiques.",
+    proj_siem_title: "Mini SIEM",
+    detect: "Ingestion de logs Sysmon / PowerShell Script Block (Event ID 4104). Matching sur règles Sigma. Score de risque 0–100 par agrégation pondérée d'indicateurs comportementaux.",
+    response: "Sortie JSON structurée avec classification (Execution / Persistence / Privilege Escalation). Limitations assumées : condition 1 of selection*, faux positifs connus sur scripts admin légitimes.",
+  
 
     // malware section
     scope_title: "Périmètre",
@@ -167,8 +169,9 @@ const I18N = {
     proj_malware_desc: "Encrypted C2 config, XOR decryption notes, basic YARA learning.",
     proj_yara_title: "YARA rules (learning)",
     proj_yara_desc: "Small defensive signatures built from analysis notes.",
-    proj_siem_title: "Mini SIEM (planned)",
-    proj_siem_desc: "In progress: log ingestion + basic detection views.",
+    threat: "Behavioral detection on Windows logs: suspicious PowerShell execution and simulated ransomware activity in an isolated lab environment.",
+    detect: "Log ingestion from Sysmon / PowerShell Script Block (Event ID 4104). Sigma rule matching. Risk score 0–100 via weighted behavioral indicator aggregation.",
+    response: "Structured JSON output with classification (Execution / Persistence / Privilege Escalation). Known limits: 1 of selection* condition, false positives on legitimate admin scripts.",
 
     // malware section
     scope_title: "Scope",
