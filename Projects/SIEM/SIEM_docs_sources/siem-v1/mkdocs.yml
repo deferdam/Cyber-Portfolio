@@ -1,0 +1,65 @@
+site_name: Mini-SIEM — Documentation v1
+site_description: Documentation technique complète du moteur de détection SIEM v1
+site_author: SOC Engineering
+docs_dir: docs
+site_dir: site
+
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: slate
+      primary: black
+      accent: red
+      toggle:
+        icon: material/brightness-4
+        name: Light mode
+    - scheme: default
+      primary: black
+      accent: red
+      toggle:
+        icon: material/brightness-7
+        name: Dark mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.annotate
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: index.md
+  - Architecture:
+    - Vue d'ensemble: architecture/overview.md
+    - Pipeline de données: architecture/pipeline.md
+    - Invariants de sécurité: architecture/invariants.md
+  - Modules:
+    - Core — Schémas: modules/schemas.md
+    - Core — IDs & Temps: modules/ids-time.md
+    - Normalisation: modules/normalizer.md
+    - Détection Ransomware: modules/ransomware.md
+    - Détection PowerShell (Sigma): modules/powershell-sigma.md
+    - Corrélation: modules/correlator.md
+    - Rapports: modules/reporter.md
+  - Utilisation:
+    - Démarrage rapide: usage/quickstart.md
+    - Format des événements: usage/event-format.md
+    - Interpréter les alertes: usage/alerts.md
+  - Référence:
+    - Glossaire: reference/glossary.md
