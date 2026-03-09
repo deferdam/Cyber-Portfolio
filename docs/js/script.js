@@ -6,6 +6,7 @@ const buttons = document.querySelectorAll("[data-nav]");
 function showPage(key) {
   pages.forEach(p => p.classList.toggle("is-active", p.dataset.page === key));
   buttons.forEach(b => b.classList.toggle("is-active", b.dataset.nav === key));
+  document.body.classList.toggle("menu-open", isMenuOpen);
   window.scrollTo(0, 0);
 
   // Close sidebar on mobile after navigation
@@ -13,6 +14,10 @@ function showPage(key) {
   const hb = document.getElementById("hamburger");
   if (hb) hb.setAttribute("aria-expanded", "false");
 }
+
+document.querySelectorAll(".card-link[data-nav]").forEach(btn => {
+  btn.addEventListener("click", () => showPage(btn.dataset.nav));
+});
 
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-nav]");
