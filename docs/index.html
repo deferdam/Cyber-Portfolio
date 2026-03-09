@@ -164,78 +164,81 @@
               <button class="card-link" onclick="showPage('siem')" data-i18n="open">Open</button>
             </div>
           </article>
+      
+        </div>
+      </section>
           
-          <!-- SIEM HUB -->
-          <section class="page" data-page="siem">
-            <h1 data-i18n="siem_title">Mini SIEM</h1>
-            <p class="lead" data-i18n="siem_lead">
-              Sigma-based behavioral detection engine built in Python. No hash signatures — pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.
-            </p>
+      <!-- SIEM HUB -->
+      <section class="page" data-page="siem">
+        <h1 data-i18n="siem_title">Mini SIEM</h1>
+        <p class="lead" data-i18n="siem_lead">
+          Sigma-based behavioral detection engine built in Python. No hash signatures — pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.
+        </p>
 
-            <div class="callout">
-              <div class="callout-title" data-i18n="siem_scope_title">Architecture</div>
-              <ul>
-                <li data-i18n="siem_arch_b1">Multi-format log ingestion — Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat</li>
-                <li data-i18n="siem_arch_b2">3-layer engine — Signature / Behavioral / Correlation — with per-layer error isolation</li>
-                <li data-i18n="siem_arch_b3">Sigma YAML rules per domain — multi-file loader, paths resolved relative to module</li>
-                <li data-i18n="siem_arch_b4">MITRE ATT&amp;CK tagging on every Signal — tactic + technique</li>
-                <li data-i18n="siem_arch_b5">Risk score 0–100, structured JSON alert output</li>
-              </ul>
+        <div class="callout">
+          <div class="callout-title" data-i18n="siem_scope_title">Architecture</div>
+          <ul>
+            <li data-i18n="siem_arch_b1">Multi-format log ingestion — Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat</li>
+            <li data-i18n="siem_arch_b2">3-layer engine — Signature / Behavioral / Correlation — with per-layer error isolation</li>
+            <li data-i18n="siem_arch_b3">Sigma YAML rules per domain — multi-file loader, paths resolved relative to module</li>
+            <li data-i18n="siem_arch_b4">MITRE ATT&amp;CK tagging on every Signal — tactic + technique</li>
+            <li data-i18n="siem_arch_b5">Risk score 0–100, structured JSON alert output</li>
+          </ul>
+        </div>
+
+        <h2 data-i18n="siem_versions_title">Versions</h2>
+        <div class="grid">
+
+          <article class="card no-thumb">
+            <div class="card-body">
+              <div class="card-title" data-i18n="siem_v1_title">v1 — Sigma Engine</div>
+              <div class="card-desc" data-i18n="siem_v1_desc">First working version. PowerShell Script Block detection + ransomware behavioral scoring. Single YAML rule file.</div>
+              <div class="card-actions"></div>
+              <a class="card-link"
+                href="./doc.html?doc=Projects/SIEM/Siem_V1/README.md&title=Mini%20SIEM%20%E2%80%94%20v1&proj=siem_v1"
+                data-doc-fr="Projects/SIEM/Siem_V1/README.md"
+                data-doc-en="Projects/SIEM/Siem_V1/README.en.md"
+                data-title-fr="Mini%20SIEM%20%E2%80%94%20v1"
+                data-title-en="Mini%20SIEM%20%E2%80%94%20v1"
+                data-proj="siem_v1"
+                data-i18n="open">Open</a>
             </div>
+          </article>
 
-            <h2 data-i18n="siem_versions_title">Versions</h2>
-            <div class="grid">
-
-              <article class="card no-thumb">
-                <div class="card-body">
-                  <div class="card-title" data-i18n="siem_v1_title">v1 — Sigma Engine</div>
-                  <div class="card-desc" data-i18n="siem_v1_desc">First working version. PowerShell Script Block detection + ransomware behavioral scoring. Single YAML rule file.</div>
-                  <div class="card-actions"></div>
-                  <a class="card-link"
-                    href="./doc.html?doc=Projects/SIEM/Siem_V1/README.md&title=Mini%20SIEM%20%E2%80%94%20v1&proj=siem_v1"
-                    data-doc-fr="Projects/SIEM/Siem_V1/README.md"
-                    data-doc-en="Projects/SIEM/Siem_V1/README.en.md"
-                    data-title-fr="Mini%20SIEM%20%E2%80%94%20v1"
-                    data-title-en="Mini%20SIEM%20%E2%80%94%20v1"
-                    data-proj="siem_v1"
-                    data-i18n="open">Open</a>
-                </div>
-              </article>
-
-              <article class="card no-thumb">
-                <div class="card-body">
-                  <div class="card-title" data-i18n="siem_v3_title">v3 — Multi-format + LOTL</div>
-                  <div class="card-desc" data-i18n="siem_v3_desc">Multi-format syslog (RFC 3164/5424, CEF), process tree, 8 LOTL rules, suspicious spawns, MITRE ATT&amp;CK tagging. 3-layer engine.</div>
-                  <div class="card-actions"></div>
-                  <a class="card-link"
-                    href="./doc.html?doc=Projects/SIEM/Siem_V3/README.md&title=Mini%20SIEM%20%E2%80%94%20v3&proj=siem_v3"
-                    data-doc-fr="Projects/SIEM/Siem_V3/README.md"
-                    data-doc-en="Projects/SIEM/Siem_V3/README.en.md"
-                    data-title-fr="Mini%20SIEM%20%E2%80%94%20v3"
-                    data-title-en="Mini%20SIEM%20%E2%80%94%20v3"
-                    data-proj="siem_v3"
-                    data-i18n="open">Open</a>
-                </div>
-              </article>
-
-              <article class="card no-thumb">
-                <div class="card-body">
-                  <div class="card-title" data-i18n="siem_v4_title">v4 — Persistence + Privesc + Linux</div>
-                  <div class="card-desc" data-i18n="siem_v4_desc">Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell).</div>
-                  <div class="card-actions"></div>
-                  <a class="card-link"
-                    href="./doc.html?doc=Projects/SIEM/Siem_V4/README.md&title=Mini%20SIEM%20%E2%80%94%20v4&proj=siem_v4"
-                    data-doc-fr="Projects/SIEM/Siem_V4/README.md"
-                    data-doc-en="Projects/SIEM/Siem_V4/README.en.md"
-                    data-title-fr="Mini%20SIEM%20%E2%80%94%20v4"
-                    data-title-en="Mini%20SIEM%20%E2%80%94%20v4"
-                    data-proj="siem_v4"
-                    data-i18n="open">Open</a>
-                </div>
-              </article>
-
+          <article class="card no-thumb">
+            <div class="card-body">
+              <div class="card-title" data-i18n="siem_v3_title">v3 — Multi-format + LOTL</div>
+              <div class="card-desc" data-i18n="siem_v3_desc">Multi-format syslog (RFC 3164/5424, CEF), process tree, 8 LOTL rules, suspicious spawns, MITRE ATT&amp;CK tagging. 3-layer engine.</div>
+              <div class="card-actions"></div>
+              <a class="card-link"
+                href="./doc.html?doc=Projects/SIEM/Siem_V3/README.md&title=Mini%20SIEM%20%E2%80%94%20v3&proj=siem_v3"
+                data-doc-fr="Projects/SIEM/Siem_V3/README.md"
+                data-doc-en="Projects/SIEM/Siem_V3/README.en.md"
+                data-title-fr="Mini%20SIEM%20%E2%80%94%20v3"
+                data-title-en="Mini%20SIEM%20%E2%80%94%20v3"
+                data-proj="siem_v3"
+                data-i18n="open">Open</a>
             </div>
-          </section>
+          </article>
+
+          <article class="card no-thumb">
+            <div class="card-body">
+              <div class="card-title" data-i18n="siem_v4_title">v4 — Persistence + Privesc + Linux</div>
+              <div class="card-desc" data-i18n="siem_v4_desc">Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell).</div>
+              <div class="card-actions"></div>
+              <a class="card-link"
+                href="./doc.html?doc=Projects/SIEM/Siem_V4/README.md&title=Mini%20SIEM%20%E2%80%94%20v4&proj=siem_v4"
+                data-doc-fr="Projects/SIEM/Siem_V4/README.md"
+                data-doc-en="Projects/SIEM/Siem_V4/README.en.md"
+                data-title-fr="Mini%20SIEM%20%E2%80%94%20v4"
+                data-title-en="Mini%20SIEM%20%E2%80%94%20v4"
+                data-proj="siem_v4"
+                data-i18n="open">Open</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
 
       <!-- PROJECTS -->
       <section class="page" data-page="projects">
@@ -303,38 +306,6 @@
               <button class="card-link" onclick="showPage('siem')" data-i18n="open">Open</button>
             </div>
           </article>
-
-          <!-- SIEM VERSIONS -->
-          <section class="page" data-page="siem-versions">
-            <h1>Mini SIEM</h1>
-            <p class="lead">Sigma-based behavioral detection engine. Select a version.</p>
-            <div class="grid">
-              <article class="card no-thumb">
-                <div class="card-body">
-                  <div class="card-title">Mini SIEM v1 — Sigma Engine</div>
-                  <div class="card-desc">PowerShell detection + ransomware behavioral scoring. First working version.</div>
-                  <div class="card-actions"></div>
-                  <a class="card-link"
-                    href="./doc.html?doc=Projects/SIEM/Siem_V1/README.md&title=Mini%20SIEM%20%E2%80%94%20v1&proj=siem_v1"
-                    data-doc-fr="Projects/SIEM/Siem_V1/README.md"
-                    data-doc-en="Projects/SIEM/Siem_V1/README.en.md"
-                    data-title-fr="Mini%20SIEM%20%E2%80%94%20v1"
-                    data-title-en="Mini%20SIEM%20%E2%80%94%20v1"
-                    data-proj="siem_v1"
-                    data-i18n="open">Open</a>
-                </div>
-              </article>
-
-              <article class="card no-thumb">
-                <div class="card-body">
-                  <div class="card-title">v2 — In progress</div>
-                  <div class="card-desc">Weighted scoring, persistence detection, multi-source correlation.</div>
-                  <div class="card-actions"></div>
-                  <span class="card-link card-link-disabled">In progress</span>
-                </div>
-              </article>
-            </div>
-          </section>
         </div>
       </section>
 
