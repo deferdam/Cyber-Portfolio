@@ -10,13 +10,13 @@ function showPage(key) {
 
   // Close sidebar on mobile after navigation
   document.body.classList.remove("sidebar-open");
-  document.body.classList.toggle("menu-open", isMenuOpen);
   const hb = document.getElementById("hamburger");
   if (hb) hb.setAttribute("aria-expanded", "false");
 }
 
-buttons.forEach(btn => {
-  btn.addEventListener("click", () => showPage(btn.dataset.nav));
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-nav]");
+  if (btn) showPage(btn.dataset.nav);
 });
 
 // Hamburger toggle
@@ -133,7 +133,26 @@ const I18N = {
     // doc page
     doc_open_github: "Ouvrir sur GitHub",
     doc_open_raw: "Ouvrir en brut",
-    doc_note: "Cette page pointe vers le Markdown correspondant dans le dépôt. Aucun binaire n’est hébergé."
+    doc_note: "Cette page pointe vers le Markdown correspondant dans le dépôt. Aucun binaire n’est hébergé.",
+
+    // siem
+    siem_card_title: "Mini SIEM — Sigma Engine",
+    siem_card_desc: "Moteur de détection comportemental : PowerShell, LOTL, ransomware, persistance, élévation de privilèges. v3 stable — v4 en cours.",
+    siem_title: "Mini SIEM",
+    siem_lead: "Moteur de détection comportementale construit en Python. Pas de signatures par hash — comportements purs : obfuscation PowerShell, binaires LOTL, activité ransomware, mécanismes de persistance, élévation de privilèges et commandes Linux suspectes. Environnement lab uniquement. Périmètre défensif.",
+    siem_scope_title: "Architecture",
+    siem_arch_b1: "Ingestion multi-format — Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
+    siem_arch_b2: "Moteur 3 couches — Signature / Comportementale / Corrélation — avec isolation d'erreurs par couche",
+    siem_arch_b3: "Règles Sigma YAML par domaine — chargeur multi-fichiers, chemins résolus relatifs au module",
+    siem_arch_b4: "Tagging MITRE ATT&CK sur chaque Signal — tactique + technique",
+    siem_arch_b5: "Score de risque 0–100, sortie JSON structurée",
+    siem_versions_title: "Versions",
+    siem_v1_title: "v1 — Sigma Engine",
+    siem_v1_desc: "Première version fonctionnelle. Détection Script Block PowerShell + scoring comportemental ransomware. Fichier YAML unique.",
+    siem_v3_title: "v3 — Multi-format + LOTL",
+    siem_v3_desc: "Syslog multi-format (RFC 3164/5424, CEF), process tree, 8 règles LOTL, spawn suspects, tagging MITRE ATT&CK. Moteur 3 couches.",
+    siem_v4_title: "v4 — Persistance + Privesc + Linux",
+    siem_v4_desc: "Chargeur Sigma multi-fichiers. Persistance (registry Run, WMI sub), élévation de privilèges (UAC bypass, Mimikatz), détection Linux (chmod +s, reverse shell)."
   },
 
   en: {
@@ -223,7 +242,26 @@ const I18N = {
     // doc page
     doc_open_github: "Open on GitHub",
     doc_open_raw: "Open raw",
-    doc_note: "This page links to the corresponding Markdown in the repository. No binaries are hosted."
+    doc_note: "This page links to the corresponding Markdown in the repository. No binaries are hosted.",
+
+    // siem
+    siem_card_title: "Mini SIEM — Sigma Engine",
+    siem_card_desc: "Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable — v4 current.",
+    siem_title: "Mini SIEM",
+    siem_lead: "Sigma-based behavioral detection engine built in Python. No hash signatures — pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.",
+    siem_scope_title: "Architecture",
+    siem_arch_b1: "Multi-format log ingestion — Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
+    siem_arch_b2: "3-layer engine — Signature / Behavioral / Correlation — with per-layer error isolation",
+    siem_arch_b3: "Sigma YAML rules per domain — multi-file loader, paths resolved relative to module",
+    siem_arch_b4: "MITRE ATT&CK tagging on every Signal — tactic + technique",
+    siem_arch_b5: "Risk score 0–100, structured JSON alert output",
+    siem_versions_title: "Versions",
+    siem_v1_title: "v1 — Sigma Engine",
+    siem_v1_desc: "First working version. PowerShell Script Block detection + ransomware behavioral scoring. Single YAML rule file.",
+    siem_v3_title: "v2/3 — Multi-format + LOTL",
+    siem_v3_desc: "Multi-format syslog (RFC 3164/5424, CEF), process tree, 8 LOTL rules, suspicious spawns, MITRE ATT&CK tagging. 3-layer engine.",
+    siem_v4_title: "v4 — Persistence + Privesc + Linux",
+    siem_v4_desc: "Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell)."
   }
 };
 
