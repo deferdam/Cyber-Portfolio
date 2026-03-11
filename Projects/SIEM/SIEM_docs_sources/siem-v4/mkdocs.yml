@@ -1,0 +1,70 @@
+site_name: Mini-SIEM — Documentation v4
+site_description: Multi-file Sigma rules · Persistence · Privilege Escalation · Linux detection
+site_author: SOC Engineering
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+    - scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - content.code.annotate
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - attr_list
+  - def_list
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: index.md
+  - Changelog v3→v4: changelog.md
+  - Architecture:
+    - Vue d'ensemble: architecture/overview.md
+    - Chargeur Sigma multi-fichiers: architecture/sigma-loader.md
+  - Règles Sigma:
+    - ps_scriptblock.yaml: detection/ps-scriptblock.md
+    - ps_persistence.yaml: detection/ps-persistence.md
+    - ps_privilege_escalation.yaml: detection/ps-privesc.md
+    - linux_suspicious.yaml: detection/linux-suspicious.md
+  - Roadmap:
+    - v5 — Linux étendu: roadmap/v5-linux.md
+    - v6 — Enrichissement: roadmap/v6-enrichissement.md
+    - v7 — SOAR: roadmap/v7-soar.md
+  - Référence:
+    - Ajouter une règle Sigma: reference/add-rule.md

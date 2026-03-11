@@ -1,0 +1,23 @@
+title: #Title of your rule
+id: #Universally Unique Identifier (UUID) Generate one from https://www.uuidgenerator.net
+status: #stage of your rule testing 
+description: #Details about the detection intensions of the rule.
+author: #Who wrote the rule.
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  category: #Classification of the log data for detection
+  product: #Source of the log data
+detection:
+  selection:
+    FieldName1: Value #Search identifiers for the detection
+    FieldName2: Value
+  condition: selection #Action to be taken.
+fields: #List of associated fields that are important for the detection
+
+falsepositives: #Any possible false positives that could trigger the rule.
+
+level: medium #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.credential_access #MITRE Tactic
+  - attack.t1110 #MITRE Technique

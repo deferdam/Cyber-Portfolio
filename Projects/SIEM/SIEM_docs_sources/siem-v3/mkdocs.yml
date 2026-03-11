@@ -1,0 +1,70 @@
+site_name: Mini-SIEM — Documentation v2
+site_description: Documentation technique complète du moteur de détection SIEM v2 — syslog, process tree, LOTL, MITRE ATT&CK
+site_author: SOC Engineering
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+    - scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - content.code.annotate
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: index.md
+  - Changelog v1→v2: changelog.md
+  - Architecture:
+    - Vue d'ensemble: architecture/overview.md
+    - Trois couches de détection: architecture/layers.md
+    - Pipeline de données: architecture/pipeline.md
+    - Invariants de sécurité: architecture/invariants.md
+  - Modules:
+    - Ingestion Syslog: modules/syslog-parser.md
+    - Process Tree: modules/process-tree.md
+    - Détection LOTL: modules/lotl-sigma.md
+    - Engine (orchestrateur): modules/engine.md
+  - Détection:
+    - Règles LOTL complètes: detection/lotl-rules.md
+    - Couverture MITRE ATT&CK: detection/mitre-coverage.md
+    - Spawn suspects: detection/spawn-pairs.md
+  - Utilisation:
+    - Démarrage rapide: usage/quickstart.md
+    - Modes d'ingestion: usage/ingestion-modes.md
+    - Interpréter les signaux v2: usage/signals-v2.md
+    - Audit Policies Windows: usage/audit-policies.md
+  - Référence:
+    - Glossaire: reference/glossary.md
+    - FAQ: reference/faq.md

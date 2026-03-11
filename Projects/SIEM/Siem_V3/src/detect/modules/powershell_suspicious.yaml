@@ -1,0 +1,60 @@
+title: Suspicious PowerShell Script Block
+id: 74367fcc-b9d5-40e2-94ed-96f286919809
+description: Detect suspicious PowerShell patterns via Script Block Logging
+status: Experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+detection:
+    selection_encoded:
+        ScriptBlockText|contains: '-EncodedCommand'
+    selection_iex:
+        ScriptBlockText|contains: 'Invoke-Expression'
+    selection_download:
+        ScriptBlockText|contains: 'DownloadString'
+    selection_webclient:
+        ScriptBlockText|contains: 'WebClient'
+    selection_recon_identity:
+        ScriptBlockText|contains:
+            - 'whoami'
+            - 'whoami /all'
+            - '[System.Security.Principal.WindowsIdentity]::GetCurrent()'
+    selection_recon_enum:
+        ScriptBlockText|contains:
+            - 'net user'
+            - 'net localgroup'
+            - 'Get-LocalUser'
+            - 'Get-ADUser'
+    condition: 1 of selection*
+falsepositives:
+    - Legitimate admin scripts using WebClient or IEX
+    - Scheduled tasks running enumeration for inventory
+level: high
+fields:
+    - ScriptBlockText
+    - CommandLine
+
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.t1086
+    - attack.t1110
+    - attack.t1087
+    - attack.t1087.001
+    - attack.t1087.002
+
+# add silence, hidden, --install, start-with-win, others if needed to the selection criteria to reduce false positives.
+# verify cron job add, and task planificator
+# add user to admin group, add local admin, add domain admin, others if needed to the selection criteria to reduce false positives.
+# peut etre chmod a check aussi
+
+# deuxieme phase de check
+# faire en sorte que l'url qu'on peut trouver, le decoder en base 64 ou autre pr verifier si c'est malveillant ou pas
+# si url est recup, l'envoyer sur urlvoid, ou faire un whois, ou faire un check de reputation, ou noter l'url pour la prochaine fois
+# faire un check de hash si on peut recuperer le hash du fichier telecharge
+# rechercher en resultat si des ip sont present dans les script block, et faire un check de reputation ou de geoloc
+# si cenfidence trop haut, faire chmod et retirer perms du fichier, ou block l'ip ou block url et couper le processus ainsi que le reseau
