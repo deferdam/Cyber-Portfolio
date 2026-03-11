@@ -1,4 +1,4 @@
-# Mini SIEM — Sigma-Based Detection Engine
+# Mini SIEM, Sigma-Based Detection Engine
 
 > Behavioral detection engine built for learning and lab use.  
 > Defensive scope only. No malware binaries hosted.
@@ -9,7 +9,7 @@
 
 Mini SIEM is a lightweight detection engine that ingests Windows logs and scores them against Sigma-based behavioral rules.
 
-It does not rely on hash signatures. It detects behavior patterns — which means it catches obfuscated or renamed variants that signature-based tools miss.
+It does not rely on hash signatures. It detects behavior patterns, which means it catches obfuscated or renamed variants that signature-based tools miss.
 
 The engine analyzes:
 - Windows Event Logs (Sysmon, PowerShell Script Block, Security)
@@ -30,11 +30,11 @@ Current detection coverage:
 ```
 Log sources (Windows Event Logs / Sysmon / PowerShell / JSON-Syslog)
     ↓
-Normalizer — log parsing and field extraction
+Normalizer, log parsing and field extraction
     ↓
-Sigma rule engine — pattern matching
+Sigma rule engine, pattern matching
     ↓
-Behavioral scorer — weighted indicator aggregation
+Behavioral scorer, weighted indicator aggregation
     ↓
 JSON alert output
     {
@@ -57,9 +57,9 @@ JSON alert output
 
 ---
 
-## 3. Detection Rules — v1
+## 3. Detection Rules, v1
 
-### PowerShell Detection (Event ID 4104 — Script Block Logging)
+### PowerShell Detection (Event ID 4104, Script Block Logging)
 
 Triggers on any of the following patterns:
 
@@ -71,7 +71,7 @@ Triggers on any of the following patterns:
 | `WebClient` instantiation | Medium |
 | `whoami` / identity enumeration | Medium |
 
-**Condition:** `1 of selection*` — one indicator is sufficient to trigger.  
+**Condition:** `1 of selection*`, one indicator is sufficient to trigger.  
 **Known false positives:** legitimate admin scripts using WebClient or IEX, scheduled inventory tasks.  
 **Planned fix (v2):** weighted scoring per indicator to reduce false positive rate.
 
@@ -96,7 +96,7 @@ Triggers on:
 | Lab environment only | Not tested against production log volumes |
 | Requires proper log ingestion | Sysmon and Script Block Logging must be enabled |
 | v1 false positive rate | `1 of selection*` condition is intentionally broad |
-| No blocking capability | Detection and alerting only — no automated response |
+| No blocking capability | Detection and alerting only, no automated response |
 | Evasion possible | Advanced actors can bypass behavioral rules |
 
 ---
@@ -117,7 +117,7 @@ Triggers on:
 
 ## 6. Roadmap
 
-- [x] Sigma rule engine — PowerShell detection
+- [x] Sigma rule engine, PowerShell detection
 - [x] Ransomware behavioral detector
 - [ ] Weighted scoring per indicator (v2)
 - [ ] Persistence detection (scheduled tasks, registry keys)
@@ -131,7 +131,7 @@ Triggers on:
 - MITRE ATT&CK: T1059.001 (PowerShell), T1486 (Data Encrypted for Impact)
 - Sigma rule specification: https://github.com/SigmaHQ/sigma
 - Sysmon logging format: https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
-- Windows Event ID 4104 — Script Block Logging
+- Windows Event ID 4104, Script Block Logging
 
 ---
 

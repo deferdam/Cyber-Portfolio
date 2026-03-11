@@ -1,4 +1,4 @@
-# Mini SIEM — Moteur de détection comportementale Sigma
+# Mini SIEM, Moteur de détection comportementale Sigma
 
 > Moteur de détection comportementale construit en lab, à des fins d'apprentissage.  
 > Périmètre défensif uniquement. Aucun binaire malveillant hébergé.
@@ -9,7 +9,7 @@
 
 Mini SIEM est un moteur de détection léger qui ingère des logs Windows et les score contre des règles comportementales Sigma.
 
-Il ne repose pas sur des signatures par hash. Il détecte des patterns comportementaux — ce qui lui permet de détecter des variantes obfusquées ou renommées que les outils à base de signatures manquent.
+Il ne repose pas sur des signatures par hash. Il détecte des patterns comportementaux, ce qui lui permet de détecter des variantes obfusquées ou renommées que les outils à base de signatures manquent.
 
 Le moteur analyse :
 - Les logs Windows (Sysmon, PowerShell Script Block, Security)
@@ -30,11 +30,11 @@ Couverture actuelle :
 ```
 Sources de logs (Windows Event Logs / Sysmon / PowerShell / JSON-Syslog)
     ↓
-Normaliseur — parsing et extraction des champs
+Normaliseur, parsing et extraction des champs
     ↓
-Moteur de règles Sigma — matching comportemental
+Moteur de règles Sigma, matching comportemental
     ↓
-Scorer — agrégation pondérée des indicateurs
+Scorer, agrégation pondérée des indicateurs
     ↓
 Sortie JSON
     {
@@ -57,9 +57,9 @@ Sortie JSON
 
 ---
 
-## 3. Règles de détection — v1
+## 3. Règles de détection, v1
 
-### Détection PowerShell (Event ID 4104 — Script Block Logging)
+### Détection PowerShell (Event ID 4104, Script Block Logging)
 
 Déclenche sur l'un des patterns suivants :
 
@@ -71,7 +71,7 @@ Déclenche sur l'un des patterns suivants :
 | Instanciation `WebClient` | Medium |
 | `whoami` / énumération d'identité | Medium |
 
-**Condition :** `1 of selection*` — un seul indicateur suffit à déclencher.  
+**Condition :** `1 of selection*`, un seul indicateur suffit à déclencher.  
 **Faux positifs connus :** scripts admin légitimes utilisant WebClient ou IEX, tâches planifiées d'inventaire.  
 **Correction prévue (v2) :** scoring pondéré par indicateur pour réduire le taux de faux positifs.
 
@@ -96,7 +96,7 @@ Déclenche sur :
 | Environnement lab uniquement | Non testé sur des volumes de logs de production |
 | Nécessite une ingestion correcte | Sysmon et Script Block Logging doivent être activés |
 | Taux de faux positifs v1 | Condition `1 of selection*` intentionnellement large |
-| Pas de capacité de blocage | Détection et alerting uniquement — pas de réponse automatisée |
+| Pas de capacité de blocage | Détection et alerting uniquement, pas de réponse automatisée |
 | Évasion possible | Un attaquant avancé peut contourner les règles comportementales |
 
 ---
@@ -117,7 +117,7 @@ Déclenche sur :
 
 ## 6. Roadmap
 
-- [x] Moteur de règles Sigma — détection PowerShell
+- [x] Moteur de règles Sigma, détection PowerShell
 - [x] Détecteur comportemental ransomware
 - [ ] Scoring pondéré par indicateur (v2)
 - [ ] Détection de persistance (scheduled tasks, clés de registre)
@@ -131,7 +131,7 @@ Déclenche sur :
 - MITRE ATT&CK : T1059.001 (PowerShell), T1486 (Data Encrypted for Impact)
 - Spécification des règles Sigma : https://github.com/SigmaHQ/sigma
 - Format de log Sysmon : https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
-- Windows Event ID 4104 — Script Block Logging
+- Windows Event ID 4104, Script Block Logging
 
 ---
 

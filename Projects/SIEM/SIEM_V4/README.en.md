@@ -1,4 +1,4 @@
-# Mini SIEM — Sigma-Based Detection Engine
+# Mini SIEM, Sigma-Based Detection Engine
 
 > Behavioral detection engine built for learning and lab use.  
 > Defensive scope only. No malware binaries hosted.
@@ -9,25 +9,25 @@
 
 Mini SIEM v4 introduces a multi-file Sigma rule loader and three new detection domains: Windows persistence, privilege escalation, and suspicious Linux/Unix commands.
 
-It does not rely on hash signatures. It detects behavior patterns — which means it catches obfuscated or renamed variants that signature-based tools miss.
+It does not rely on hash signatures. It detects behavior patterns, which means it catches obfuscated or renamed variants that signature-based tools miss.
 
 The engine analyzes:
 - Windows Event Logs, syslog RFC 3164/5424, CEF, NXLog and Winlogbeat
-- PowerShell Script Blocks (EventID 4104) — obfuscation, AMSI bypass, download cradles
+- PowerShell Script Blocks (EventID 4104), obfuscation, AMSI bypass, download cradles
 - Persistence mechanisms: registry Run keys, WMI subscription, startup folder, inline schtasks
 - Privilege escalation: admin group manipulation, UAC bypass, credential dumping
 - Suspicious Linux/Unix commands: chmod +s, cron, curl pipe bash, reverse shells
 - Parent-child process relationships and LOTL binaries
 
 Current detection coverage:
-- Suspicious PowerShell execution — 4 Sigma files by domain
+- Suspicious PowerShell execution, 4 Sigma files by domain
 - Ransomware behavioral patterns
 - LOTL binaries (8 rules, MITRE ATT&CK)
-- Windows persistence — 6 techniques detected
-- Privilege escalation — 5 techniques detected
-- Linux commands — 8 detection categories
+- Windows persistence, 6 techniques detected
+- Privilege escalation, 5 techniques detected
+- Linux commands, 8 detection categories
 
-**Status: v4 complete. v5 in development (extended Linux detection — auditd).**
+**Status: v4 complete. v5 in development (extended Linux detection, auditd).**
 
 ---
 
@@ -36,18 +36,18 @@ Current detection coverage:
 ```
 Log sources (Windows / Sysmon / PowerShell / RFC 3164 / RFC 5424 / CEF / NXLog / Winlogbeat)
     ↓
-Syslog parser — auto-format detection
+Syslog parser, auto-format detection
     ↓
-Normalizer — field extraction into immutable CanonicalEvent
+Normalizer, field extraction into immutable CanonicalEvent
     ↓
-Process Tree — parent→child index (2-pass build)
+Process Tree, parent→child index (2-pass build)
     ↓
 3-layer detection engine
-  ├── Layer 1 — Signature   : ransomware_v4
-  ├── Layer 2 — Behavioral  : powershell_sigma (4 YAML files) + lotl_sigma + spawn suspects
-  └── Layer 3 — Correlation : temporal recon → exec sequences
+  ├── Layer 1, Signature   : ransomware_v4
+  ├── Layer 2, Behavioral  : powershell_sigma (4 YAML files) + lotl_sigma + spawn suspects
+  └── Layer 3, Correlation : temporal recon → exec sequences
     ↓
-Correlator — signal aggregation into alerts with severity
+Correlator, signal aggregation into alerts with severity
     ↓
 JSON alert output
     {
@@ -69,22 +69,22 @@ JSON alert output
 | `process_tree.py` | Builds parent→child index, detects suspicious spawns |
 | `lotl_sigma.py` | 8 LOTL rules + EventID 4698/4699 + spawn suspects |
 | `powershell_sigma.py` | Multi-file Sigma YAML loader |
-| `engine.py` | 3-layer orchestrator — declares `_PS_RULE_FILES` |
+| `engine.py` | 3-layer orchestrator, declares `_PS_RULE_FILES` |
 | `correlator.py` | Signals → Alerts with calculated severity |
-| `reporter.py` | JSONL export — events, signals, alerts, timelines |
+| `reporter.py` | JSONL export, events, signals, alerts, timelines |
 
 ### PowerShell Sigma Files
 
 | File | Domain | MITRE Techniques |
 |------|--------|-----------------|
-| `ps_scriptblock.yaml` | Script Block 4104 — encoding, IEX, AMSI, recon | T1059.001, T1027, T1562 |
+| `ps_scriptblock.yaml` | Script Block 4104, encoding, IEX, AMSI, recon | T1059.001, T1027, T1562 |
 | `ps_persistence.yaml` | Registry Run, WMI sub, startup, inline schtasks | T1547.001, T1053.005, T1546.003 |
 | `ps_privilege_escalation.yaml` | Admin group add, UAC bypass, credential dump | T1098, T1548.002, T1003 |
 | `linux_suspicious.yaml` | chmod +s, cron, curl pipe bash, reverse shell | T1059.004, T1053.003, T1222.002 |
 
 ---
 
-## 3. Detection Rules — v4
+## 3. Detection Rules, v4
 
 ### PowerShell Script Block (EventID 4104)
 
@@ -140,7 +140,7 @@ JSON alert output
 | Requires proper log ingestion | Sysmon and Script Block Logging must be enabled |
 | No legitimacy baseline | False positives on admin activity and deployments |
 | No signal deduplication | One event may produce multiple distinct Signals |
-| No blocking capability | Detection and alerting only — no automated response |
+| No blocking capability | Detection and alerting only, no automated response |
 | Linux in CommandLine mode only | No auditd / syscall integration yet (v5) |
 | Evasion possible | Advanced actors can bypass behavioral rules |
 
@@ -170,20 +170,20 @@ JSON alert output
 
 ## 6. Roadmap
 
-- [x] Sigma rule engine — PowerShell detection
+- [x] Sigma rule engine, PowerShell detection
 - [x] Ransomware behavioral detector
 - [x] Multi-format syslog support (RFC 3164, RFC 5424, CEF, NXLog, Winlogbeat)
-- [x] Process tree — parent→child modeling
+- [x] Process tree, parent→child modeling
 - [x] 8 LOTL rules with MITRE ATT&CK tagging
 - [x] Multi-file Sigma loader per domain
 - [x] Windows persistence detection (registry Run, WMI sub, startup)
 - [x] Privilege escalation detection (admin group, UAC bypass, credential dump)
 - [x] Linux command detection (chmod +s, cron, reverse shell)
-- [ ] Extended Linux detection — auditd, PAM, systemd (v5)
+- [ ] Extended Linux detection, auditd, PAM, systemd (v5)
 - [ ] Signal deduplication + aggregated scoring (v5.5)
-- [ ] Deferred enrichment — URLVoid, WHOIS, IP geolocation (v6)
+- [ ] Deferred enrichment, URLVoid, WHOIS, IP geolocation (v6)
 - [ ] Legitimacy baseline to reduce false positives (v7)
-- [ ] SOAR — automated response (v8)
+- [ ] SOAR, automated response (v8)
 
 ---
 
@@ -192,7 +192,7 @@ JSON alert output
 - MITRE ATT&CK: T1059.001 (PowerShell), T1486 (Ransomware), T1490 (Shadow Copy), T1047 (WMI), T1218 (LOLBIN), T1547.001 (Registry Run), T1548.002 (UAC Bypass), T1003 (Credential Dumping)
 - Sigma rule specification: https://github.com/SigmaHQ/sigma
 - Sysmon logging format: https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
-- Windows Event ID 4104 — Script Block Logging
+- Windows Event ID 4104, Script Block Logging
 - LOLBAS Project: https://lolbas-project.github.io
 - GTFOBins (Linux): https://gtfobins.github.io
 
