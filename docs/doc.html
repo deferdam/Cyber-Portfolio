@@ -174,6 +174,30 @@ const PROJECT_BRIEFS = {
       detect: "Multi-file Sigma loader (4 YAML files per domain). Paths resolved relative to module — no more cwd dependency. Loop bug fixed (return + reset inside loop). 3-layer engine unchanged.",
       response: "Extended MITRE ATT&CK coverage: T1547.001, T1546.003, T1548.002, T1003, T1222.002. Score 0–100. Limits: signal deduplication not yet implemented (v5.5)."
     }
+  },
+  siem_v4: {
+    fr: {
+      threat: "Nouvelles couches de détection : persistance Windows (registry Run, WMI subscription, startup folder), élévation de privilèges (ajout admin, UAC bypass, Mimikatz), commandes Linux suspectes (chmod +s, cron, reverse shell).",
+      detect: "Chargeur Sigma multi-fichiers — 4 fichiers YAML par domaine. Chemins résolus relatifs au module (plus de dépendance au cwd). Bug de boucle corrigé (return + reset dans la boucle). Moteur 3 couches inchangé.",
+      response: "Couverture MITRE ATT&CK étendue : T1547.001, T1546.003, T1548.002, T1003, T1222.002. Score 0–100. Limitations : déduplication des signaux non encore implémentée (v5.5)."
+    },
+    en: {
+      threat: "New detection layers: Windows persistence (registry Run, WMI subscription, startup folder), privilege escalation (admin group add, UAC bypass, Mimikatz), suspicious Linux commands (chmod +s, cron, reverse shell).",
+      detect: "Multi-file Sigma loader — 4 YAML files per domain. Paths resolved relative to module — no more cwd dependency. Loop bug fixed (return + reset inside loop). 3-layer engine unchanged.",
+      response: "Extended MITRE ATT&CK coverage: T1547.001, T1546.003, T1548.002, T1003, T1222.002. Score 0–100. Limits: signal deduplication not yet implemented (v5.5)."
+    }
+  },
+  siem_v5: {
+    fr: {
+      threat: "Pipeline Linux complet : détection auditd au niveau kernel (EXECVE, SYSCALL), authentification PAM/SSH, outils offensifs (mimipenguin, lazagne, bloodhound, chisel), kernel exploits (DirtyCow, Dirty Pipe), container escape.",
+      detect: "Normalisation multi-source : reconstruction args EXECVE (a0/a1/a2), décodage hex, routing auditd/auth/générique. Dispatch OS conditionnel au chargement du module. bash_sigma réutilise le parser powershell_sigma sans duplication.",
+      response: "Brute force SSH détecté par corrélation temporelle (5 échecs / 120s). Ransomware Linux adapté : /tmp, uid=0, outils chiffrement (openssl enc, gpg -c), ransom notes. 42 tests validés. MITRE : T1068, T1572, T1003.008, T1110.001, T1574.006."
+    },
+    en: {
+      threat: "Full Linux pipeline: auditd kernel-level detection (EXECVE, SYSCALL), PAM/SSH authentication, offensive tools (mimipenguin, lazagne, bloodhound, chisel), kernel exploits (DirtyCow, Dirty Pipe), container escape.",
+      detect: "Multi-source normalization: EXECVE args reconstruction (a0/a1/a2), hex decoding, auditd/auth/generic routing. OS-conditional module dispatch at import time. bash_sigma reuses the powershell_sigma parser without duplication.",
+      response: "SSH brute force via temporal correlation (5 failures / 120s). Linux ransomware adapted: /tmp, uid=0, encryption tools (openssl enc, gpg -c), ransom notes. 42 tests validated. MITRE: T1068, T1572, T1003.008, T1110.001, T1574.006."
+    }
   }
 };
 
