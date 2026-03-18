@@ -157,7 +157,9 @@ const I18N = {
     siem_v3_title: "v3 — Multi-format + LOTL",
     siem_v3_desc: "Syslog multi-format (RFC 3164/5424, CEF), process tree, 8 règles LOTL, spawn suspects, tagging MITRE ATT&CK. Moteur 3 couches.",
     siem_v4_title: "v4 — Persistance + Privesc + Linux",
-    siem_v4_desc: "Chargeur Sigma multi-fichiers. Persistance (registry Run, WMI sub), élévation de privilèges (UAC bypass, Mimikatz), détection Linux (chmod +s, reverse shell)."
+    siem_v4_desc: "Chargeur Sigma multi-fichiers. Persistance (registry Run, WMI sub), élévation de privilèges (UAC bypass, Mimikatz), détection Linux (chmod +s, reverse shell).",
+  siem_v5_title: "v5 — Pipeline Linux complet",
+  siem_v5_desc: "Détection auditd au niveau kernel, auth PAM/SSH, outils offensifs (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. Dispatch conditionnel par OS."
   },
 
   en: {
@@ -266,7 +268,9 @@ const I18N = {
     siem_v3_title: "v2/3 — Multi-format + LOTL",
     siem_v3_desc: "Multi-format syslog (RFC 3164/5424, CEF), process tree, 8 LOTL rules, suspicious spawns, MITRE ATT&CK tagging. 3-layer engine.",
     siem_v4_title: "v4 — Persistence + Privesc + Linux",
-    siem_v4_desc: "Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell)."
+    siem_v4_desc: "Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell).",
+    siem_v5_title: "v5 — Full Linux Pipeline",
+    siem_v5_desc: "Auditd kernel-level detection, PAM/SSH auth, offensive tools (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. OS-conditional engine."
   }
 };
 
