@@ -1,0 +1,155 @@
+title: Suspicious Linux Commands
+id: 1a0e5215-0ac7-414c-a16a-687e0c40edc5
+description: >
+    Detect suspicious Linux shell commands: dangerous chmod/chown,
+    cron job manipulation, curl/wget pipe-to-shell, reverse shells,
+    credential file access, defense evasion, and data staging.
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: linux
+    service: syslog
+
+detection:
+    # ── Dangerous chmod / setuid bit ───────────────────────────────────────
+    # T1222.002 — File and Directory Permissions Modification: Linux
+    # chmod +s sets the setuid/setgid bit. Any user executing a setuid
+    # binary runs it with the file owner's privileges (often root).
+    # This is a classic post-exploitation step to plant a root backdoor.
+    selection_chmod_suspicious:
+        CommandLine|contains:
+            - 'chmod +s'
+            - 'chmod 4755'
+            - 'chmod 4777'
+            - 'chmod 6755'
+            - 'chmod 777'
+            - 'chmod a+x /tmp'
+            - 'chmod a+x /dev/shm'
+
+    # ── chown to root ──────────────────────────────────────────────────────
+    # Changing file ownership to root is used in combination with
+    # chmod +s to create a setuid root backdoor binary.
+    selection_chown_root:
+        CommandLine|contains:
+            - 'chown root:'
+            - 'chown 0:0'
+            - 'chown root /bin/bash'
+            - 'chown root /tmp'
+
+    # ── Malicious cron job creation ────────────────────────────────────────
+    # T1053.003 — Scheduled Task/Job: Cron
+    # Attackers add cron entries to execute payloads at regular intervals,
+    # achieving persistence that survives reboots and process kills.
+    selection_cron_suspicious:
+        CommandLine|contains:
+            - 'crontab -'
+            - '* * * * * curl'
+            - '* * * * * wget'
+            - '* * * * * bash'
+            - '* * * * * python'
+            - '/etc/cron.d/'
+            - '/etc/cron.daily/'
+            - 'echo.*crontab'
+
+    # ── Download and execute pipe ──────────────────────────────────────────
+    # T1059.004 — Command and Scripting Interpreter: Unix Shell
+    # One-liner infection pattern: downloads a script from a remote server
+    # and immediately pipes it into a shell interpreter without saving to disk.
+    # This evades file-based detection.
+    selection_pipe_exec:
+        CommandLine|contains:
+            - '| bash'
+            - '| sh'
+            - '| python'
+            - '|bash'
+            - '|sh'
+            - '|python3'
+            - 'fetch.*|.*sh'
+
+    # ── Reverse shell ──────────────────────────────────────────────────────
+    # T1059.004
+    # Establishes an outbound connection that gives the attacker
+    # an interactive shell on the victim machine, bypassing inbound
+    # firewall rules. /dev/tcp is a bash built-in that does not
+    # require any external tool.
+    selection_reverse_shell:
+        CommandLine|contains:
+            - 'bash -i >& /dev/tcp'
+            - 'bash -i >&'
+            - '/dev/tcp/'
+            - 'nc -e /bin/bash'
+            - 'nc -e /bin/sh'
+            - 'ncat -e'
+            - 'python.*socket.*connect'
+            - 'python.*pty'
+            - 'socat.*EXEC'
+
+    # ── Credential file access / manipulation ──────────────────────────────
+    # T1098 — Account Manipulation
+    # Direct writes to /etc/passwd or /etc/shadow allow creating
+    # a backdoor account or changing the root password without
+    # using standard tools that may be audited.
+    selection_passwd_manipulation:
+        CommandLine|contains:
+            - '/etc/passwd'
+            - '/etc/shadow'
+            - 'openssl passwd'
+            - 'useradd -o -u 0'
+            - 'adduser.*uid 0'
+
+    # ── Defense evasion / disable security controls ────────────────────────
+    # T1562.001 — Impair Defenses: Disable or Modify Tools
+    # Disabling SELinux, firewalls, or auditd removes the visibility
+    # that security tools depend on and enables subsequent attack steps.
+    selection_disable_defenses:
+        CommandLine|contains:
+            - 'setenforce 0'
+            - 'systemctl stop firewalld'
+            - 'systemctl disable firewalld'
+            - 'ufw disable'
+            - 'iptables -F'
+            - 'service iptables stop'
+            - 'auditctl -e 0'
+
+    # ── Data staging / exfiltration preparation ────────────────────────────
+    # T1074 — Data Staged
+    # Archiving sensitive data to /tmp or piping it over the network
+    # via netcat are pre-exfiltration staging steps.
+    # base64-encoding /etc/shadow is used to exfiltrate hashes covertly.
+    selection_staging:
+        CommandLine|contains:
+            - 'tar.*|.*nc'
+            - 'tar czf /tmp/'
+            - 'dd if=/dev/.*of=/tmp'
+            - 'base64 /etc/shadow'
+            - 'base64 /etc/passwd'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - 'chmod +x used by developers making their own scripts executable'
+    - 'Legitimate backup cron jobs monitoring scripts'
+    - 'curl pipe in controlled CI/CD environments (Docker, Ansible provisioning)'
+    - 'Authorized penetration testers performing sanctioned assessments'
+
+level: medium
+
+fields:
+    - CommandLine
+    - Image
+    - User
+    - ParentImage
+
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.persistence
+    - attack.t1053.003
+    - attack.privilege_escalation
+    - attack.t1222.002
+    - attack.t1548
+    - attack.credential_access
+    - attack.t1098
+    - attack.defense_evasion
+    - attack.t1562.001
