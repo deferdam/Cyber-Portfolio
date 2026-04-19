@@ -93,14 +93,14 @@ const I18N = {
     scope_b1: "Aucun binaire malware publié.",
     scope_b2: "Uniquement texte, captures, notes et pseudocode.",
     scope_b3: "Intention strictement défensive.",
-    malware_writeup_title: "Reverse shell Linux ELF — write-up",
+    malware_writeup_title: "Reverse shell Linux ELF - write-up",
     malware_writeup_desc: "Notes de reverse + script de déchiffrement + apprentissage YARA.",
 
     // SOC
     soc_labs_title: "SOC Labs",
     soc_labs_desc: "Exercices style SOC : bases réseau, triage de logs, playbooks simples et idées de détection.",
     soc_writeup_title: "Write-up SOC / réseau",
-    soc_writeup_desc: "DNS, WHOIS, ICMP, couches TCP/IP — notes structurées.",
+    soc_writeup_desc: "DNS, WHOIS, ICMP, couches TCP/IP - notes structurées.",
 
     // TryHackMe
     thm_status_title: "Statut",
@@ -116,7 +116,7 @@ const I18N = {
     feat_vault_desc: "Outil chiffrement/déchiffrement + threat model + guidelines sécurité.",
     feat_rbd_title: "Ransomware Behavior Detector",
     feat_rbd_desc: "Idée de détection basée sur le comportement + documentation (périmètre défensif).",
-    feat_elf_title: "Reverse Shell Linux ELF — analyse",
+    feat_elf_title: "Reverse Shell Linux ELF - analyse",
     feat_elf_desc: "Notes statiques + dynamique basique, extraction d’IOC, conclusions orientées détection.",
 
     // mini blocks
@@ -131,7 +131,7 @@ const I18N = {
     mini_output_text: "Write-ups, IOCs, apprentissages YARA/Sigma",
 
     // sidebar / badges
-    sidebar_role: "Étudiant cybersécurité — Blue Team & Analyse malware",
+    sidebar_role: "Étudiant cybersécurité - Blue Team & Analyse malware",
     badge_soc: "Orienté SOC",
     badge_thm: "TryHackMe top 4%",
 
@@ -141,24 +141,24 @@ const I18N = {
     doc_note: "Cette page pointe vers le Markdown correspondant dans le dépôt. Aucun binaire n’est hébergé.",
 
     // siem
-    siem_card_title: "Mini SIEM — Sigma Engine",
-    siem_card_desc: "Moteur de détection comportemental : PowerShell, LOTL, ransomware, persistance, élévation de privilèges. v3 stable — v4 en cours.",
+    siem_card_title: "Mini SIEM - Sigma Engine",
+    siem_card_desc: "Moteur de détection comportemental : PowerShell, LOTL, ransomware, persistance, élévation de privilèges. v3 stable - v4 en cours.",
     siem_title: "Mini SIEM",
-    siem_lead: "Moteur de détection comportementale construit en Python. Pas de signatures par hash — comportements purs : obfuscation PowerShell, binaires LOTL, activité ransomware, mécanismes de persistance, élévation de privilèges et commandes Linux suspectes. Environnement lab uniquement. Périmètre défensif.",
+    siem_lead: "Moteur de détection comportementale construit en Python. Pas de signatures par hash - comportements purs : obfuscation PowerShell, binaires LOTL, activité ransomware, mécanismes de persistance, élévation de privilèges et commandes Linux suspectes. Environnement lab uniquement. Périmètre défensif.",
     siem_scope_title: "Architecture",
-    siem_arch_b1: "Ingestion multi-format — Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
-    siem_arch_b2: "Moteur 3 couches — Signature / Comportementale / Corrélation — avec isolation d'erreurs par couche",
-    siem_arch_b3: "Règles Sigma YAML par domaine — chargeur multi-fichiers, chemins résolus relatifs au module",
-    siem_arch_b4: "Tagging MITRE ATT&CK sur chaque Signal — tactique + technique",
+    siem_arch_b1: "Ingestion multi-format - Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
+    siem_arch_b2: "Moteur 3 couches - Signature / Comportementale / Corrélation - avec isolation d'erreurs par couche",
+    siem_arch_b3: "Règles Sigma YAML par domaine - chargeur multi-fichiers, chemins résolus relatifs au module",
+    siem_arch_b4: "Tagging MITRE ATT&CK sur chaque Signal - tactique + technique",
     siem_arch_b5: "Score de risque 0–100, sortie JSON structurée",
     siem_versions_title: "Versions",
-    siem_v1_title: "v1 — Sigma Engine",
+    siem_v1_title: "v1 - Sigma Engine",
     siem_v1_desc: "Première version fonctionnelle. Détection Script Block PowerShell + scoring comportemental ransomware. Fichier YAML unique.",
-    siem_v3_title: "v3 — Multi-format + LOTL",
+    siem_v3_title: "v3 - Multi-format + LOTL",
     siem_v3_desc: "Syslog multi-format (RFC 3164/5424, CEF), process tree, 8 règles LOTL, spawn suspects, tagging MITRE ATT&CK. Moteur 3 couches.",
-    siem_v4_title: "v4 — Persistance + Privesc + Linux",
+    siem_v4_title: "v4 - Persistance + Privesc + Linux",
     siem_v4_desc: "Chargeur Sigma multi-fichiers. Persistance (registry Run, WMI sub), élévation de privilèges (UAC bypass, Mimikatz), détection Linux (chmod +s, reverse shell).",
-  siem_v5_title: "v5 — Pipeline Linux complet",
+  siem_v5_title: "v5 - Pipeline Linux complet",
   siem_v5_desc: "Détection auditd au niveau kernel, auth PAM/SSH, outils offensifs (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. Dispatch conditionnel par OS."
   },
 
@@ -204,14 +204,14 @@ const I18N = {
     scope_b1: "No malware binaries published.",
     scope_b2: "Text, screenshots, notes, and pseudocode only.",
     scope_b3: "Defensive intent only.",
-    malware_writeup_title: "Linux ELF reverse shell — write-up",
+    malware_writeup_title: "Linux ELF reverse shell - write-up",
     malware_writeup_desc: "Reverse engineering notes + decryption script + YARA learning.",
 
     // SOC
     soc_labs_title: "SOC Labs",
     soc_labs_desc: "SOC-style exercises: network basics, log triage mindset, simple playbooks, and detection ideas.",
     soc_writeup_title: "SOC / network write-up",
-    soc_writeup_desc: "DNS, WHOIS, ICMP, TCP/IP layers — structured notes.",
+    soc_writeup_desc: "DNS, WHOIS, ICMP, TCP/IP layers - structured notes.",
 
     // TryHackMe
     thm_status_title: "Status",
@@ -227,7 +227,7 @@ const I18N = {
     feat_vault_desc: "File encryption/decryption tool + threat model + security guidelines.",
     feat_rbd_title: "Ransomware Behavior Detector",
     feat_rbd_desc: "Behavior-based detection idea + documentation (defensive scope).",
-    feat_elf_title: "Linux ELF Reverse Shell — analysis",
+    feat_elf_title: "Linux ELF Reverse Shell - analysis",
     feat_elf_desc: "Static + basic dynamic notes, IOC extraction, detection-oriented conclusions.",
 
     // mini blocks
@@ -242,7 +242,7 @@ const I18N = {
     mini_output_text: "Write-ups, IOCs, YARA/Sigma learning artefacts",
 
     // sidebar / badges
-    sidebar_role: "Cybersecurity Student — Blue Team & Malware Analysis",
+    sidebar_role: "Cybersecurity Student - Blue Team & Malware Analysis",
     badge_soc: "SOC-oriented",
     badge_thm: "TryHackMe top 4%",
 
@@ -252,24 +252,24 @@ const I18N = {
     doc_note: "This page links to the corresponding Markdown in the repository. No binaries are hosted.",
 
     // siem
-    siem_card_title: "Mini SIEM — Sigma Engine",
-    siem_card_desc: "Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable — v4 current.",
+    siem_card_title: "Mini SIEM - Sigma Engine",
+    siem_card_desc: "Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable - v4 current.",
     siem_title: "Mini SIEM",
-    siem_lead: "Sigma-based behavioral detection engine built in Python. No hash signatures — pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.",
+    siem_lead: "Sigma-based behavioral detection engine built in Python. No hash signatures - pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.",
     siem_scope_title: "Architecture",
-    siem_arch_b1: "Multi-format log ingestion — Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
-    siem_arch_b2: "3-layer engine — Signature / Behavioral / Correlation — with per-layer error isolation",
-    siem_arch_b3: "Sigma YAML rules per domain — multi-file loader, paths resolved relative to module",
-    siem_arch_b4: "MITRE ATT&CK tagging on every Signal — tactic + technique",
+    siem_arch_b1: "Multi-format log ingestion - Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
+    siem_arch_b2: "3-layer engine - Signature / Behavioral / Correlation - with per-layer error isolation",
+    siem_arch_b3: "Sigma YAML rules per domain - multi-file loader, paths resolved relative to module",
+    siem_arch_b4: "MITRE ATT&CK tagging on every Signal - tactic + technique",
     siem_arch_b5: "Risk score 0–100, structured JSON alert output",
     siem_versions_title: "Versions",
-    siem_v1_title: "v1 — Sigma Engine",
+    siem_v1_title: "v1 - Sigma Engine",
     siem_v1_desc: "First working version. PowerShell Script Block detection + ransomware behavioral scoring. Single YAML rule file.",
-    siem_v3_title: "v2/3 — Multi-format + LOTL",
+    siem_v3_title: "v2/3 - Multi-format + LOTL",
     siem_v3_desc: "Multi-format syslog (RFC 3164/5424, CEF), process tree, 8 LOTL rules, suspicious spawns, MITRE ATT&CK tagging. 3-layer engine.",
-    siem_v4_title: "v4 — Persistence + Privesc + Linux",
+    siem_v4_title: "v4 - Persistence + Privesc + Linux",
     siem_v4_desc: "Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell).",
-    siem_v5_title: "v5 — Full Linux Pipeline",
+    siem_v5_title: "v5 - Full Linux Pipeline",
     siem_v5_desc: "Auditd kernel-level detection, PAM/SSH auth, offensive tools (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. OS-conditional engine."
   }
 };

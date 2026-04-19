@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Damien D. — Cybersecurity Portfolio</title>
+  <title>Damien D. - Cybersecurity Portfolio</title>
 
   <link rel="stylesheet" href="./css/style.css" />
 </head>
@@ -26,7 +26,7 @@
           <img class="avatar" src="./img/avatar.jpg" alt="Damien D.">
           <div class="profile-meta">
           <div class="name">Damien D.</div>
-          <div class="role" data-i18n="sidebar_role">Cybersecurity Student — Blue Team & Malware Analysis</div>
+          <div class="role" data-i18n="sidebar_role">Cybersecurity Student - Blue Team & Malware Analysis</div>
           
           <div class="badges">
               <span class="pill pill-red" data-i18n="badge_soc">SOC-oriented</span>
@@ -109,7 +109,7 @@
         <div class="grid">
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="feat_elf_title">Linux ELF Reverse Shell — analysis</div>
+              <div class="card-title" data-i18n="feat_elf_title">Linux ELF Reverse Shell - analysis</div>
               <div class="card-desc" data-i18n="feat_elf_desc">Static + basic dynamic notes, IOC extraction, detection-oriented conclusions.</div>
               <div class="card-actions"></div>
               <a class="card-link"
@@ -158,8 +158,8 @@
 
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="siem_card_title">Mini SIEM — Sigma Engine</div>
-              <div class="card-desc" data-i18n="siem_card_desc">Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable — v4 current.</div>
+              <div class="card-title" data-i18n="siem_card_title">Mini SIEM - Sigma Engine</div>
+              <div class="card-desc" data-i18n="siem_card_desc">Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable - v4 current.</div>
               <div class="card-actions"></div>
               <button class="card-link" onclick="showPage('siem')" data-i18n="open">Open</button>
             </div>
@@ -172,16 +172,16 @@
       <section class="page" data-page="siem">
         <h1 data-i18n="siem_title">Mini SIEM</h1>
         <p class="lead" data-i18n="siem_lead">
-          Sigma-based behavioral detection engine built in Python. No hash signatures — pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.
+          Sigma-based behavioral detection engine built in Python. No hash signatures - pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.
         </p>
 
         <div class="callout">
           <div class="callout-title" data-i18n="siem_scope_title">Architecture</div>
           <ul>
-            <li data-i18n="siem_arch_b1">Multi-format log ingestion — Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat</li>
-            <li data-i18n="siem_arch_b2">3-layer engine — Signature / Behavioral / Correlation — with per-layer error isolation</li>
-            <li data-i18n="siem_arch_b3">Sigma YAML rules per domain — multi-file loader, paths resolved relative to module</li>
-            <li data-i18n="siem_arch_b4">MITRE ATT&amp;CK tagging on every Signal — tactic + technique</li>
+            <li data-i18n="siem_arch_b1">Multi-format log ingestion - Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat</li>
+            <li data-i18n="siem_arch_b2">3-layer engine - Signature / Behavioral / Correlation - with per-layer error isolation</li>
+            <li data-i18n="siem_arch_b3">Sigma YAML rules per domain - multi-file loader, paths resolved relative to module</li>
+            <li data-i18n="siem_arch_b4">MITRE ATT&amp;CK tagging on every Signal - tactic + technique</li>
             <li data-i18n="siem_arch_b5">Risk score 0–100, structured JSON alert output</li>
           </ul>
         </div>
@@ -191,7 +191,7 @@
 
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="siem_v1_title">v1 — Sigma Engine</div>
+              <div class="card-title" data-i18n="siem_v1_title">v1 - Sigma Engine</div>
               <div class="card-desc" data-i18n="siem_v1_desc">First working version. PowerShell Script Block detection + ransomware behavioral scoring. Single YAML rule file.</div>
               <div class="card-actions"></div>
               <a class="card-link"
@@ -207,7 +207,7 @@
 
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="siem_v3_title">v3 — Multi-format + LOTL</div>
+              <div class="card-title" data-i18n="siem_v3_title">v3 - Multi-format + LOTL</div>
               <div class="card-desc" data-i18n="siem_v3_desc">Multi-format syslog (RFC 3164/5424, CEF), process tree, 8 LOTL rules, suspicious spawns, MITRE ATT&amp;CK tagging. 3-layer engine.</div>
               <div class="card-actions"></div>
               <a class="card-link"
@@ -223,7 +223,7 @@
 
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="siem_v4_title">v4 — Persistence + Privesc + Linux</div>
+              <div class="card-title" data-i18n="siem_v4_title">v4 - Persistence + Privesc + Linux</div>
               <div class="card-desc" data-i18n="siem_v4_desc">Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell).</div>
               <div class="card-actions"></div>
               <a class="card-link"
@@ -239,7 +239,7 @@
 
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="siem_v5_title">v5 — Full Linux Pipeline</div>
+              <div class="card-title" data-i18n="siem_v5_title">v5 - Full Linux Pipeline</div>
               <div class="card-desc" data-i18n="siem_v5_desc">Auditd kernel-level detection, PAM/SSH auth, offensive tools (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. OS-conditional engine.</div>
               <div class="card-actions"></div>
               <a class="card-link"
@@ -291,8 +291,8 @@
                 href="./doc.html?doc=yara/README.md"
                 data-doc-fr="yara/README.md"
                 data-doc-en="yara/README.en.md"
-                data-title-fr="YARA%20—%20Détection%20et%20classification"
-                data-title-en="YARA%20—%20Detection%20and%20classification"
+                data-title-fr="YARA%20-%20Détection%20et%20classification"
+                data-title-en="YARA%20-%20Detection%20and%20classification"
                 data-proj="yara"
                 data-i18n="open">Open</a>
             </div>
@@ -316,8 +316,8 @@
           
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="siem_card_title">Mini SIEM — Sigma Engine</div>
-              <div class="card-desc" data-i18n="siem_card_desc">Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable — v4 current.</div>
+              <div class="card-title" data-i18n="siem_card_title">Mini SIEM - Sigma Engine</div>
+              <div class="card-desc" data-i18n="siem_card_desc">Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable - v4 current.</div>
               <div class="card-actions"></div>
               <button class="card-link" onclick="showPage('siem')" data-i18n="open">Open</button>
             </div>
@@ -345,7 +345,7 @@
         <div class="grid">
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="malware_writeup_title">Linux ELF reverse shell — write-up</div>
+              <div class="card-title" data-i18n="malware_writeup_title">Linux ELF reverse shell - write-up</div>
               <div class="card-desc" data-i18n="malware_writeup_desc">Reverse engineering notes + decryption script + YARA learning.</div>
               <div class="card-actions"></div>
               <a class="card-link"
@@ -372,7 +372,7 @@
           <article class="card no-thumb">
             <div class="card-body">
               <div class="card-title" data-i18n="soc_writeup_title">SOC / network write-up</div>
-              <div class="card-desc" data-i18n="soc_writeup_desc">DNS, WHOIS, ICMP, TCP/IP layers — structured notes.</div>
+              <div class="card-desc" data-i18n="soc_writeup_desc">DNS, WHOIS, ICMP, TCP/IP layers - structured notes.</div>
               <div class="card-actions"></div>
               <a class="card-link"
                 href="./doc.html?doc=tryhackme/tryhackme-progress.md&title=TryHackMe%20%E2%80%94%20Progress%20Notes"

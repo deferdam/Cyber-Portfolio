@@ -125,13 +125,13 @@ const PROJECT_BRIEFS = {
   
   yara: {
     fr: {
-      title: "YARA — Détection et classification",
+      title: "YARA - Détection et classification",
       threat: "Règles YARA écrites pour identifier des artefacts issus d’analyses défensives (échantillons pédagogiques / labs). Objectif : accélérer le triage et reconnaître des motifs stables.",
       detect: "Sélection d’indicateurs robustes (strings, patterns, sections), écriture de règles lisibles, tests pour limiter les faux positifs. Règles classées par contexte (reverse shell, etc.).",
       response: "Usage défensif uniquement : aider au triage, à la classification et à l’apprentissage. Ajustements itératifs des conditions et ajout de commentaires pour expliciter les choix."
     },
     en: {
-      title: "YARA — Detection and classification",
+      title: "YARA - Detection and classification",
       threat: "YARA rules written to identify artefacts from defensive analyses (training samples / labs). Goal: speed up triage and recognize stable patterns.",
       detect: "Select robust indicators (strings, patterns, sections), write readable rules, test to reduce false positives. Rules organized by context (reverse shell, etc.).",
       response: "Defensive use only: support triage, classification, and learning. Iterate on conditions and add comments to document the reasoning."
@@ -139,13 +139,13 @@ const PROJECT_BRIEFS = {
   },
   siem_v1: {
     fr: {
-      title: "Mini SIEM — v1",
+      title: "Mini SIEM - v1",
       threat: "Détection comportementale sur logs Windows : exécution PowerShell suspecte et activité ransomware simulée en environnement lab isolé.",
       detect: "Ingestion de logs Sysmon / PowerShell Script Block (Event ID 4104). Matching sur règles Sigma. Score de risque 0–100 par agrégation pondérée d'indicateurs comportementaux.",
       response: "Sortie JSON structurée avec classification (Execution / Persistence / Privilege Escalation). Limitations assumées : condition 1 of selection*, faux positifs connus sur scripts admin légitimes."
     },
     en: {
-      title: "Mini SIEM — v1",
+      title: "Mini SIEM - v1",
       threat: "Behavioral detection on Windows logs: suspicious PowerShell execution and simulated ransomware activity in an isolated lab environment.",
       detect: "Log ingestion from Sysmon / PowerShell Script Block (Event ID 4104). Sigma rule matching. Risk score 0–100 via weighted behavioral indicator aggregation.",
       response: "Structured JSON output with classification (Execution / Persistence / Privilege Escalation). Known limits: 1 of selection* condition, false positives on legitimate admin scripts."
@@ -166,24 +166,24 @@ const PROJECT_BRIEFS = {
   siem_v3: {
     fr: {
       threat: "Nouvelles couches de détection : persistance Windows (registry Run, WMI subscription, startup folder), élévation de privilèges (ajout admin, UAC bypass, Mimikatz), commandes Linux suspectes (chmod +s, cron, reverse shell).",
-      detect: "Chargeur Sigma multi-fichiers (4 YAML par domaine). Chemins résolus relatifs au module — plus de dépendance au cwd. Bug de boucle corrigé (return + reset dans la boucle). Moteur 3 couches inchangé.",
+      detect: "Chargeur Sigma multi-fichiers (4 YAML par domaine). Chemins résolus relatifs au module - plus de dépendance au cwd. Bug de boucle corrigé (return + reset dans la boucle). Moteur 3 couches inchangé.",
       response: "Couverture MITRE ATT&CK étendue : T1547.001, T1546.003, T1548.002, T1003, T1222.002. Score 0–100. Limitations : déduplication des signaux non encore implémentée (v5.5)."
     },
     en: {
       threat: "New detection layers: Windows persistence (registry Run, WMI subscription, startup folder), privilege escalation (admin group add, UAC bypass, Mimikatz), suspicious Linux commands (chmod +s, cron, reverse shell).",
-      detect: "Multi-file Sigma loader (4 YAML files per domain). Paths resolved relative to module — no more cwd dependency. Loop bug fixed (return + reset inside loop). 3-layer engine unchanged.",
+      detect: "Multi-file Sigma loader (4 YAML files per domain). Paths resolved relative to module - no more cwd dependency. Loop bug fixed (return + reset inside loop). 3-layer engine unchanged.",
       response: "Extended MITRE ATT&CK coverage: T1547.001, T1546.003, T1548.002, T1003, T1222.002. Score 0–100. Limits: signal deduplication not yet implemented (v5.5)."
     }
   },
   siem_v4: {
     fr: {
       threat: "Nouvelles couches de détection : persistance Windows (registry Run, WMI subscription, startup folder), élévation de privilèges (ajout admin, UAC bypass, Mimikatz), commandes Linux suspectes (chmod +s, cron, reverse shell).",
-      detect: "Chargeur Sigma multi-fichiers — 4 fichiers YAML par domaine. Chemins résolus relatifs au module (plus de dépendance au cwd). Bug de boucle corrigé (return + reset dans la boucle). Moteur 3 couches inchangé.",
+      detect: "Chargeur Sigma multi-fichiers - 4 fichiers YAML par domaine. Chemins résolus relatifs au module (plus de dépendance au cwd). Bug de boucle corrigé (return + reset dans la boucle). Moteur 3 couches inchangé.",
       response: "Couverture MITRE ATT&CK étendue : T1547.001, T1546.003, T1548.002, T1003, T1222.002. Score 0–100. Limitations : déduplication des signaux non encore implémentée (v5.5)."
     },
     en: {
       threat: "New detection layers: Windows persistence (registry Run, WMI subscription, startup folder), privilege escalation (admin group add, UAC bypass, Mimikatz), suspicious Linux commands (chmod +s, cron, reverse shell).",
-      detect: "Multi-file Sigma loader — 4 YAML files per domain. Paths resolved relative to module — no more cwd dependency. Loop bug fixed (return + reset inside loop). 3-layer engine unchanged.",
+      detect: "Multi-file Sigma loader - 4 YAML files per domain. Paths resolved relative to module - no more cwd dependency. Loop bug fixed (return + reset inside loop). 3-layer engine unchanged.",
       response: "Extended MITRE ATT&CK coverage: T1547.001, T1546.003, T1548.002, T1003, T1222.002. Score 0–100. Limits: signal deduplication not yet implemented (v5.5)."
     }
   },
