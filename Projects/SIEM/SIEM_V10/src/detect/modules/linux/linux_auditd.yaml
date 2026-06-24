@@ -1,0 +1,84 @@
+title: Suspicious Auditd Activity
+id: 7a3c2b1d-e45f-4891-b234-56789abcdef0
+description: Detect suspicious auditd activity
+status: experimental
+author: Dams
+date: 2026-03-15
+logsource:
+    product: linux
+    service: auditd
+
+detection:
+    selection_privesc_tools:
+        CommandLine|contains:
+            - 'pkexec'
+            - 'nsenter --target 1'
+            - 'unshare --user'
+            - 'runuser -l root'
+            - 'capsh --'
+            - 'newgrp root'
+
+    selection_container_escape:
+        CommandLine|contains:
+            - 'nsenter'
+            - 'unshare -r'
+            - '/proc/1/root'
+            - 'docker.sock'
+            - 'cgroup release_agent'
+            - 'mount --bind /proc'
+
+    selection_credential_tools:
+        CommandLine|contains:
+            - 'mimipenguin'
+            - 'LaZagne'
+            - 'lazagne'
+            - 'linpeas'
+            - 'LinEnum'
+            - '/proc/*/mem'
+            - 'gcore'
+            - 'linux-exploit-suggester'
+
+    selection_kernel_exploit:
+        CommandLine|contains:
+            - 'dirty_cow'
+            - 'dirtycow'
+            - 'exploit.c'
+            - '/tmp/exploit'
+            - '/dev/shm/exploit'
+
+    selection_ld_preload:
+        CommandLine|contains:
+            - 'LD_PRELOAD='
+            - 'LD_LIBRARY_PATH=/tmp'
+            - '/etc/ld.so.preload'
+
+    selection_systemd_persistence:
+        CommandLine|contains:
+            - 'systemctl enable'
+            - '/etc/systemd/system/'
+            - '/lib/systemd/system/'
+
+    selection_proc_injection:
+        CommandLine|contains:
+            - '/proc/self/mem'
+            - 'ptrace'
+            - 'process_vm_writev'
+            - 'dd if=/proc'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - systemctl enable par des scripts legit
+    - nsenter pour debug conteneurs
+
+level: high
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548
+    - attack.credential_access
+    - attack.t1003
+    - attack.defense_evasion
+    - attack.t1574.006
+    - attack.persistence
+    - attack.t1543.002

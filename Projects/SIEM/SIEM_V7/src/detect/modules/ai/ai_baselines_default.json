@@ -1,0 +1,56 @@
+{
+  "ollama": {
+    "process_name": "ollama",
+    "port": 11434,
+    "model_paths": [
+      "~/.ollama/models/"
+    ],
+    "extensions": [
+      ".gguf",
+      ".bin"
+    ]
+  },
+  "lm_studio": {
+    "process_name": "LM Studio",
+    "port": 1234,
+    "model_paths": [
+      "~/LM Studio/models/"
+    ],
+    "extensions": [
+      ".gguf"
+    ]
+  },
+  "llama_cpp": {
+    "process_name": "llama-server",
+    "port": 8080,
+    "model_paths": [
+      "/opt/models/",
+      "~/models/"
+    ],
+    "extensions": [
+      ".gguf"
+    ]
+  },
+  "vllm": {
+    "process_name": "python",
+    "port": 8000,
+    "model_paths": [
+      "/opt/vllm/models/"
+    ],
+    "extensions": [
+      ".safetensors",
+      ".bin"
+    ]
+  },
+  "localai": {
+    "process_name": "local-ai",
+    "port": 8080,
+    "model_paths": [
+      "/usr/share/local-ai/models/"
+    ],
+    "extensions": [
+      ".gguf",
+      ".bin"
+    ]
+  }
+}

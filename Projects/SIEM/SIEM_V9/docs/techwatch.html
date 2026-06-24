@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tech watch | Mini SIEM/SOAR</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header>
+  <span class="brand">Mini SIEM/SOAR</span>
+  <a href="index.html">Home</a>
+  <a href="developer.html">Developer</a>
+  <a href="security.html">Security</a>
+  <a href="usage.html">Usage</a>
+  <a href="techwatch.html" class="active">Tech watch</a>
+</header>
+<main>
+  <h1>Tech watch</h1>
+  <p class="lead">A SIEM is only as good as the freshness of what it depends on and what it
+  detects. This page lists what to monitor over time so the project does not silently rot.
+  Adding libraries (dpkt, python-evtx, OAuth) raises the supply-chain surface; this is the
+  discipline that keeps it under control.</p>
+
+  <h2>Dependencies to monitor</h2>
+  <table>
+    <tr><th>Dependency</th><th>Used for</th><th>Watch for</th></tr>
+    <tr><td>flask</td><td>web app and API</td><td>security releases, Werkzeug advisories</td></tr>
+    <tr><td>python-dateutil</td><td>timestamp parsing</td><td>parsing edge cases, releases</td></tr>
+    <tr><td>dpkt</td><td>PCAP parsing (local only)</td><td>memory-safety and parser CVEs</td></tr>
+    <tr><td>python-evtx</td><td>EVTX parsing (local only)</td><td>parser CVEs, format changes</td></tr>
+    <tr><td>(future) OAuth client</td><td>mail integration</td><td>token handling, scope changes</td></tr>
+  </table>
+
+  <h2>Supply-chain discipline</h2>
+  <ul>
+    <li>Pin exact versions in <code>requirements.txt</code>; do not float.</li>
+    <li>Keep an SBOM (a simple list of dependencies and versions is enough to start).</li>
+    <li>Scan dependencies for known CVEs on a schedule (for example pip-audit).</li>
+    <li>Track upstream advisories for Flask, dpkt and python-evtx.</li>
+    <li>Confine the risky binary parsers to local mode; this keeps them off any
+    internet-facing server and is itself a mitigation.</li>
+  </ul>
+
+  <h2>Detection content to keep current</h2>
+  <p>Detections age as attacker techniques shift. Watch and periodically refresh against:</p>
+  <ul>
+    <li>SigmaHQ community rules, for new and updated detection logic.</li>
+    <li>MITRE ATT&amp;CK, for technique coverage and renames.</li>
+    <li>LOLBAS and GTFOBins, for living-off-the-land binaries on Windows and Linux.</li>
+    <li>Public incident reports (CERT-FR, Mandiant, CrowdStrike), to prioritize tools by
+    real-world frequency rather than theoretical risk.</li>
+  </ul>
+
+  <h2>Platform changes that can break ingestion</h2>
+  <ul>
+    <li>Windows event schema and audit policy defaults (EVTX, 4688 CommandLine inclusion).</li>
+    <li>auditd record formats across distributions.</li>
+    <li>Elastic / ECS field naming across versions.</li>
+    <li>PCAP link-layer and protocol coverage as captures vary.</li>
+  </ul>
+
+  <h2>Planned integrations to track</h2>
+  <ul>
+    <li>Webhook bridge to a companion app, the future integration point toward Ghidra and
+    heavier offline analysis. Kept separate to isolate the reverse-engineering surface.</li>
+    <li>Mail providers (Gmail, Outlook) OAuth read-only, professional mailboxes only.</li>
+  </ul>
+
+  <footer>Tech watch | Mini SIEM/SOAR. Keep dependencies and detections fresh.</footer>
+</main>
+</body></html>

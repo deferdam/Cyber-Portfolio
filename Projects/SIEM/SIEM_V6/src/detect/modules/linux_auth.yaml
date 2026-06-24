@@ -1,0 +1,68 @@
+title: Suspicious Linux Authentication Events
+id: 9f1e3d7a-b820-4c56-a98f-1234567890ab
+description: Detect suspicious auth events from auth.log and sudo
+status: experimental
+author: Dams
+date: 2026-03-15
+logsource:
+    product: linux
+    service: auth
+
+detection:
+    selection_ssh_failure:
+        CommandLine|contains:
+            - 'Failed password'
+            - 'Failed publickey'
+            - 'Invalid user'
+            - 'Authentication failure'
+            - 'maximum authentication attempts exceeded'
+
+    selection_root_session:
+        CommandLine|contains:
+            - 'session opened for user root'
+            - 'Accepted password for root'
+            - 'Accepted publickey for root'
+            - 'session opened for user root by'
+
+    selection_sudo_dangerous:
+        CommandLine|contains:
+            - 'COMMAND=/bin/bash'
+            - 'COMMAND=/bin/sh'
+            - 'COMMAND=/usr/bin/python'
+            - 'COMMAND=/usr/bin/perl'
+            - 'COMMAND=/usr/bin/vim'
+            - 'COMMAND=/usr/bin/find'
+            - 'COMMAND=/usr/sbin/useradd'
+            - 'COMMAND=/usr/bin/dd'
+            - 'sudo -s'
+            - 'sudo -i'
+            - 'sudo su'
+
+    selection_pam_failure:
+        CommandLine|contains:
+            - 'pam_unix.*authentication failure'
+            - 'account locked'
+            - 'Too many authentication failures'
+
+    selection_ssh_key_ops:
+        CommandLine|contains:
+            - 'authorized_keys'
+            - 'ssh-copy-id'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - Tentatives legit d utilisateurs oublieux
+    - Scripts de deploiement avec sudo
+
+level: medium
+
+tags:
+    - attack.credential_access
+    - attack.t1110
+    - attack.initial_access
+    - attack.t1078.003
+    - attack.privilege_escalation
+    - attack.t1548.003
+    - attack.persistence
+    - attack.t1098.004

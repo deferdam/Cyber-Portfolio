@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Developer | Mini SIEM/SOAR</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header>
+  <span class="brand">Mini SIEM/SOAR</span>
+  <a href="index.html">Home</a>
+  <a href="developer.html" class="active">Developer</a>
+  <a href="security.html">Security</a>
+  <a href="usage.html">Usage</a>
+  <a href="techwatch.html">Tech watch</a>
+</header>
+<main>
+  <h1>Developer documentation</h1>
+  <p class="lead">Read this top to bottom and you can navigate and extend the code.
+  The system is a one-direction pipeline: each stage consumes the previous output
+  and never reaches backward. Adding a format means adding a reader; nothing
+  downstream changes.</p>
+
+  <h2>1. The pipeline</h2>
+  <pre><code>raw source
+  -> reader        (format specific, src/ingest)
+  -> normalizer    (raw dict -> Event, owns event_type and field mapping)
+  -> detection     (OS-gated Sigma + heuristics, dedup, process-context attach)
+  -> correlator    (signals -> alerts)
+  -> reporter      (writes normalized_events / signals / alerts to out/)
+  -> SOAR          (signal -> playbook -> Ticket, writes tickets.jsonl)
+  -> web UI        (reads out/, renders dashboard, tickets, signals)</code></pre>
+  <p>The detection stage is where the most subtle logic lives: it runs the modules
+  for the current OS, deduplicates and merges signals, then attaches process
+  context (ancestors, children, and the triggering process itself) from the
+  process tree, <em>after</em> the merge.</p>
+
+  <h2>2. Module map</h2>
+  <table>
+    <tr><th>Path</th><th>Responsibility</th></tr>
+    <tr><td><code>src/ingest/replay.py</code></td><td>Entry point for batch runs. Holds <code>_READERS</code>, the map from format name to reader function.</td></tr>
+    <tr><td><code>src/normalize/normalizer.py</code></td><td>Converts a raw dict into an <code>Event</code>. Decides <code>event_type</code> and maps every field. The single place format quirks are reconciled.</td></tr>
+    <tr><td><code>src/normalize/process_tree.py</code></td><td>Builds the process tree from process events. Exposes ancestor and child lookups by (host, pid).</td></tr>
+    <tr><td><code>src/detect/engine.py</code></td><td>Runs OS-gated modules, deduplicates, then attaches process context. Owns <code>run_all</code>.</td></tr>
+    <tr><td><code>src/detect/modules/...</code></td><td>One module per detection family: windows (powershell, lotl, ransomware), linux (bash, auditd, auth), ai.</td></tr>
+    <tr><td><code>src/correlate/correlator.py</code></td><td>Groups related signals into alerts.</td></tr>
+    <tr><td><code>src/soar/ticket.py</code></td><td><code>Ticket</code> dataclass, <code>from_signal</code>, <code>to_dict</code>.</td></tr>
+    <tr><td><code>src/soar/orchestrator.py</code></td><td>Turns signals into tickets via playbooks. New tickets start at status <code>open</code>.</td></tr>
+    <tr><td><code>src/server/app.py</code></td><td>Flask API and app entry. Endpoints for stats, tickets, signals, file browse, and the streaming run.</td></tr>
+    <tr><td><code>src/server/frontend.py</code></td><td>The entire single-page app, embedded as one HTML string (<code>FRONTEND_HTML</code>). Must stay 100% ASCII.</td></tr>
+  </table>
+
+  <h2>3. Data model</h2>
+  <h3>Event (normalized)</h3>
+  <p>Produced by the normalizer. Key fields: <code>event_id</code>, <code>event_time_utc</code>,
+  <code>event_type</code> (for example <code>process</code>, <code>file</code>, <code>auth</code>),
+  <code>host.hostname</code>, and <code>process</code> (a <code>ProcessRef</code> with
+  <code>name</code>, <code>pid</code>, <code>ppid</code>, <code>image_path</code>,
+  <code>command_line</code>). The original raw record is kept under <code>raw</code>.</p>
+  <h3>Signal</h3>
+  <p>A frozen dataclass emitted by detection. Carries <code>signal_type</code>,
+  <code>score</code>, <code>severity</code>, <code>mitre_technique</code>,
+  <code>explanation</code>, <code>recommended_actions</code>, <code>evidence_event_ids</code>,
+  and the process context: <code>process_ancestors</code>, <code>process_children</code>,
+  <code>process_self</code>. Because it is frozen, enrich it with
+  <code>dataclasses.replace</code>, never by assignment.</p>
+  <h3>Ticket</h3>
+  <p>Not frozen. Built by <code>Ticket.from_signal</code>. Adds workflow fields:
+  <code>status</code>, <code>assignee</code>, <code>notes</code>, <code>disposition</code>
+  (the analyst verdict, feeds future auto-triage), and the same process context fields
+  propagated from the signal.</p>
+
+  <h2>4. Adding an ingestion format (the reader contract)</h2>
+  <p>A reader is a function <code>path -&gt; iterator of raw dicts</code>. Each dict
+  uses the keys the normalizer already understands, so the rest of the pipeline is
+  untouched. Register it in <code>_READERS</code>.</p>
+  <p>Minimum keys to emit per record:</p>
+  <table>
+    <tr><th>Key</th><th>Meaning</th></tr>
+    <tr><td><code>event_id</code></td><td>stable id for the record</td></tr>
+    <tr><td><code>timestamp</code></td><td>ISO 8601 string</td></tr>
+    <tr><td><code>source</code></td><td>short tag (sysmon_like, auditd, snort, ...)</td></tr>
+    <tr><td><code>host</code></td><td>hostname</td></tr>
+    <tr><td><code>event_type</code></td><td><code>process</code> for process events (required for the tree), else a tag</td></tr>
+    <tr><td><code>pid</code>, <code>ppid</code></td><td>integers for process events (required for the tree)</td></tr>
+    <tr><td><code>image_path</code> or <code>process_name</code></td><td>the binary; the tree derives the node image from it</td></tr>
+    <tr><td><code>command_line</code></td><td>full command; most detection matches on this</td></tr>
+  </table>
+  <div class="warn">
+    <p><strong>The lesson that cost real debugging time.</strong> Two independent traps
+    leave the process tree empty even when pids look fine:</p>
+    <ul>
+      <li>The record is not typed <code>process</code> (for sysmon-like input the
+      normalizer defaults missing <code>event_type</code> to <code>file</code>), so the
+      tree never registers a node.</li>
+      <li>The record is typed <code>process</code> and has pid and ppid, but the binary
+      name is not extracted (auditd EXECVE put it in <code>a0</code>), so the image is
+      empty and <code>build_tree</code> skips the node with <code>if not image: continue</code>.</li>
+    </ul>
+    <p>A new reader must set <code>event_type</code> correctly and provide a usable image
+    or name, or the tree silently shows nothing.</p>
+  </div>
+  <p>Robustness rules: wrap each record in try/except (a bad record is logged and
+  skipped, never fatal); if a third-party library is missing, fail with a clear
+  install message and keep the format disabled in the UI; detect by magic bytes where
+  possible; ship a tiny sample under <code>samples/</code> with a test asserting the
+  normalized output.</p>
+
+  <h2>5. Detection modules</h2>
+  <p>Each module exposes a <code>run(events, tree)</code> that returns signals. Sigma
+  matching uses literal substring matching, not regex: write <code>| bash</code> or
+  <code>| sh</code>, not wildcard patterns. The engine is OS-gated: Windows modules run
+  when the host OS is Windows, Linux modules otherwise. Scores combine as
+  <code>max(scores) + 0.05 * (n_sources - 1)</code>, capped at 1.0, so corroboration
+  raises confidence rather than averaging it down.</p>
+
+  <h2>6. SOAR and playbooks</h2>
+  <p><code>orchestrator._handle</code> matches a signal to a playbook, builds the ticket
+  with <code>Ticket.from_signal</code>, executes the playbook steps, then sets status to
+  <code>open</code>. The <code>TicketStore</code> appends to <code>tickets.jsonl</code>;
+  regenerating sample data requires deleting that file first, or tickets accumulate.</p>
+
+  <h2>7. The frontend SPA</h2>
+  <p>The whole UI is one HTML string in <code>frontend.py</code>, served at <code>/</code>.
+  It must stay ASCII (a recurring bug reintroduced the box-drawing character U+2500 in
+  comment separators; scrub before shipping). Navigation is tab based:
+  Dashboard, Open, My Tickets, Signals, Run SIEM, Templates. State lives in a few
+  globals; the History API drives back/forward. Tickets and templates persist drafts in
+  <code>localStorage</code>.</p>
+  <p>Two conventions worth keeping. First, clickable elements use <code>data-</code>
+  attributes plus a single handler (<code>goScope(this)</code>) rather than inline calls
+  with nested quotes, which avoids an escaping nightmare. Second, the modal closes only
+  when a click both starts and ends on the backdrop, tracked with a mousedown flag, so a
+  text selection released outside the note does not close it.</p>
+
+  <h2>8. The API</h2>
+  <table>
+    <tr><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td><code>GET /api/stats</code></td><td>counts by severity, status, type, MITRE</td></tr>
+    <tr><td><code>GET /api/tickets</code></td><td>list, filterable by severity, status, host, type, MITRE</td></tr>
+    <tr><td><code>GET /api/tickets/&lt;id&gt;</code></td><td>one ticket</td></tr>
+    <tr><td><code>PATCH /api/tickets/&lt;id&gt;</code></td><td>update status, assignee, notes, disposition</td></tr>
+    <tr><td><code>GET /api/signals</code></td><td>list of signals</td></tr>
+    <tr><td><code>GET /api/browse</code></td><td>file browser (local only; confined to a root in server mode)</td></tr>
+    <tr><td><code>GET /api/run-stream</code></td><td>Server-Sent Events stream of a pipeline run</td></tr>
+  </table>
+
+  <h2>9. Mode seam</h2>
+  <p><code>SIEM_MODE</code> (env) selects local or server behavior, fixed at launch.
+  The app binds to loopback by default (<code>SIEM_HOST</code> overrides). File analysis
+  (browser, run-on-file, pcap, evtx) is local only and hidden in server mode. The mode
+  must come from a trusted server-side source, never a client input.</p>
+
+  <h2>10. Tests</h2>
+  <p>Tests are print-based scripts under <code>tests/</code>, run with
+  <code>PYTHONPATH=src python3 tests/test_X.py</code>. Use
+  <code>scripts/run_tests.sh</code> or <code>scripts/run_tests.bat</code> to run all of
+  them with a per-file PASS/FAIL line and a total. Keep the suite green and add a test
+  for every new reader.</p>
+
+  <footer>Developer documentation | Mini SIEM/SOAR v9.</footer>
+</main>
+</body></html>

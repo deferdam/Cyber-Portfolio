@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Usage | Mini SIEM/SOAR</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header>
+  <span class="brand">Mini SIEM/SOAR</span>
+  <a href="index.html">Home</a>
+  <a href="developer.html">Developer</a>
+  <a href="security.html">Security</a>
+  <a href="usage.html" class="active">Usage</a>
+  <a href="techwatch.html">Tech watch</a>
+</header>
+<main>
+  <h1>Usage documentation</h1>
+  <p class="lead">One command gets you a working app. The other scripts are optional
+  tools. Here is what each does and what works where.</p>
+
+  <h2>The launchers (all in <code>scripts/</code>)</h2>
+  <table>
+    <tr><th>Script</th><th>What it does</th><th>Run it?</th></tr>
+    <tr><td><code>start.sh</code> / <code>start.bat</code></td>
+        <td>Starts the app in local mode and opens the browser. Data already in
+        <code>out/large</code> shows immediately; you run new captures from the Run tab
+        inside the app. This is the single "launch everything" entry.</td>
+        <td>Yes, normally</td></tr>
+    <tr><td><code>docs.sh</code> / <code>docs.bat</code></td>
+        <td>Opens this HTML documentation in your browser.</td>
+        <td>When you need the docs</td></tr>
+    <tr><td><code>pipeline.sh</code> / <code>pipeline.bat</code></td>
+        <td>Optional. Runs the detection pipeline on a data file from the command line,
+        without the UI. The Run tab does the same thing.</td>
+        <td>Advanced only</td></tr>
+    <tr><td><code>run_tests.sh</code> / <code>run_tests.bat</code></td>
+        <td>Runs the whole test suite and prints PASS/FAIL per file and a total.</td>
+        <td>To verify a build</td></tr>
+    <tr><td><code>server.sh</code> / <code>server.bat</code></td>
+        <td>Placeholder. Multi-user / server mode is not implemented yet (v10). It
+        deliberately does not start a network server, since that would be unsafe without
+        auth.</td>
+        <td>Not yet</td></tr>
+  </table>
+
+  <div class="ok">
+  <p><strong>Why start is "everything at once".</strong> The app is the product. Viewing
+  tickets and running new analyses both happen inside it. You no longer choose between a
+  separate "run the pipeline" step and a separate "open the UI" step; start does the whole
+  thing and the browser opens by itself.</p>
+  </div>
+
+  <h2>run local versus run siem, the old confusion</h2>
+  <p>The previous scripts split two unrelated things: <code>run_local</code> started the web
+  app, while <code>run_siem</code> was a batch processor that turned a data file into tickets.
+  They are now <code>start</code> (the app, what you use) and <code>pipeline</code> (the
+  optional batch tool). The duplicate and platform-specific launchers at the project root
+  are gone; everything lives in <code>scripts/</code>.</p>
+
+  <h2>Why file analysis is local only</h2>
+  <p>Online, an analyst does not push a Wireshark capture or a Windows event log through a
+  shared web app; those artifacts live on the analyst workstation, and a regular user
+  neither has nor can produce them. Exposing a file browser and binary parsers on a server
+  adds path-traversal and parser-exploit risk for no operational gain. So the analyze-a-file
+  capability stays local.</p>
+
+  <h2>Format availability matrix</h2>
+  <table>
+    <tr><th>Format</th><th>Local</th><th>Multi (v10)</th><th>Parser</th></tr>
+    <tr><td>JSON / JSONL</td><td>yes</td><td>via feed</td><td>stdlib</td></tr>
+    <tr><td>Syslog</td><td>yes</td><td>via feed</td><td>stdlib</td></tr>
+    <tr><td>CSV (generic)</td><td>yes</td><td>no</td><td>stdlib</td></tr>
+    <tr><td>Snort alerts</td><td>yes</td><td>no</td><td>stdlib</td></tr>
+    <tr><td>Elastic / ECS</td><td>yes</td><td>no</td><td>stdlib</td></tr>
+    <tr><td>EVTX (Windows)</td><td>yes</td><td>no</td><td>python-evtx</td></tr>
+    <tr><td>PCAP / Wireshark</td><td>yes</td><td>no</td><td>dpkt</td></tr>
+  </table>
+  <p>In multi mode the file browser and run-on-file UI are hidden; JSON and syslog arrive
+  through controlled server-side feeds or the streaming capture, not analyst uploads. PCAP
+  and EVTX are local only and never exposed in multi, being the most security-sensitive.</p>
+
+  <h2>Live capture (v9)</h2>
+  <p>A special streaming mode follows a local file: new lines flow through the pipeline and
+  tickets appear in near real time. This is not a system agent; it is a file-tail streaming
+  ingest, available locally.</p>
+
+  <h2>Command line, for reference</h2>
+  <pre><code>PYTHONPATH=src python3 -m ingest.replay \
+  --input samples/demo_linux_attack.jsonl \
+  --out-dir out/large --format auto</code></pre>
+
+  <footer>Usage documentation | Mini SIEM/SOAR v9.</footer>
+</main>
+</body></html>

@@ -1,0 +1,38 @@
+title: Suspicious PowerShell Script Block
+id: 74367fcc-b9d5-40e2-94ed-96f286919809
+description: Detect suspicious PowerShell patterns via Script Block Logging
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+detection:
+    selection_encoded:
+        ScriptBlockText|contains: '-EncodedCommand'
+    selection_iex:
+        ScriptBlockText|contains: 'Invoke-Expression'
+    selection_download:
+        ScriptBlockText|contains: 'DownloadString'
+    selection_webclient:
+        ScriptBlockText|contains: 'WebClient'
+    selection_recon_identity:
+        ScriptBlockText|contains:
+            - 'whoami'
+            - 'whoami /all'
+            - '[System.Security.Principal.WindowsIdentity]::GetCurrent()'
+    selection_recon_enum:
+        ScriptBlockText|contains:
+            - 'net user'
+            - 'net localgroup'
+            - 'Get-LocalUser'
+            - 'Get-ADUser'
+    condition: 1 of selection*
+falsepositives:
+    - Legitimate admin scripts using WebClient or IEX
+    - Scheduled tasks running enumeration for inventory
+level: high
+fields:
+    - ScriptBlockText
+    - CommandLine

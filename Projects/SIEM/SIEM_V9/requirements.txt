@@ -1,0 +1,5 @@
+python-dateutil>=2.9.0
+
+flask>=3.0.0
+dpkt>=1.9.8
+python-evtx>=0.7.4

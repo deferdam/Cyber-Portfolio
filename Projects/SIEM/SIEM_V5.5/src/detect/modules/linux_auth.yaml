@@ -1,0 +1,95 @@
+title: Suspicious Linux Authentication Events
+id: 59583b4b-de55-40d0-94fe-51bb159f5205
+description: >
+    Detect suspicious authentication events from /var/log/auth.log,
+    PAM, SSH and sudo: brute force patterns, root login, dangerous sudo
+    commands, and SSH authorized_keys manipulation.
+status: experimental
+author: Dams
+date: 2026-03-15
+logsource:
+    product: linux
+    service: auth
+
+detection:
+    # ── SSH authentication failures ────────────────────────────────────────
+    # T1110 — Brute Force
+    # Individual SSH failure events. The temporal correlation
+    # (5 failures within 120 seconds) is handled in linux_auth.py,
+    # not here. This rule provides the raw signal.
+    selection_ssh_failure:
+        CommandLine|contains:
+            - 'Failed password'
+            - 'Failed publickey'
+            - 'Invalid user'
+            - 'Authentication failure'
+            - 'maximum authentication attempts exceeded'
+
+    # ── Direct root login ──────────────────────────────────────────────────
+    # T1078.003 — Valid Accounts: Local Accounts
+    # Direct root login via SSH should be disabled in production
+    # (PermitRootLogin no). Any session opened as root is worth investigating.
+    selection_root_session:
+        CommandLine|contains:
+            - 'session opened for user root'
+            - 'Accepted password for root'
+            - 'Accepted publickey for root'
+            - 'session opened for user root by'
+
+    # ── Dangerous sudo commands ────────────────────────────────────────────
+    # T1548.003 — Sudo and Sudo Caching
+    # These commands are commonly used for GTFOBins-style privilege escalation.
+    # Running a shell, interpreter, or file manipulation tool via sudo
+    # can trivially lead to a root shell.
+    selection_sudo_dangerous:
+        CommandLine|contains:
+            - 'COMMAND=/bin/bash'
+            - 'COMMAND=/bin/sh'
+            - 'COMMAND=/usr/bin/python'
+            - 'COMMAND=/usr/bin/perl'
+            - 'COMMAND=/usr/bin/vim'
+            - 'COMMAND=/usr/bin/find'
+            - 'COMMAND=/usr/sbin/useradd'
+            - 'COMMAND=/usr/bin/dd'
+            - 'sudo -s'
+            - 'sudo -i'
+            - 'sudo su'
+
+    # ── PAM lockout / failure events ───────────────────────────────────────
+    # Repeated PAM failures or account lockouts indicate
+    # active brute force or misconfigured automation.
+    selection_pam_failure:
+        CommandLine|contains:
+            - 'pam_unix.*authentication failure'
+            - 'account locked'
+            - 'Too many authentication failures'
+
+    # ── SSH authorized_keys manipulation ──────────────────────────────────
+    # T1098.004 — Account Manipulation: SSH Authorized Keys
+    # Adding a new SSH key is a classic persistence mechanism.
+    # Attackers add their public key to maintain access
+    # even after a password reset.
+    selection_ssh_key_ops:
+        CommandLine|contains:
+            - 'authorized_keys'
+            - 'ssh-copy-id'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - 'Legitimate users failing to authenticate due to forgotten credentials'
+    - 'Deployment scripts using sudo for privileged operations (Ansible, Chef, Puppet)'
+    - 'Automated SSH key rotation by secrets management tools (Vault, AWS SSM)'
+    - 'System administrators legitimately running interactive shells via sudo'
+
+level: medium
+
+tags:
+    - attack.credential_access
+    - attack.t1110
+    - attack.initial_access
+    - attack.t1078.003
+    - attack.privilege_escalation
+    - attack.t1548.003
+    - attack.persistence
+    - attack.t1098.004

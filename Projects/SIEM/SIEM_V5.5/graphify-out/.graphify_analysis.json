@@ -1,0 +1,401 @@
+{
+  "communities": {
+    "0": [
+      "core_ids_process_key",
+      "core_ids_rationale_19",
+      "core_ids_rationale_9",
+      "core_ids_stable_event_id",
+      "core_schemas_canonicalevent",
+      "modules_bash_sigma_get_field",
+      "modules_bash_sigma_is_linux_event",
+      "modules_bash_sigma_make_signal_id",
+      "modules_bash_sigma_run",
+      "modules_powershell_sigma_correlate_recon_sequence",
+      "modules_powershell_sigma_get_field",
+      "modules_powershell_sigma_is_powershell_4104",
+      "modules_powershell_sigma_make_signal_id",
+      "modules_powershell_sigma_parse_simple_sigma_yaml",
+      "modules_powershell_sigma_rationale_163",
+      "modules_powershell_sigma_rationale_190",
+      "modules_powershell_sigma_rationale_220",
+      "modules_powershell_sigma_rationale_234",
+      "modules_powershell_sigma_rationale_260",
+      "modules_powershell_sigma_rationale_27",
+      "modules_powershell_sigma_rationale_378",
+      "modules_powershell_sigma_rationale_45",
+      "modules_powershell_sigma_rationale_52",
+      "modules_powershell_sigma_read_text",
+      "modules_powershell_sigma_run",
+      "modules_powershell_sigma_severity_from_level",
+      "modules_powershell_sigma_simplesigmarule",
+      "src_core_ids_py",
+      "src_core_ids_py_any",
+      "src_core_ids_py_int",
+      "src_core_ids_py_str",
+      "src_detect_modules_bash_sigma_py",
+      "src_detect_modules_powershell_sigma_py",
+      "src_detect_modules_powershell_sigma_py_bool",
+      "src_detect_modules_powershell_sigma_py_canonicalevent",
+      "src_detect_modules_powershell_sigma_py_int",
+      "src_detect_modules_powershell_sigma_py_path",
+      "src_detect_modules_powershell_sigma_py_signal",
+      "src_detect_modules_powershell_sigma_py_str"
+    ],
+    "1": [
+      "core_schemas_fileref",
+      "core_schemas_hostref",
+      "core_schemas_networkref",
+      "core_schemas_processref",
+      "core_schemas_userref",
+      "core_time_parse_to_utc",
+      "core_time_rationale_8",
+      "core_time_utcnow",
+      "datetime",
+      "modules_lotl_sigma_lotlrule",
+      "modules_lotl_sigma_rationale_90",
+      "normalize_normalizer_detect_source",
+      "normalize_normalizer_dir",
+      "normalize_normalizer_execve_cmdline",
+      "normalize_normalizer_ext",
+      "normalize_normalizer_norm_auditd",
+      "normalize_normalizer_norm_auth",
+      "normalize_normalizer_normalize",
+      "normalize_normalizer_parse_auth",
+      "src_core_schemas_py",
+      "src_core_time_py",
+      "src_core_time_py_str",
+      "src_normalize_normalizer_py",
+      "src_normalize_normalizer_py_any",
+      "src_normalize_normalizer_py_canonicalevent",
+      "src_normalize_normalizer_py_str",
+      "tests_test_linux_v5_auth",
+      "tests_test_linux_v5_check",
+      "tests_test_linux_v5_ev",
+      "tests_test_linux_v5_fev",
+      "tests_test_linux_v5_py",
+      "tests_test_linux_v5_rationale_1",
+      "tests_test_linux_v5_rule_paths",
+      "tests_test_linux_v5_ts"
+    ],
+    "2": [
+      "detect_deduplicator_aggregate_score",
+      "detect_deduplicator_event_ids_set",
+      "detect_deduplicator_group_by_overlap",
+      "detect_deduplicator_group_key",
+      "detect_deduplicator_merge",
+      "detect_deduplicator_merge_group",
+      "detect_deduplicator_rationale_1",
+      "detect_deduplicator_rationale_106",
+      "detect_deduplicator_rationale_209",
+      "detect_deduplicator_rationale_231",
+      "detect_deduplicator_rationale_257",
+      "detect_deduplicator_rationale_312",
+      "detect_deduplicator_rationale_62",
+      "detect_deduplicator_rationale_77",
+      "detect_deduplicator_rationale_87",
+      "detect_deduplicator_signals_overlap",
+      "detect_deduplicator_stats",
+      "detect_deduplicator_unionfind",
+      "detect_deduplicator_unionfind_find",
+      "detect_deduplicator_unionfind_init",
+      "detect_deduplicator_unionfind_union",
+      "groupkey",
+      "src_detect_deduplicator_py",
+      "src_detect_deduplicator_py_bool",
+      "src_detect_deduplicator_py_float",
+      "src_detect_deduplicator_py_int",
+      "src_detect_deduplicator_py_signal",
+      "src_detect_deduplicator_py_str"
+    ],
+    "3": [
+      "modules_ransomware_core_detect_ransomware",
+      "modules_ransomware_core_extract_extension",
+      "modules_ransomware_core_is_private_ip",
+      "modules_ransomware_core_rationale_30",
+      "modules_ransomware_core_rationale_88",
+      "modules_ransomware_core_sliding_burst_unique_files",
+      "modules_ransomware_linux_enc_tools",
+      "modules_ransomware_linux_is_abnormal",
+      "modules_ransomware_linux_is_root",
+      "modules_ransomware_linux_ransom_notes",
+      "modules_ransomware_linux_run",
+      "modules_ransomware_v4_format_explanation",
+      "modules_ransomware_v4_rationale_11",
+      "modules_ransomware_v4_run",
+      "src_detect_modules_ransomware_core_py",
+      "src_detect_modules_ransomware_core_py_any",
+      "src_detect_modules_ransomware_core_py_bool",
+      "src_detect_modules_ransomware_core_py_float",
+      "src_detect_modules_ransomware_core_py_int",
+      "src_detect_modules_ransomware_core_py_str",
+      "src_detect_modules_ransomware_linux_py",
+      "src_detect_modules_ransomware_v4_py",
+      "src_detect_modules_ransomware_v4_py_any",
+      "src_detect_modules_ransomware_v4_py_canonicalevent",
+      "src_detect_modules_ransomware_v4_py_signal",
+      "src_detect_modules_ransomware_v4_py_str"
+    ],
+    "4": [
+      "normalize_process_tree_build_tree",
+      "normalize_process_tree_processnode",
+      "normalize_process_tree_processtree",
+      "normalize_process_tree_processtree_all_suspicious_spawns",
+      "normalize_process_tree_processtree_basename",
+      "normalize_process_tree_processtree_build",
+      "normalize_process_tree_processtree_get_ancestors",
+      "normalize_process_tree_processtree_get_children",
+      "normalize_process_tree_processtree_is_spawn_suspect",
+      "normalize_process_tree_rationale_1",
+      "normalize_process_tree_rationale_112",
+      "normalize_process_tree_rationale_175",
+      "normalize_process_tree_rationale_179",
+      "normalize_process_tree_rationale_215",
+      "normalize_process_tree_rationale_223",
+      "normalize_process_tree_rationale_255",
+      "normalize_process_tree_rationale_79",
+      "normalize_process_tree_rationale_91",
+      "src_normalize_process_tree_py",
+      "src_normalize_process_tree_py_bool",
+      "src_normalize_process_tree_py_canonicalevent",
+      "src_normalize_process_tree_py_int",
+      "src_normalize_process_tree_py_str"
+    ],
+    "5": [
+      "core_schemas_alert",
+      "core_schemas_alert_to_dict",
+      "core_schemas_canonicalevent_to_dict",
+      "core_schemas_signal",
+      "core_schemas_signal_to_dict",
+      "correlate_correlator_correlate",
+      "correlate_correlator_rationale_9",
+      "correlate_correlator_severity_from_score",
+      "ingest_replay_main",
+      "output_reporter_export",
+      "output_reporter_write_jsonl",
+      "src_core_schemas_py_any",
+      "src_core_schemas_py_str",
+      "src_correlate_correlator_py",
+      "src_correlate_correlator_py_alert",
+      "src_correlate_correlator_py_float",
+      "src_correlate_correlator_py_signal",
+      "src_correlate_correlator_py_str",
+      "src_output_reporter_py",
+      "src_output_reporter_py_alert",
+      "src_output_reporter_py_canonicalevent",
+      "src_output_reporter_py_path",
+      "src_output_reporter_py_signal"
+    ],
+    "6": [
+      "modules_lotl_sigma_basename",
+      "modules_lotl_sigma_cl",
+      "modules_lotl_sigma_image",
+      "modules_lotl_sigma_make_signal",
+      "modules_lotl_sigma_rationale_1",
+      "modules_lotl_sigma_rationale_331",
+      "modules_lotl_sigma_rationale_378",
+      "modules_lotl_sigma_rationale_415",
+      "modules_lotl_sigma_rationale_45",
+      "modules_lotl_sigma_rationale_454",
+      "modules_lotl_sigma_run",
+      "modules_lotl_sigma_run_cmdline_rules",
+      "modules_lotl_sigma_run_eventid_rules",
+      "modules_lotl_sigma_run_spawn_rules",
+      "modules_lotl_sigma_signal_id",
+      "src_detect_modules_lotl_sigma_py",
+      "src_detect_modules_lotl_sigma_py_any",
+      "src_detect_modules_lotl_sigma_py_canonicalevent",
+      "src_detect_modules_lotl_sigma_py_float",
+      "src_detect_modules_lotl_sigma_py_signal",
+      "src_detect_modules_lotl_sigma_py_str"
+    ],
+    "7": [
+      "ingest_syslog_parser_decode_priority",
+      "ingest_syslog_parser_flatten_windows_json",
+      "ingest_syslog_parser_guess_event_type",
+      "ingest_syslog_parser_normalise_ts",
+      "ingest_syslog_parser_parse_cef",
+      "ingest_syslog_parser_parse_cef_extensions",
+      "ingest_syslog_parser_parse_json",
+      "ingest_syslog_parser_parse_line",
+      "ingest_syslog_parser_parse_rfc3164",
+      "ingest_syslog_parser_parse_rfc5424",
+      "ingest_syslog_parser_rationale_1",
+      "ingest_syslog_parser_rationale_106",
+      "ingest_syslog_parser_rationale_265",
+      "ingest_syslog_parser_rationale_320",
+      "ingest_syslog_parser_rationale_373",
+      "ingest_syslog_parser_read_syslog_file",
+      "src_ingest_syslog_parser_py",
+      "src_ingest_syslog_parser_py_any",
+      "src_ingest_syslog_parser_py_int",
+      "src_ingest_syslog_parser_py_str"
+    ],
+    "8": [
+      "modules_linux_auditd_cl",
+      "modules_linux_auditd_execve_patterns",
+      "modules_linux_auditd_is_auditd",
+      "modules_linux_auditd_make",
+      "modules_linux_auditd_raw_args",
+      "modules_linux_auditd_run",
+      "modules_linux_auditd_sensitive_file",
+      "modules_linux_auditd_setuid_chmod",
+      "modules_linux_auditd_sig_id",
+      "modules_linux_auditd_suspicious_connect",
+      "modules_linux_auditd_user_creation",
+      "src_detect_modules_linux_auditd_py"
+    ],
+    "9": [
+      "modules_linux_auth_brute_force",
+      "modules_linux_auth_is_auth",
+      "modules_linux_auth_make",
+      "modules_linux_auth_msg",
+      "modules_linux_auth_root_login",
+      "modules_linux_auth_run",
+      "modules_linux_auth_sig_id",
+      "modules_linux_auth_ssh_key_added",
+      "modules_linux_auth_sudo_escalation",
+      "src_detect_modules_linux_auth_py"
+    ],
+    "10": [
+      "detect_engine_rationale_1",
+      "detect_engine_rationale_102",
+      "detect_engine_run_all",
+      "detect_engine_run_linux",
+      "detect_engine_run_windows",
+      "src_detect_engine_py",
+      "src_detect_engine_py_canonicalevent",
+      "src_detect_engine_py_signal"
+    ],
+    "11": [
+      "ingest_replay_rationale_1",
+      "ingest_replay_read_auto",
+      "ingest_replay_read_jsonl",
+      "ingest_replay_read_syslog",
+      "src_ingest_replay_py",
+      "src_ingest_replay_py_any",
+      "src_ingest_replay_py_str"
+    ],
+    "12": [
+      "detect_test_deduplicator_check",
+      "detect_test_deduplicator_rationale_1",
+      "detect_test_deduplicator_sig",
+      "src_detect_test_deduplicator_py"
+    ],
+    "13": [
+      "src_init_py"
+    ],
+    "14": [
+      "src_detect_modules_init_py"
+    ]
+  },
+  "cohesion": {},
+  "god_nodes": [
+    {
+      "id": "core_schemas_signal",
+      "label": "Signal",
+      "degree": 36
+    },
+    {
+      "id": "core_schemas_canonicalevent",
+      "label": "CanonicalEvent",
+      "degree": 34
+    },
+    {
+      "id": "core_schemas_hostref",
+      "label": "HostRef",
+      "degree": 26
+    },
+    {
+      "id": "normalize_normalizer_normalize",
+      "label": "normalize()",
+      "degree": 18
+    },
+    {
+      "id": "modules_powershell_sigma_run",
+      "label": "run()",
+      "degree": 12
+    },
+    {
+      "id": "modules_ransomware_core_detect_ransomware",
+      "label": "detect_ransomware()",
+      "degree": 12
+    },
+    {
+      "id": "src_ingest_syslog_parser_py_str",
+      "label": "str",
+      "degree": 11
+    },
+    {
+      "id": "ingest_syslog_parser_parse_line",
+      "label": "parse_line()",
+      "degree": 11
+    },
+    {
+      "id": "core_schemas_userref",
+      "label": "UserRef",
+      "degree": 10
+    },
+    {
+      "id": "core_schemas_processref",
+      "label": "ProcessRef",
+      "degree": 10
+    }
+  ],
+  "surprises": [
+    {
+      "source": "_sig()",
+      "target": "HostRef",
+      "source_files": [
+        "src/detect/test_deduplicator.py",
+        "src/core/schemas.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; peripheral node `_sig()` unexpectedly reaches hub `HostRef`"
+    },
+    {
+      "source": "_auth()",
+      "target": "HostRef",
+      "source_files": [
+        "tests/test_linux_v5.py",
+        "src/core/schemas.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "_ev()",
+      "target": "HostRef",
+      "source_files": [
+        "tests/test_linux_v5.py",
+        "src/core/schemas.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "_fev()",
+      "target": "HostRef",
+      "source_files": [
+        "tests/test_linux_v5.py",
+        "src/core/schemas.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "_auth()",
+      "target": "UserRef",
+      "source_files": [
+        "tests/test_linux_v5.py",
+        "src/core/schemas.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "files": {
+    "code": [
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\__init__.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\core\\ids.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\core\\schemas.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\core\\time.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\correlate\\correlator.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\deduplicator.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\engine.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\test_deduplicator.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\bash_sigma.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\linux_auditd.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\linux_auth.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\lotl_sigma.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\powershell_sigma.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\ransomware_core.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\ransomware_linux.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\ransomware_v4.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\__init__.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\ingest\\replay.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\ingest\\syslog_parser.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\normalize\\normalizer.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\normalize\\process_tree.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\output\\reporter.py",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\tests\\test_linux_v5.py"
+    ],
+    "document": [
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\README.en.md",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\README.md",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\requirements.txt",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\.github\\copilot-instructions.md",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\linux_auditd.yaml",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\linux_auth.yaml",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\linux_suspicious.yaml",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\powershell_suspicious.yaml",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\ps_persistence.yaml",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\ps_privilege_escalation.yaml",
+      "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5\\src\\detect\\modules\\ps_scriptblock.yaml"
+    ],
+    "paper": [],
+    "image": [],
+    "video": []
+  },
+  "total_files": 34,
+  "total_words": 20193,
+  "needs_graph": false,
+  "warning": "Corpus is ~20,193 words - fits in a single context window. You may not need a graph.",
+  "skipped_sensitive": [],
+  "graphifyignore_patterns": 3,
+  "scan_root": "D:\\Cyber\\Cyber-Portfolio\\Projects\\SIEM\\SIEM_V5.5"
+}

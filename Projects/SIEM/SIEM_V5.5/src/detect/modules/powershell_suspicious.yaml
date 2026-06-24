@@ -1,0 +1,67 @@
+title: Suspicious PowerShell Script Block
+id: 74367fcc-b9d5-40e2-94ed-96f286919809
+description: Detect suspicious PowerShell patterns via Script Block Logging (EventID 4104)
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+detection:
+    # ── Encoded command ────────────────────────────────────────────────────
+    # Encoding a command in Base64 is the most common obfuscation technique
+    # used to bypass string-based detection and logging.
+    selection_encoded:
+        ScriptBlockText|contains: '-EncodedCommand'
+
+    # ── Invoke-Expression ─────────────────────────────────────────────────
+    # IEX executes a string as a PowerShell command.
+    # Used to run downloaded payloads without writing to disk.
+    selection_iex:
+        ScriptBlockText|contains: 'Invoke-Expression'
+
+    # ── Remote download ────────────────────────────────────────────────────
+    # DownloadString fetches a script from a URL and returns it as a string,
+    # typically immediately passed to IEX for fileless execution.
+    selection_download:
+        ScriptBlockText|contains: 'DownloadString'
+
+    # ── WebClient instantiation ────────────────────────────────────────────
+    # Net.WebClient is the base class used for most PowerShell download cradles.
+    selection_webclient:
+        ScriptBlockText|contains: 'WebClient'
+
+    # ── Identity enumeration ───────────────────────────────────────────────
+    # T1033 — System Owner/User Discovery
+    # Checking the current user and group membership is a standard
+    # first step in post-exploitation reconnaissance.
+    selection_recon_identity:
+        ScriptBlockText|contains:
+            - 'whoami'
+            - 'whoami /all'
+            - '[System.Security.Principal.WindowsIdentity]::GetCurrent()'
+
+    # ── Account enumeration ────────────────────────────────────────────────
+    # T1087 — Account Discovery
+    # Listing local users, domain users, and group membership
+    # helps the attacker understand the target environment.
+    selection_recon_enum:
+        ScriptBlockText|contains:
+            - 'net user'
+            - 'net localgroup'
+            - 'Get-LocalUser'
+            - 'Get-ADUser'
+
+    condition: 1 of selection*
+
+falsepositives:
+    - 'Legitimate admin scripts using WebClient or IEX for software deployment'
+    - 'Scheduled tasks running enumeration for system inventory'
+    - 'Monitoring tools collecting user and process information'
+
+level: high
+
+fields:
+    - ScriptBlockText
+    - CommandLine

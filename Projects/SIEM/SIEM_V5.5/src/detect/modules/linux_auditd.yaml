@@ -1,0 +1,242 @@
+title: Suspicious Auditd Activity
+id: 6e57ec9d-772d-4cc0-867d-f8babbbfcb00
+description: >
+    Detect suspicious activity via auditd events: privilege escalation tools,
+    container escape attempts, credential dumping tools, kernel exploits,
+    dynamic linker hijacking, systemd persistence, process injection,
+    and offensive lateral movement / tunneling tools.
+status: experimental
+author: Dams
+date: 2026-03-15
+modified: 2026-03-16
+logsource:
+    product: linux
+    service: auditd
+
+detection:
+    # ── Privilege escalation tools ─────────────────────────────────────────
+    # T1548 — Abuse Elevation Control Mechanism
+    # These binaries are specifically designed or commonly abused
+    # to gain elevated privileges on Linux systems.
+    selection_privesc_tools:
+        CommandLine|contains:
+            - 'pkexec'
+            - 'nsenter --target 1'
+            - 'unshare --user'
+            - 'runuser -l root'
+            - 'capsh --'
+            - 'newgrp root'
+
+    # ── Container / namespace escape ───────────────────────────────────────
+    # T1611 — Escape to Host
+    # Techniques used to break out of container isolation
+    # and reach the underlying host filesystem or namespace.
+    selection_container_escape:
+        CommandLine|contains:
+            - 'nsenter'
+            - 'unshare -r'
+            - '/proc/1/root'
+            - 'docker.sock'
+            - 'cgroup release_agent'
+            - 'mount --bind /proc'
+
+    # ── Credential dumping and post-exploitation tools ─────────────────────
+    # T1003 — OS Credential Dumping
+    # Known Linux credential harvesting and post-exploitation tools.
+    # Their presence on a production system is almost always malicious.
+    # Selection criteria: documented in public incident reports, near-zero
+    # legitimate production use, high signal-to-noise ratio.
+    selection_credential_tools:
+        CommandLine|contains:
+            # ── In-memory credential extraction ───────────────────────────
+            # mimipenguin: Linux equivalent of Mimikatz. Extracts plaintext
+            # passwords from gnome-keyring, sshd, vsftpd process memory.
+            - 'mimipenguin'
+            # lazagne: multi-platform harvester. Extracts credentials from
+            # browsers, databases, mail clients, system tools. No prod use.
+            - 'LaZagne'
+            - 'lazagne'
+            # ── Privilege escalation enumeration scripts ───────────────────
+            # linpeas/LinEnum: automated privesc enumeration. Scans SUID
+            # binaries, writable paths, cron jobs, weak sudo config.
+            # Presence outside an authorized pentest is an IOC.
+            - 'linpeas'
+            - 'LinEnum'
+            # pspy / pspy64: monitors processes and cron jobs without root.
+            # Used to discover credentials or secrets passed as CLI arguments.
+            # No legitimate production use.
+            - 'pspy'
+            - 'pspy64'
+            # ── Direct memory access ───────────────────────────────────────
+            # Reading /proc/PID/mem directly extracts process memory without
+            # needing a dedicated tool. Requires ptrace permissions or root.
+            - '/proc/*/mem'
+            # gcore: dumps a running process full memory to a file.
+            # Used to extract SSHD or web server credentials offline.
+            - 'gcore'
+            - 'linux-exploit-suggester'
+
+    # ── Active Directory / lateral movement tools ──────────────────────────
+    # T1087 — Account Discovery / T1021 — Remote Services
+    # These tools have no legitimate use on Linux production servers.
+    # Their presence indicates active post-exploitation and lateral movement.
+    selection_lateral_movement_tools:
+        CommandLine|contains:
+            # bloodhound: AD attack graph tool. Maps attack paths to Domain
+            # Admin. Presence on any server is an unambiguous IOC.
+            - 'bloodhound'
+            - 'BloodHound'
+            # kerbrute: Kerberos username/password brute force tool.
+            # No legitimate use outside authorized security testing.
+            - 'kerbrute'
+            # responder: LLMNR/NBT-NS/MDNS poisoner. Captures Net-NTLMv2
+            # hashes from Windows clients. Purely offensive.
+            - 'Responder'
+            - 'responder.py'
+            # crackmapexec / cme: SMB/WinRM/LDAP lateral movement framework.
+            # The Linux equivalent of PsExec for mass deployment attacks.
+            - 'crackmapexec'
+            - 'cme'
+            # impacket tools: Python SMB/Kerberos attack suite.
+            # secretsdump.py dumps domain hashes remotely.
+            - 'secretsdump'
+            - 'psexec.py'
+            - 'wmiexec.py'
+            - 'smbexec.py'
+
+    # ── Tunneling and C2 infrastructure tools ──────────────────────────────
+    # T1572 — Protocol Tunneling / T1071 — Application Layer Protocol
+    # Used to establish covert communication channels that bypass
+    # firewall rules by tunneling traffic over allowed protocols.
+    selection_tunneling_tools:
+        CommandLine|contains:
+            # chisel: TCP/UDP tunnel over HTTP. Used to pivot through
+            # restricted networks. No legitimate prod use.
+            - 'chisel'
+            # ligolo / ligolo-ng: TUN-based tunneling. More sophisticated
+            # than chisel, used in advanced APT campaigns.
+            - 'ligolo'
+            # frp: fast reverse proxy. Commonly used for C2 tunneling
+            # over HTTP/HTTPS to bypass egress filtering.
+            - 'frpc'
+            - 'frps'
+            # ngrok-like tools used for covert reverse shell exposure.
+            - 'ngrok'
+
+    # ── Network sniffers (offensive use) ──────────────────────────────────
+    # T1040 — Network Sniffing
+    # These tools capture network traffic for credential harvesting.
+    # Legitimate packet capture uses tcpdump with specific filters,
+    # not these offensive-purpose tools.
+    selection_network_sniffers:
+        CommandLine|contains:
+            # dsniff: captures passwords from unencrypted protocols
+            # (FTP, Telnet, HTTP, IMAP). No modern legitimate use.
+            - 'dsniff'
+            # ettercap: ARP poisoning + sniffing framework. Purely offensive.
+            - 'ettercap'
+            # bettercap: modern replacement for ettercap.
+            - 'bettercap'
+
+    # ── Kernel exploit indicators ──────────────────────────────────────────
+    # T1068 — Exploitation for Privilege Escalation
+    # Common naming patterns associated with kernel exploit PoCs.
+    # Legitimate binaries are almost never named this way.
+    #
+    # Known gaps: CVE-2021-3493 (Ubuntu OverlayFS), CVE-2023-0386
+    # (OverlayFS again) and newer exploits are not fully covered.
+    # This selection must be reviewed quarterly against new public PoCs.
+    selection_kernel_exploit:
+        CommandLine|contains:
+            # ── DirtyCow (CVE-2016-5195) ──────────────────────────────────
+            # Race condition in copy-on-write kernel mechanism.
+            # Local privilege escalation on all Linux kernels 2007–2016.
+            - 'dirty_cow'
+            - 'dirtycow'
+            - 'dirtyc0w'
+            # ── Dirty Pipe (CVE-2022-0847) ────────────────────────────────
+            # Race condition in Linux pipe mechanism, kernel 5.8 to 5.16.11.
+            # Allows overwriting read-only files including SUID binaries.
+            - 'dirty_pipe'
+            - 'dirtypipe'
+            - 'CVE-2022-0847'
+            # ── PwnKit (CVE-2021-4034) ────────────────────────────────────
+            # pkexec local privilege escalation, present since 2009.
+            # Already partially covered by selection_privesc_tools (pkexec).
+            - 'pwnkit'
+            - 'CVE-2021-4034'
+            # ── Generic exploit naming conventions ────────────────────────
+            # Attackers rarely rename PoC files. These patterns catch
+            # the vast majority of compiled/staged exploits.
+            - 'exploit.c'
+            - '/tmp/exploit'
+            - '/dev/shm/exploit'
+            - '/tmp/poc'
+            - '/dev/shm/poc'
+            # ── CVE number patterns in suspicious locations ────────────────
+            - '/tmp/CVE-'
+            - '/dev/shm/CVE-'
+
+    # ── Dynamic linker hijacking (LD_PRELOAD) ──────────────────────────────
+    # T1574.006 — Hijack Execution Flow: Dynamic Linker Hijacking
+    # LD_PRELOAD forces a shared library to be loaded before all others,
+    # allowing code injection into any process at startup.
+    selection_ld_preload:
+        CommandLine|contains:
+            - 'LD_PRELOAD='
+            - 'LD_LIBRARY_PATH=/tmp'
+            - '/etc/ld.so.preload'
+
+    # ── Systemd persistence ────────────────────────────────────────────────
+    # T1543.002 — Create or Modify System Process: Systemd Service
+    # Attackers drop malicious .service files to survive reboots.
+    # High false positive rate — correlate with other signals before acting.
+    # A systemctl enable at 3AM from a non-package-manager parent process
+    # is far more suspicious than one triggered by apt during a deployment.
+    selection_systemd_persistence:
+        CommandLine|contains:
+            - 'systemctl enable'
+            - '/etc/systemd/system/'
+            - '/lib/systemd/system/'
+
+    # ── Process injection via /proc ────────────────────────────────────────
+    # T1055 — Process Injection
+    # Writing to /proc/self/mem or using ptrace() allows injecting
+    # arbitrary code into a running process's memory space.
+    selection_proc_injection:
+        CommandLine|contains:
+            - '/proc/self/mem'
+            - 'ptrace'
+            - 'process_vm_writev'
+            - 'dd if=/proc'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - 'systemctl enable used by legitimate installation scripts (package managers, provisioning tools)'
+    - 'nsenter used for legitimate container debugging by platform engineers'
+    - 'gcore triggered by crash reporting tools (e.g., Apport, Breakpad)'
+    - 'LD_PRELOAD set by legitimate profiling tools (Valgrind, strace wrappers, address sanitizer)'
+    - 'chisel or ngrok used by authorized penetration testers during sanctioned engagements'
+    - 'pspy used by security engineers for authorized process monitoring audits'
+
+level: high
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548
+    - attack.t1068
+    - attack.credential_access
+    - attack.t1003
+    - attack.defense_evasion
+    - attack.t1574.006
+    - attack.persistence
+    - attack.t1543.002
+    - attack.lateral_movement
+    - attack.t1021
+    - attack.command_and_control
+    - attack.t1572
+    - attack.discovery
+    - attack.t1087
+    - attack.collection
+    - attack.t1040

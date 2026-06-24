@@ -1,0 +1,143 @@
+title: Suspicious PowerShell Script Block
+id: 67c2b434-343f-4a46-873f-ef5705c13fc8
+description: Detect suspicious PowerShell patterns via Script Block Logging (EventID 4104)
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+
+detection:
+    # ── Encoded / obfuscated execution ────────────────────────────────────
+    # T1027 — Obfuscated Files or Information
+    # -EncodedCommand accepts Base64-encoded commands, which bypass
+    # string-based detection and make logs unreadable to analysts.
+    selection_encoded:
+        ScriptBlockText|contains:
+            - '-EncodedCommand'
+            - '-enc '
+            - '-ec '
+
+    # ── Character-level obfuscation ────────────────────────────────────────
+    # Backtick escaping, char casting, and -join are common obfuscation
+    # methods used to break up recognizable strings and evade detection.
+    selection_obfuscation:
+        ScriptBlockText|contains:
+            - '`I`E`X'
+            - '`i`e`x'
+            - "''''+"
+            - '[char]'
+            - '-join'
+
+    # ── Invoke-Expression (IEX) ────────────────────────────────────────────
+    # T1059.001 — Command and Scripting Interpreter: PowerShell
+    # IEX executes a string as a command. Combined with a download cradle,
+    # this enables fileless execution of remote payloads.
+    selection_iex:
+        ScriptBlockText|contains:
+            - 'Invoke-Expression'
+            - 'IEX '
+            - 'IEX('
+
+    # ── Remote download cradles ────────────────────────────────────────────
+    # T1105 — Ingress Tool Transfer
+    # These are the standard methods used to download payloads from
+    # attacker-controlled infrastructure without writing to disk first.
+    selection_download:
+        ScriptBlockText|contains:
+            - 'DownloadString'
+            - 'DownloadFile'
+            - 'Invoke-WebRequest'
+            - 'Invoke-RestMethod'
+            - 'Start-BitsTransfer'
+            - 'curl '
+
+    # ── WebClient / HttpClient ─────────────────────────────────────────────
+    # Base classes used by most PowerShell download cradles.
+    selection_webclient:
+        ScriptBlockText|contains:
+            - 'Net.WebClient'
+            - 'WebClient'
+            - 'System.Net.Http.HttpClient'
+
+    # ── AMSI bypass ───────────────────────────────────────────────────────
+    # T1562.001 — Impair Defenses: Disable or Modify Tools
+    # AMSI (Antimalware Scan Interface) scans script content at runtime.
+    # These patterns indicate attempts to disable or patch AMSI in memory,
+    # which is a near-certain indicator of malicious intent.
+    selection_amsi_bypass:
+        ScriptBlockText|contains:
+            - 'amsiInitFailed'
+            - 'AmsiScanBuffer'
+            - 'amsi.dll'
+            - '[Ref].Assembly.GetType'
+            - 'System.Management.Automation.AmsiUtils'
+
+    # ── Execution policy bypass ────────────────────────────────────────────
+    # Windows uses execution policies to restrict unsigned script execution.
+    # Bypassing them is standard practice for both attackers and admins,
+    # making context crucial for triage.
+    selection_exec_bypass:
+        ScriptBlockText|contains:
+            - '-ExecutionPolicy Bypass'
+            - '-Exec Bypass'
+            - 'Set-ExecutionPolicy Unrestricted'
+            - 'Set-ExecutionPolicy Bypass'
+
+    # ── Identity enumeration (recon) ───────────────────────────────────────
+    # T1033 — System Owner/User Discovery
+    # Verifying the current user and privileges is a standard
+    # first step in post-exploitation to determine next actions.
+    selection_recon_identity:
+        ScriptBlockText|contains:
+            - 'whoami'
+            - 'whoami /all'
+            - '[System.Security.Principal.WindowsIdentity]::GetCurrent()'
+            - '$env:USERNAME'
+            - '$env:USERDOMAIN'
+
+    # ── Environment enumeration ────────────────────────────────────────────
+    # T1087 — Account Discovery
+    # Gathering information about users, groups, services, and network
+    # configuration helps the attacker plan lateral movement.
+    selection_recon_enum:
+        ScriptBlockText|contains:
+            - 'net user'
+            - 'net localgroup'
+            - 'Get-LocalUser'
+            - 'Get-ADUser'
+            - 'Get-ADGroupMember'
+            - 'Get-Process'
+            - 'Get-Service'
+            - 'ipconfig'
+            - 'systeminfo'
+            - 'nltest'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - 'Legitimate admin scripts using WebClient or IEX for software deployment'
+    - 'Scheduled inventory tasks using Get-Process, Get-Service, systeminfo'
+    - 'SCCM / Intune deployment scripts with -ExecutionPolicy Bypass'
+    - 'Monitoring agents collecting system information'
+
+level: high
+
+fields:
+    - ScriptBlockText
+    - CommandLine
+    - ScriptBlockId
+    - Path
+
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.t1027
+    - attack.t1562.001
+    - attack.discovery
+    - attack.t1087
+    - attack.t1087.001
+    - attack.t1087.002

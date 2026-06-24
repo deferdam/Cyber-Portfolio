@@ -1,0 +1,1287 @@
+[
+  {
+    "id": "src_init_py",
+    "label": "__init__.py",
+    "file": null
+  },
+  {
+    "id": "src_core_ids_py",
+    "label": "ids.py",
+    "file": null
+  },
+  {
+    "id": "core_ids_stable_event_id",
+    "label": "stable_event_id()",
+    "file": null
+  },
+  {
+    "id": "src_core_ids_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "src_core_ids_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "core_ids_process_key",
+    "label": "process_key()",
+    "file": null
+  },
+  {
+    "id": "src_core_ids_py_int",
+    "label": "int",
+    "file": null
+  },
+  {
+    "id": "core_ids_rationale_9",
+    "label": "Generate a stable event_id from raw content.      Invariant: same raw input -> s",
+    "file": null
+  },
+  {
+    "id": "core_ids_rationale_19",
+    "label": "Best-effort process key for V1.      Limitation: PID recycling exists. V2 should",
+    "file": null
+  },
+  {
+    "id": "src_core_schemas_py",
+    "label": "schemas.py",
+    "file": null
+  },
+  {
+    "id": "core_schemas_hostref",
+    "label": "HostRef",
+    "file": null
+  },
+  {
+    "id": "core_schemas_userref",
+    "label": "UserRef",
+    "file": null
+  },
+  {
+    "id": "core_schemas_processref",
+    "label": "ProcessRef",
+    "file": null
+  },
+  {
+    "id": "core_schemas_fileref",
+    "label": "FileRef",
+    "file": null
+  },
+  {
+    "id": "core_schemas_networkref",
+    "label": "NetworkRef",
+    "file": null
+  },
+  {
+    "id": "core_schemas_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "core_schemas_canonicalevent_to_dict",
+    "label": ".to_dict()",
+    "file": null
+  },
+  {
+    "id": "src_core_schemas_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "src_core_schemas_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "core_schemas_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "core_schemas_signal_to_dict",
+    "label": ".to_dict()",
+    "file": null
+  },
+  {
+    "id": "core_schemas_alert",
+    "label": "Alert",
+    "file": null
+  },
+  {
+    "id": "core_schemas_alert_to_dict",
+    "label": ".to_dict()",
+    "file": null
+  },
+  {
+    "id": "src_core_time_py",
+    "label": "time.py",
+    "file": null
+  },
+  {
+    "id": "core_time_parse_to_utc",
+    "label": "parse_to_utc()",
+    "file": null
+  },
+  {
+    "id": "src_core_time_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "datetime",
+    "label": "datetime",
+    "file": null
+  },
+  {
+    "id": "core_time_utcnow",
+    "label": "utcnow()",
+    "file": null
+  },
+  {
+    "id": "core_time_rationale_8",
+    "label": "Parse an ISO8601 timestamp to timezone-aware UTC datetime.      Security invaria",
+    "file": null
+  },
+  {
+    "id": "src_correlate_correlator_py",
+    "label": "correlator.py",
+    "file": null
+  },
+  {
+    "id": "correlate_correlator_correlate",
+    "label": "correlate()",
+    "file": null
+  },
+  {
+    "id": "src_correlate_correlator_py_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "src_correlate_correlator_py_alert",
+    "label": "Alert",
+    "file": null
+  },
+  {
+    "id": "correlate_correlator_severity_from_score",
+    "label": "_severity_from_score()",
+    "file": null
+  },
+  {
+    "id": "src_correlate_correlator_py_float",
+    "label": "float",
+    "file": null
+  },
+  {
+    "id": "src_correlate_correlator_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "correlate_correlator_rationale_9",
+    "label": "Create Alerts from Signals.      V1 correlation policy:     - one alert per rans",
+    "file": null
+  },
+  {
+    "id": "src_detect_deduplicator_py",
+    "label": "deduplicator.py",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_group_key",
+    "label": "_group_key()",
+    "file": null
+  },
+  {
+    "id": "src_detect_deduplicator_py_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "groupkey",
+    "label": "_GroupKey",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_event_ids_set",
+    "label": "_event_ids_set()",
+    "file": null
+  },
+  {
+    "id": "src_detect_deduplicator_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_signals_overlap",
+    "label": "_signals_overlap()",
+    "file": null
+  },
+  {
+    "id": "src_detect_deduplicator_py_bool",
+    "label": "bool",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_aggregate_score",
+    "label": "_aggregate_score()",
+    "file": null
+  },
+  {
+    "id": "src_detect_deduplicator_py_float",
+    "label": "float",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_merge_group",
+    "label": "_merge_group()",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_unionfind",
+    "label": "_UnionFind",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_unionfind_init",
+    "label": ".__init__()",
+    "file": null
+  },
+  {
+    "id": "src_detect_deduplicator_py_int",
+    "label": "int",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_unionfind_find",
+    "label": ".find()",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_unionfind_union",
+    "label": ".union()",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_group_by_overlap",
+    "label": "_group_by_overlap()",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_merge",
+    "label": "merge()",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_stats",
+    "label": "stats()",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_1",
+    "label": "deduplicator.py — Signal deduplication and score aggregation (v5.5).  Problem:",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_62",
+    "label": "Stable group key: (hostname, process_key).      process_key is normalised to the",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_77",
+    "label": "Return True if two Signals share at least one evidence event ID.",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_87",
+    "label": "Aggregate scores from N independent sources.      Formula: min(1.0, max(scores)",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_106",
+    "label": "Merge a list of duplicate Signals into one consolidated Signal.      Merging str",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_209",
+    "label": "Simple union-find to group Signals that share event IDs.      Runs in O(n^2) in",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_231",
+    "label": "Partition signals into groups where members share at least one event ID.      Us",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_257",
+    "label": "Deduplicate and aggregate a list of Signals.      Steps:     1. Group Signals by",
+    "file": null
+  },
+  {
+    "id": "detect_deduplicator_rationale_312",
+    "label": "Return a human-readable deduplication summary string.",
+    "file": null
+  },
+  {
+    "id": "src_detect_engine_py",
+    "label": "engine.py",
+    "file": null
+  },
+  {
+    "id": "detect_engine_run_windows",
+    "label": "_run_windows()",
+    "file": null
+  },
+  {
+    "id": "src_detect_engine_py_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "src_detect_engine_py_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "detect_engine_run_linux",
+    "label": "_run_linux()",
+    "file": null
+  },
+  {
+    "id": "detect_engine_run_all",
+    "label": "run_all()",
+    "file": null
+  },
+  {
+    "id": "detect_engine_rationale_1",
+    "label": "engine.py — Detection engine orchestrator (v5.5 — dual OS + deduplication).  Thr",
+    "file": null
+  },
+  {
+    "id": "detect_engine_rationale_102",
+    "label": "Run all detection layers, deduplicate, and return consolidated signals.      Pip",
+    "file": null
+  },
+  {
+    "id": "src_detect_test_deduplicator_py",
+    "label": "test_deduplicator.py",
+    "file": null
+  },
+  {
+    "id": "detect_test_deduplicator_check",
+    "label": "check()",
+    "file": null
+  },
+  {
+    "id": "detect_test_deduplicator_sig",
+    "label": "_sig()",
+    "file": null
+  },
+  {
+    "id": "detect_test_deduplicator_rationale_1",
+    "label": "test_deduplicator.py — Tests for Signal deduplication and score aggregation (v5.",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_bash_sigma_py",
+    "label": "bash_sigma.py",
+    "file": null
+  },
+  {
+    "id": "modules_bash_sigma_is_linux_event",
+    "label": "_is_linux_event()",
+    "file": null
+  },
+  {
+    "id": "modules_bash_sigma_get_field",
+    "label": "_get_field()",
+    "file": null
+  },
+  {
+    "id": "modules_bash_sigma_make_signal_id",
+    "label": "_make_signal_id()",
+    "file": null
+  },
+  {
+    "id": "modules_bash_sigma_run",
+    "label": "run()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_linux_auditd_py",
+    "label": "linux_auditd.py",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_sig_id",
+    "label": "_sig_id()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_cl",
+    "label": "_cl()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_raw_args",
+    "label": "_raw_args()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_is_auditd",
+    "label": "_is_auditd()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_make",
+    "label": "_make()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_sensitive_file",
+    "label": "_sensitive_file()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_setuid_chmod",
+    "label": "_setuid_chmod()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_user_creation",
+    "label": "_user_creation()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_suspicious_connect",
+    "label": "_suspicious_connect()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_execve_patterns",
+    "label": "_execve_patterns()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auditd_run",
+    "label": "run()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_linux_auth_py",
+    "label": "linux_auth.py",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_sig_id",
+    "label": "_sig_id()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_is_auth",
+    "label": "_is_auth()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_msg",
+    "label": "_msg()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_make",
+    "label": "_make()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_brute_force",
+    "label": "_brute_force()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_root_login",
+    "label": "_root_login()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_sudo_escalation",
+    "label": "_sudo_escalation()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_ssh_key_added",
+    "label": "_ssh_key_added()",
+    "file": null
+  },
+  {
+    "id": "modules_linux_auth_run",
+    "label": "run()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_lotl_sigma_py",
+    "label": "lotl_sigma.py",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_basename",
+    "label": "_basename()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_lotl_sigma_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_cl",
+    "label": "_cl()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_lotl_sigma_py_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_image",
+    "label": "_image()",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_signal_id",
+    "label": "_signal_id()",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_make_signal",
+    "label": "_make_signal()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_lotl_sigma_py_float",
+    "label": "float",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_lotl_sigma_py_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_lotlrule",
+    "label": "LotlRule",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_run_cmdline_rules",
+    "label": "_run_cmdline_rules()",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_run_eventid_rules",
+    "label": "_run_eventid_rules()",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_run_spawn_rules",
+    "label": "_run_spawn_rules()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_lotl_sigma_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_run",
+    "label": "run()",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_rationale_1",
+    "label": "lotl_sigma.py — Living-off-the-Land (LOTL) detection module.  Security invariant",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_rationale_45",
+    "label": "Return command_line lowercase, empty string if absent.",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_rationale_90",
+    "label": "One LOTL detection rule.",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_rationale_331",
+    "label": "Pattern-match CommandLine for each LOTL rule.",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_rationale_378",
+    "label": "Detect scheduled task events by EventID (4698/4699/4702).",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_rationale_415",
+    "label": "Detect suspicious parent→child spawn pairs using the process tree.",
+    "file": null
+  },
+  {
+    "id": "modules_lotl_sigma_rationale_454",
+    "label": "Entry point — run all LOTL detectors and return aggregated signals.",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_powershell_sigma_py",
+    "label": "powershell_sigma.py",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_simplesigmarule",
+    "label": "SimpleSigmaRule",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_read_text",
+    "label": "_read_text()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_powershell_sigma_py_path",
+    "label": "Path",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_powershell_sigma_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_parse_simple_sigma_yaml",
+    "label": "_parse_simple_sigma_yaml()",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_is_powershell_4104",
+    "label": "_is_powershell_4104()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_powershell_sigma_py_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_powershell_sigma_py_bool",
+    "label": "bool",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_get_field",
+    "label": "_get_field()",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_severity_from_level",
+    "label": "_severity_from_level()",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_make_signal_id",
+    "label": "_make_signal_id()",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_correlate_recon_sequence",
+    "label": "correlate_recon_sequence()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_powershell_sigma_py_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_powershell_sigma_py_int",
+    "label": "int",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_run",
+    "label": "run()",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_27",
+    "label": "Immutable representation of a parsed Sigma rule.      selections maps each selec",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_45",
+    "label": "Read YAML as string. errors='replace' prevents crash on malformed bytes.",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_52",
+    "label": "Minimal hand-written parser for Sigma YAML.      Assumptions (hard constraints —",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_163",
+    "label": "Returns True if the event is a PowerShell Script Block Logging event (ID 4104).",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_190",
+    "label": "Map a Sigma field name to actual data in CanonicalEvent.      Handles case varia",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_220",
+    "label": "Convert Sigma level string to internal severity vocabulary.",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_234",
+    "label": "Deterministic signal ID.     sorted(matched) ensures [\"sel_a\",\"sel_b\"] and [\"sel",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_260",
+    "label": "SIEM-level temporal correlator. Not a Sigma rule.      Emits a 'recon_sequence'",
+    "file": null
+  },
+  {
+    "id": "modules_powershell_sigma_rationale_378",
+    "label": "Match PowerShell 4104 events against one or more Sigma YAML files.      rule_pat",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_core_py",
+    "label": "ransomware_core.py",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_core_is_private_ip",
+    "label": "is_private_ip()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_core_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_core_py_bool",
+    "label": "bool",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_core_extract_extension",
+    "label": "extract_extension()",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_core_sliding_burst_unique_files",
+    "label": "_sliding_burst_unique_files()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_core_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_core_py_int",
+    "label": "int",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_core_detect_ransomware",
+    "label": "detect_ransomware()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_core_py_float",
+    "label": "float",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_core_rationale_30",
+    "label": "Compute the maximum number of UNIQUE files touched in any time window.      Corr",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_core_rationale_88",
+    "label": "Heuristic ransomware detector (V4 core) operating on generic events dicts.",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_linux_py",
+    "label": "ransomware_linux.py",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_linux_is_abnormal",
+    "label": "_is_abnormal()",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_linux_is_root",
+    "label": "_is_root()",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_linux_enc_tools",
+    "label": "_enc_tools()",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_linux_ransom_notes",
+    "label": "_ransom_notes()",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_linux_run",
+    "label": "run()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_v4_py",
+    "label": "ransomware_v4.py",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_v4_run",
+    "label": "run()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_v4_py_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_v4_py_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_v4_format_explanation",
+    "label": "_format_explanation()",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_v4_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_ransomware_v4_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "modules_ransomware_v4_rationale_11",
+    "label": "Run ransomware V4 detector on CanonicalEvent list.      Design invariant:     -",
+    "file": null
+  },
+  {
+    "id": "src_detect_modules_init_py",
+    "label": "__init__.py",
+    "file": null
+  },
+  {
+    "id": "src_ingest_replay_py",
+    "label": "replay.py",
+    "file": null
+  },
+  {
+    "id": "ingest_replay_read_jsonl",
+    "label": "_read_jsonl()",
+    "file": null
+  },
+  {
+    "id": "src_ingest_replay_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "src_ingest_replay_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "ingest_replay_read_syslog",
+    "label": "_read_syslog()",
+    "file": null
+  },
+  {
+    "id": "ingest_replay_read_auto",
+    "label": "_read_auto()",
+    "file": null
+  },
+  {
+    "id": "ingest_replay_main",
+    "label": "main()",
+    "file": null
+  },
+  {
+    "id": "ingest_replay_rationale_1",
+    "label": "replay.py — Ingest layer entry point.  Supports three input formats (--format fl",
+    "file": null
+  },
+  {
+    "id": "src_ingest_syslog_parser_py",
+    "label": "syslog_parser.py",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_decode_priority",
+    "label": "_decode_priority()",
+    "file": null
+  },
+  {
+    "id": "src_ingest_syslog_parser_py_int",
+    "label": "int",
+    "file": null
+  },
+  {
+    "id": "src_ingest_syslog_parser_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_parse_cef_extensions",
+    "label": "_parse_cef_extensions()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_normalise_ts",
+    "label": "_normalise_ts()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_guess_event_type",
+    "label": "_guess_event_type()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_parse_json",
+    "label": "_parse_json()",
+    "file": null
+  },
+  {
+    "id": "src_ingest_syslog_parser_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_parse_rfc5424",
+    "label": "_parse_rfc5424()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_parse_rfc3164",
+    "label": "_parse_rfc3164()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_parse_cef",
+    "label": "_parse_cef()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_flatten_windows_json",
+    "label": "_flatten_windows_json()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_parse_line",
+    "label": "parse_line()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_read_syslog_file",
+    "label": "read_syslog_file()",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_rationale_1",
+    "label": "syslog_parser.py — Ingest layer for RFC 3164, RFC 5424, and CEF syslog lines.  S",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_rationale_106",
+    "label": "Best-effort: return ISO 8601 string or original.",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_rationale_265",
+    "label": "Extract canonical fields from Windows event JSON structures.      NXLog wraps ev",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_rationale_320",
+    "label": "Parse a single text line into a raw event dict.      Returns None if the line is",
+    "file": null
+  },
+  {
+    "id": "ingest_syslog_parser_rationale_373",
+    "label": "Yield parsed event dicts from a syslog file or stdin.      Skips blank lines and",
+    "file": null
+  },
+  {
+    "id": "src_normalize_normalizer_py",
+    "label": "normalizer.py",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_ext",
+    "label": "_ext()",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_dir",
+    "label": "_dir()",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_execve_cmdline",
+    "label": "_execve_cmdline()",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_parse_auth",
+    "label": "_parse_auth()",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_detect_source",
+    "label": "_detect_source()",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_norm_auditd",
+    "label": "_norm_auditd()",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_norm_auth",
+    "label": "_norm_auth()",
+    "file": null
+  },
+  {
+    "id": "normalize_normalizer_normalize",
+    "label": "normalize()",
+    "file": null
+  },
+  {
+    "id": "src_normalize_normalizer_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "src_normalize_normalizer_py_any",
+    "label": "Any",
+    "file": null
+  },
+  {
+    "id": "src_normalize_normalizer_py_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "src_normalize_process_tree_py",
+    "label": "process_tree.py",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processnode",
+    "label": "ProcessNode",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processtree",
+    "label": "ProcessTree",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processtree_basename",
+    "label": "._basename()",
+    "file": null
+  },
+  {
+    "id": "src_normalize_process_tree_py_str",
+    "label": "str",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processtree_build",
+    "label": ".build()",
+    "file": null
+  },
+  {
+    "id": "src_normalize_process_tree_py_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processtree_get_children",
+    "label": ".get_children()",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processtree_get_ancestors",
+    "label": ".get_ancestors()",
+    "file": null
+  },
+  {
+    "id": "src_normalize_process_tree_py_int",
+    "label": "int",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processtree_is_spawn_suspect",
+    "label": ".is_spawn_suspect()",
+    "file": null
+  },
+  {
+    "id": "src_normalize_process_tree_py_bool",
+    "label": "bool",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_processtree_all_suspicious_spawns",
+    "label": ".all_suspicious_spawns()",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_build_tree",
+    "label": "build_tree()",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_1",
+    "label": "process_tree.py — Build and query process ancestry from normalized events.  Secu",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_79",
+    "label": "One observed process instance, scoped to a host.",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_91",
+    "label": "Index of process relationships observed in a batch of events.      Internal stru",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_112",
+    "label": "Populate the tree from a sorted list of CanonicalEvents.          Must be called",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_175",
+    "label": "Return direct child image basenames for a given parent.",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_179",
+    "label": "Return ancestor chain for the process in this event (root first).          Cycle",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_215",
+    "label": "Return True if (parent, child) is a known suspicious spawn pair.",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_223",
+    "label": "Return list of suspicious spawn records found in the event batch.",
+    "file": null
+  },
+  {
+    "id": "normalize_process_tree_rationale_255",
+    "label": "Convenience factory — builds and returns a ready ProcessTree.",
+    "file": null
+  },
+  {
+    "id": "src_output_reporter_py",
+    "label": "reporter.py",
+    "file": null
+  },
+  {
+    "id": "output_reporter_write_jsonl",
+    "label": "write_jsonl()",
+    "file": null
+  },
+  {
+    "id": "src_output_reporter_py_path",
+    "label": "Path",
+    "file": null
+  },
+  {
+    "id": "output_reporter_export",
+    "label": "export()",
+    "file": null
+  },
+  {
+    "id": "src_output_reporter_py_canonicalevent",
+    "label": "CanonicalEvent",
+    "file": null
+  },
+  {
+    "id": "src_output_reporter_py_signal",
+    "label": "Signal",
+    "file": null
+  },
+  {
+    "id": "src_output_reporter_py_alert",
+    "label": "Alert",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_py",
+    "label": "test_linux_v5.py",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_ts",
+    "label": "_ts()",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_ev",
+    "label": "_ev()",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_rule_paths",
+    "label": "_rule_paths()",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_check",
+    "label": "check()",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_auth",
+    "label": "_auth()",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_fev",
+    "label": "_fev()",
+    "file": null
+  },
+  {
+    "id": "tests_test_linux_v5_rationale_1",
+    "label": "test_linux_v5.py — Linux detection pipeline tests (v5).  Run:     cd SIEM_V5",
+    "file": null
+  }
+]

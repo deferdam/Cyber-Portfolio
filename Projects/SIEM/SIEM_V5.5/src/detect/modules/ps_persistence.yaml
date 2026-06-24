@@ -1,0 +1,115 @@
+title: Suspicious PowerShell Persistence Patterns
+id: a6baf3ff-42ef-40d7-b7fb-9fed82629532
+description: >
+    Detect PowerShell techniques used to establish persistence:
+    hidden windows, startup registration, registry Run keys,
+    scheduled tasks inline, and WMI event subscriptions.
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+
+detection:
+    # ── Hidden / non-interactive window ───────────────────────────────────
+    # T1564.003 — Hide Artifacts: Hidden Window
+    # Hiding the PowerShell window prevents the user from seeing
+    # that a script is running. Almost always malicious when combined
+    # with other indicators.
+    selection_hidden:
+        ScriptBlockText|contains:
+            - '-WindowStyle Hidden'
+            - '-WindowStyle hidden'
+            - '-w hidden'
+            - '-w 1'
+            - '-NonInteractive'
+            - '-NoProfile'
+            - '-NoLogo'
+            - '-noni'
+
+    # ── Service installation ───────────────────────────────────────────────
+    # T1543.003 — Create or Modify System Process: Windows Service
+    # Creating a service ensures execution at boot time with SYSTEM privileges,
+    # making it one of the most persistent backdoor mechanisms on Windows.
+    selection_install:
+        ScriptBlockText|contains:
+            - '--install'
+            - '-install'
+            - 'Install-Service'
+            - 'New-Service'
+            - 'sc create'
+            - 'sc.exe create'
+
+    # ── Registry Run keys ──────────────────────────────────────────────────
+    # T1547.001 — Boot or Logon Autostart: Registry Run Keys
+    # Entries under HKCU or HKLM Run keys execute automatically
+    # at every user login or system boot without requiring elevated privileges.
+    selection_registry_run:
+        ScriptBlockText|contains:
+            - 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
+            - 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Run'
+            - 'HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce'
+            - 'HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce'
+            - 'CurrentVersion\Run'
+            - 'Set-ItemProperty.*Run'
+            - 'New-ItemProperty.*Run'
+
+    # ── Startup folder ─────────────────────────────────────────────────────
+    # T1547.001 — Startup folder variant
+    # Dropping a script or binary in the Startup folder causes Windows
+    # to execute it automatically at every user login.
+    selection_startup_folder:
+        ScriptBlockText|contains:
+            - '\Start Menu\Programs\Startup'
+            - '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup'
+            - '$env:APPDATA\Microsoft\Windows\Start Menu'
+            - 'CommonStartup'
+            - 'SpecialFolder.Startup'
+
+    # ── Inline scheduled task creation ────────────────────────────────────
+    # T1053.005 — Scheduled Task/Job: Scheduled Task
+    # Creating tasks via PowerShell cmdlets is harder to detect than
+    # the schtasks.exe binary and leaves fewer artifacts.
+    selection_schtask_inline:
+        ScriptBlockText|contains:
+            - 'Register-ScheduledTask'
+            - 'New-ScheduledTaskAction'
+            - 'New-ScheduledTaskTrigger'
+            - 'schtasks /create'
+            - 'schtasks.exe /create'
+
+    # ── WMI event subscription ─────────────────────────────────────────────
+    # T1546.003 — Event Triggered Execution: Windows Management Instrumentation
+    # WMI subscriptions survive reboots, are invisible to most endpoint tools,
+    # and do not appear in the Task Scheduler UI. Considered one of the
+    # stealthiest persistence mechanisms on Windows.
+    selection_wmi_subscription:
+        ScriptBlockText|contains:
+            - '__EventFilter'
+            - '__EventConsumer'
+            - '__FilterToConsumerBinding'
+            - 'CommandLineEventConsumer'
+            - 'ActiveScriptEventConsumer'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - 'Legitimate deployment scripts (SCCM, Ansible, Intune, PDQ Deploy)'
+    - 'Software installers using New-Service to register legitimate services'
+    - 'Monitoring agents registering themselves at startup'
+
+level: high
+
+fields:
+    - ScriptBlockText
+    - CommandLine
+
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.t1053.005
+    - attack.t1546.003
+    - attack.defense_evasion
+    - attack.t1564.003
