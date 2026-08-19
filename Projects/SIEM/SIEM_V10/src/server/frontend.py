@@ -106,6 +106,16 @@ html.light .profile-avatar{color:var(--green);}
 
 /* kpi */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;}
+.dash-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.dash-title{font-size:18px;font-weight:700;margin:0;}
+.dash-scope{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-left:8px;}
+.dash-toggle{display:inline-flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;}
+.dtbtn{background:transparent;color:var(--muted);border:none;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:background .12s,color .12s;}
+.dtbtn:hover{background:var(--s2);}
+.dtbtn.on{background:var(--green);color:#0a0c0d;}
+.signals-slot .sig-stat{display:flex;align-items:baseline;gap:12px;margin-top:8px;}
+.signals-slot .sig-num{font-size:30px;font-weight:700;color:var(--text);}
+.signals-slot .sig-lbl{font-size:12px;color:var(--muted);}
 .kpi{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
 .kpi .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
 .kpi .val{font-size:32px;font-weight:700;}
@@ -156,6 +166,8 @@ td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle
 tr:last-child td{border-bottom:none;}
 tr.clickable{cursor:pointer;transition:background .12s;}
 tr.clickable:hover td{background:var(--s2);}
+tr.ticket-new td{animation:ticketFade 2.4s ease-out forwards;}
+@keyframes ticketFade{0%{background:rgba(120,150,200,.22);}100%{background:transparent;}}
 tr.closed{opacity:.5;}
 
 /* signal accordion rows */
@@ -348,6 +360,7 @@ textarea:focus{border-color:var(--green);}
 <script>
 /* -- state -- */
 let _cur='dash';
+let _navigating=false;  // true while a page switch is rendering; blocks auto-refresh races
 let _tixFilter={};
 let _hist=[];
 
@@ -390,7 +403,7 @@ const ICONS={
 };
 const TABS=[['dash','Dashboard'],['open','Open'],['mine','My Tickets'],['signals','Signals'],['run','Run SIEM'],['templates','Templates']];
 let SHOWCASE=false;
-const VERSION='v10.1';   // single source; bumped on every new build/zip
+const VERSION='v10.9';   // single source; bumped on every new build/zip
 
 /* -- api -- */
 async function api(path,opts){
@@ -399,6 +412,12 @@ async function api(path,opts){
 }
 
 /* -- nav -- */
+function esc(s){
+  // Central XSS defense: every log-derived field is escaped before entering the DOM.
+  return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
 function buildNav(){
   document.getElementById('topnav').innerHTML=TABS.filter(function(t){
     return !(SHOWCASE && t[0]==='run');   // no file pipeline in showcase
@@ -407,15 +426,26 @@ function buildNav(){
   }).join('');
 }
 
+// Mark that the user just interacted. For a short window the auto-refresh will not touch
+// the DOM, so a click is never queued behind a refresh's synchronous work.
+let _actingTimer=null;
+function markActing(){
+  _userActing=true;
+  if(_actingTimer)clearTimeout(_actingTimer);
+  _actingTimer=setTimeout(function(){_userActing=false;},350);
+}
+
 function go(page,filter,pushH){
   if(SHOWCASE && page==='run')page='dash';   // run pipeline sealed off in showcase
+  markActing();
+  _navigating=true;
   _cur=page;
   _tixFilter=((page==='open'||page==='mine')&&filter)?filter:{};
   if(pushH!==false){
     history.pushState({page:page,filter:_tixFilter},'','#'+page);
   }
   buildNav();
-  renderPage(page);
+  Promise.resolve(renderPage(page)).finally(function(){_navigating=false;});
 }
 
 // On-screen button and the mouse/browser back button both route through here.
@@ -499,11 +529,11 @@ function processTreeHtml(ancestors,self_node,children){
   if(!ancestors.length && !children.length && !self_node)
     return '<div style="color:var(--faint);font-size:12px">No process tree for this signal. The source events carry no pid linkage.</div>';
   function node(n,role){
-    return '<div class="ptn" title="'+(n.command_line||'')+'">'+
-      '<span class="ptrole">'+role+'</span>'+
-      '<span class="ptimg">'+(n.image||'?')+'</span>'+
-      '<span class="ptpid">pid '+(n.pid==null?'?':n.pid)+'</span>'+
-      (n.command_line?'<span class="ptcmd">'+n.command_line+'</span>':'')+
+    return '<div class="ptn" title="'+esc(n.command_line||'')+'">'+
+      '<span class="ptrole">'+esc(role)+'</span>'+
+      '<span class="ptimg">'+esc(n.image||'?')+'</span>'+
+      '<span class="ptpid">pid '+(n.pid==null?'?':esc(n.pid))+'</span>'+
+      (n.command_line?'<span class="ptcmd">'+esc(n.command_line)+'</span>':'')+
       '</div>';
   }
   let html='<div class="ptree">';
@@ -765,87 +795,146 @@ function scopeCard(title,list,scope){
     '<div class="zone-lbl">By type</div><div class="chips">'+topTypes+'</div>'+
   '</div>';
 }
-async function renderDash(el){
-  const s=await api('/stats');
-  const allTix=await api('/tickets');
+let _dashSig=null;  // last-seen dashboard signature, to skip needless re-renders
+let _dashScope='general';  // 'general' = whole open queue; 'mine' = current user's tickets
+
+async function maybeRefreshDash(){
+  const scopeAtStart=_cur;
+  let tix,stats;
+  try{tix=await api('/tickets');}catch(e){return;}
+  if(_cur!==scopeAtStart||_cur!=='dash')return;
+  // Signature = counts that the dashboard visibly depends on.
+  const sig=tix.length+'|'+tix.filter(function(t){return t.status==='open';}).length+
+    '|'+tix.filter(function(t){return t.status!=='open';}).length;
+  if(sig===_dashSig)return;  // nothing the dashboard shows has changed
+  try{stats=await api('/stats');}catch(e){return;}
+  if(_cur!==scopeAtStart||_cur!=='dash')return;
+  _dashSig=sig;
+  const el=document.getElementById('pcontent');
+  if(el)renderDash(el,stats,tix);  // reuse already-fetched data, no extra round-trips
+}
+
+function setDashScope(s){
+  _dashScope=s;
+  const el=document.getElementById('pcontent');
+  if(el&&_cur==='dash')renderDash(el);
+}
+
+async function renderDash(el,preStats,preTix){
+  const s=preStats||await api('/stats');
+  const allTix=preTix||await api('/tickets');
   const openList=allTix.filter(function(t){return t.status==='open';});
   const mineList=allTix.filter(function(t){return t.status!=='open';});
-  const sev=s.severity||{};
-  const total=s.total_tickets||0;
+
+  // Scope selection (strict): in 'mine' mode every stat reflects the user's tickets only.
+  const scoped=(_dashScope==='mine')?mineList:openList;
+  const scopeLabel=(_dashScope==='mine')?'my tickets':'open queue';
+  const dnav=(_dashScope==='mine')?'mine':'open';  // navigation target for drill-down clicks
+
+  // Severity from the scoped set.
+  const sev={};
+  scoped.forEach(function(t){if(t.severity)sev[t.severity]=(sev[t.severity]||0)+1;});
+  const sevTotal=scoped.length;
   const did='d'+Date.now();
 
+  // Signal Types and MITRE recomputed from the scoped tickets (strict mode), not from the
+  // global /api/stats. This keeps every widget consistent with the selected scope.
+  const typeCount={};const mitreCount={};
+  scoped.forEach(function(t){
+    const k=baseLabel(t.signal_type);if(k)typeCount[k]=(typeCount[k]||0)+1;
+    const m=t.mitre_technique;if(m)mitreCount[m]=(mitreCount[m]||0)+1;
+  });
+
   const legend=SEV_O.filter(function(k){return sev[k];}).map(function(k){
-    return '<div class="row" style="cursor:pointer" title="Filter tickets by '+k+'" onclick="go(\\'open\\',{severity:\\''+k+'\\'})"><div class="dot" style="background:'+SEV_C[k]+'"></div><span>'+k+'</span><span class="dv">'+sev[k]+'</span></div>';
+    return '<div class=\"row\" style=\"cursor:pointer\" title=\"Filter by '+k+'\" onclick=\"go(\\''+dnav+'\\',{severity:\\''+k+'\\'})\"><div class=\"dot\" style=\"background:'+SEV_C[k]+'\"></div><span>'+k+'</span><span class=\"dv\">'+sev[k]+'</span></div>';
   }).join('');
 
-  const tE=Object.entries(s.types||{}).slice(0,10);
+  const tE=Object.entries(typeCount).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
   const tM=Math.max.apply(null,tE.map(function(e){return e[1];}).concat([1]));
   const typeBars=tE.map(function(e){
-    return '<div class="bar-row" title="'+e[0]+'" onclick="go(\\'open\\',{type:\\''+baseLabel(e[0])+'\\'})">' +
-      '<div class="bar-lbl" style="color:'+catColor(e[0])+'">'+abbrev(e[0])+'</div>'+
-      '<div class="bar-track"><div class="bar-fill" style="width:'+Math.round(e[1]/tM*100)+'%;background:'+catColor(e[0])+'"></div></div>'+
-      '<div class="bar-cnt">'+e[1]+'</div></div>';
+    return '<div class=\"bar-row\" title=\"'+e[0]+'\" onclick=\"go(\\''+dnav+'\\',{type:\\''+baseLabel(e[0])+'\\'})\">' +
+      '<div class=\"bar-lbl\" style=\"color:'+catColor(e[0])+'\">'+abbrev(e[0])+'</div>'+
+      '<div class=\"bar-track\"><div class=\"bar-fill\" style=\"width:'+Math.round(e[1]/tM*100)+'%;background:'+catColor(e[0])+'\"></div></div>'+
+      '<div class=\"bar-cnt\">'+e[1]+'</div></div>';
   }).join('');
 
-  const mE=Object.entries(s.mitre||{}).slice(0,10);
+  const mE=Object.entries(mitreCount).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
   const mM=Math.max.apply(null,mE.map(function(e){return e[1];}).concat([1]));
   const mitreBars=mE.map(function(e){
-    return '<div class="bar-row" title="'+e[0]+'" onclick="go(\\'open\\',{mitre:\\''+e[0]+'\\'})">' +
-      '<div class="bar-lbl">'+e[0]+'</div>'+
-      '<div class="bar-track"><div class="bar-fill" style="width:'+Math.round(e[1]/mM*100)+'%;background:var(--cat-ai)"></div></div>'+
-      '<div class="bar-cnt">'+e[1]+'</div></div>';
+    return '<div class=\"bar-row\" title=\"'+e[0]+'\" onclick=\"go(\\''+dnav+'\\',{mitre:\\''+e[0]+'\\'})\">' +
+      '<div class=\"bar-lbl\">'+e[0]+'</div>'+
+      '<div class=\"bar-track\"><div class=\"bar-fill\" style=\"width:'+Math.round(e[1]/mM*100)+'%;background:var(--cat-ai)\"></div></div>'+
+      '<div class=\"bar-cnt\">'+e[1]+'</div></div>';
   }).join('');
 
   const catLeg=Object.keys(CAT_COLOR).map(function(c){
     return '<span class="cat-tag"><span class="cat-bar" style="background:'+CAT_COLOR[c]+'"></span>'+c+'</span>';
   }).join('');
 
+  // View toggle: general (open queue) vs my tickets. Top-right of the dashboard.
+  const toggle=
+    '<div class=\"dash-toggle\">'+
+      '<button class=\"dtbtn'+(_dashScope==='general'?' on':'')+'\" onclick=\"setDashScope(\\'general\\')\">General view</button>'+
+      '<button class=\"dtbtn'+(_dashScope==='mine'?' on':'')+'\" onclick=\"setDashScope(\\'mine\\')\">My tickets</button>'+
+    '</div>';
+
   el.innerHTML=
+  '<div class="dash-head"><h2 class="dash-title">Dashboard <span class="dash-scope">'+scopeLabel+'</span></h2>'+toggle+'</div>'+
   '<div class="kpi-grid">'+
-    '<div class="kpi"><div class="lbl">Tickets</div><div class="val">'+total+'</div></div>'+
-    '<div class="kpi"><div class="lbl">Signals</div><div class="val">'+(s.total_signals||0)+'</div></div>'+
+    '<div class="kpi"><div class="lbl">Tickets ('+scopeLabel+')</div><div class="val">'+sevTotal+'</div></div>'+
     '<div class="kpi crit"><div class="lbl">Critical</div><div class="val">'+(sev.CRITICAL||0)+'</div></div>'+
     '<div class="kpi high"><div class="lbl">High</div><div class="val">'+(sev.HIGH||0)+'</div></div>'+
+    '<div class="kpi"><div class="lbl">Medium</div><div class="val">'+(sev.MEDIUM||0)+'</div></div>'+
   '</div>'+
   '<div class="zone-row">'+scopeCard('Open queue',openList,'open')+scopeCard('My tickets',mineList,'mine')+'</div>'+
   '<div class="chart-row">'+
-    '<div class="card"><h3>Severity</h3><div class="donut-wrap"><canvas id="'+did+'" width="120" height="120"></canvas><div class="dleg">'+(legend||'<span style="color:var(--muted)">No data</span>')+'</div></div></div>'+
-    '<div class="card"><h3>Signal Types</h3>'+(typeBars||'<div class="empty">Run SIEM first</div>')+'</div>'+
-    '<div class="card"><h3>MITRE Techniques</h3>'+(mitreBars||'<div class="empty">No data</div>')+'</div>'+
+    '<div class="card"><h3>Severity ('+scopeLabel+')</h3><div class="donut-wrap"><canvas id="'+did+'" width="120" height="120"></canvas><div class="dleg">'+(legend||'<span style="color:var(--muted)">No data</span>')+'</div></div></div>'+
+    '<div class="card"><h3>Signal Types ('+scopeLabel+')</h3>'+(typeBars||'<div class="empty">No tickets in scope</div>')+'</div>'+
+    '<div class="card"><h3>MITRE Techniques ('+scopeLabel+')</h3>'+(mitreBars||'<div class="empty">No data</div>')+'</div>'+
   '</div>'+
+  // Signals: its own separate slot, NOT mixed into the ticket-based widgets above.
+  // Signals are raw detections, conceptually distinct from tickets; they get a dedicated row.
+  '<div class="card signals-slot"><div style="display:flex;align-items:baseline;justify-content:space-between"><h3>Signals (global)</h3><span class="x" style="cursor:pointer;font-size:12px;color:var(--green)" onclick="go(\\'signals\\')">open signals &rarr;</span></div>'+
+    '<div class="sig-stat"><span class="sig-num">'+(s.total_signals||0)+'</span><span class="sig-lbl">raw detections across all sources, independent of ticket scope</span></div></div>'+
   '<div class="card"><h3>Category legend - click a bar to filter tickets</h3><div style="display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted)">'+catLeg+'</div></div>';
 
-  if(total){
+  if(sevTotal){
     const ctx=document.getElementById(did).getContext('2d');
     let start=-Math.PI/2;const cx=60,cy=60,R=52,ir=33;
     SEV_O.forEach(function(k){
       const v=sev[k]||0;if(!v)return;
-      const a=(v/total)*2*Math.PI;
+      const a=(v/sevTotal)*2*Math.PI;
       ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,start,start+a);ctx.closePath();
       ctx.fillStyle=SEV_C[k];ctx.fill();start+=a;
     });
     ctx.beginPath();ctx.arc(cx,cy,ir,0,2*Math.PI);ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--s1').trim()||'#16181a';ctx.fill();
     ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text').trim()||'#e6e7e8';
-    ctx.font='bold 16px Segoe UI';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,cx,cy);
+    ctx.font='bold 16px Segoe UI';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(sevTotal,cx,cy);
   }
 }
-
 /* -- tickets -- */
 let _tix=[];
 let _tixScope='open';
+let _tixFetching=false;   // true while any /tickets request is in flight
+let _tixLastFetch=0;      // timestamp of the last successful /tickets fetch
+let _pendingInsert=false; // true while a deferred ticket insertion is scheduled
+let _userActing=false;    // true briefly after a user interaction; refresh yields to it
 async function renderTickets(el){
   _tixScope=(_cur==='mine')?'mine':'open';
   let qs='';
   if(_tixFilter.type)qs='?type='+encodeURIComponent(_tixFilter.type);
   else if(_tixFilter.mitre)qs='?mitre='+encodeURIComponent(_tixFilter.mitre);
   else if(_tixFilter.severity)qs='?severity='+encodeURIComponent(_tixFilter.severity);
+  _tixFetching=true;
   _tix=await api('/tickets'+qs);
+  _tixFetching=false;
+  _tixLastFetch=Date.now();
   let chipLabel='';
   if(_tixFilter.type)chipLabel=abbrev(_tixFilter.type);
   else if(_tixFilter.mitre)chipLabel=_tixFilter.mitre;
   else if(_tixFilter.severity)chipLabel=_tixFilter.severity;
   const chip=chipLabel?
-    '<div class="chip">filter <b>'+chipLabel+'</b><span class="x" onclick="go(\\''+_cur+'\\')">clear</span></div>':'';
+    '<div class="chip">filter <b>'+esc(chipLabel)+'</b><span class="x" onclick="go(\\''+_cur+'\\')">clear</span></div>':'';
   const presetSev=_tixFilter.severity||'';
   const title=_tixScope==='open'?'Open queue':'My tickets';
   const sub=_tixScope==='open'
@@ -864,47 +953,130 @@ async function renderTickets(el){
   filterTix();
 }
 
-function filterTix(){
+function visibleRows(){
   const sev=(document.getElementById('f-sev')||{}).value||'';
   const st=(document.getElementById('f-st')||{}).value||'';
   const q=((document.getElementById('f-q')||{}).value||'').toLowerCase();
-  const rows=_tix.filter(function(t){
+  return _tix.filter(function(t){
     const inScope=(_tixScope==='open')?(t.status==='open'):(t.status!=='open');
     return inScope&&(!sev||t.severity===sev)&&(!st||t.status===st)&&
       (!q||[t.host,t.signal_type,t.ticket_id,t.signal_id].some(function(x){return (x||'').toLowerCase().includes(q);}));
   });
-  document.getElementById('tix-count').textContent=rows.length;
-  const tb=document.getElementById('tix-body');if(!tb)return;
-  tb.innerHTML=rows.length?rows.map(function(t){
-    return '<tr class="clickable'+(t.status==='closed'?' closed':'')+'" onclick="openTix(\\''+t.ticket_id+'\\')">'+
-      '<td><code style="font-family:Consolas,monospace;color:var(--muted)">'+t.ticket_id+'</code></td>'+
-      '<td><span class="badge '+t.severity+'">'+t.severity+'</span></td>'+
-      '<td class="score" style="color:'+sc(t.score)+'">'+(t.score||0).toFixed(2)+'</td>'+
-      '<td><span class="cat-tag"><span class="cat-bar" style="background:'+catColor(t.signal_type)+'"></span>'+abbrev(t.signal_type)+'</span></td>'+
-      '<td>'+t.host+'</td>'+
-      '<td style="font-size:11px;font-family:Consolas,monospace">'+(t.mitre_technique||'-')+'</td>'+
-      '<td><span class="stbadge '+t.status+'">'+t.status+'</span></td></tr>';
-  }).join(''):'<tr><td colspan="7" class="empty">'+(_tixScope==='open'?'No open tickets in the queue.':'You have not taken any tickets yet.')+'</td></tr>';
 }
 
+function tixRowHtml(t,isNew){
+  return '<tr class="clickable'+(t.status==='closed'?' closed':'')+(isNew?' ticket-new':'')+'" data-tid="'+t.ticket_id+'" onclick="openTix(\\''+t.ticket_id+'\\')">'+
+    '<td><code style="font-family:Consolas,monospace;color:var(--muted)">'+t.ticket_id+'</code></td>'+
+    '<td><span class="badge '+t.severity+'">'+t.severity+'</span></td>'+
+    '<td class="score" style="color:'+sc(t.score)+'">'+(t.score||0).toFixed(2)+'</td>'+
+    '<td><span class="cat-tag"><span class="cat-bar" style="background:'+catColor(t.signal_type)+'"></span>'+abbrev(t.signal_type)+'</span></td>'+
+    '<td>'+esc(t.host)+'</td>'+
+    '<td style="font-size:11px;font-family:Consolas,monospace">'+esc(t.mitre_technique||'-')+'</td>'+
+    '<td><span class="stbadge '+t.status+'">'+t.status+'</span></td></tr>';
+}
+
+function filterTix(){
+  markActing();
+  const rows=visibleRows();
+  document.getElementById('tix-count').textContent=rows.length;
+  const tb=document.getElementById('tix-body');if(!tb)return;
+  tb.innerHTML=rows.length?rows.map(function(t){return tixRowHtml(t,false);}).join('')
+    :'<tr><td colspan="7" class="empty">'+(_tixScope==='open'?'No open tickets in the queue.':'You have not taken any tickets yet.')+'</td></tr>';
+}
+
+// Additive refresh: pulls fresh tickets, inserts only new ones into the existing DOM in
+// sorted position, compensating scroll so the analyst's current view never jumps.
+async function refreshTicketsAdditive(){
+  const tb=document.getElementById('tix-body');if(!tb)return;
+  // Skip if a fetch is in flight or one completed within the last 2s (data already fresh).
+  if(_tixFetching||(Date.now()-_tixLastFetch)<2000)return;
+  const scopeAtStart=_cur;
+  let qs='';
+  if(_tixFilter.type)qs='?type='+encodeURIComponent(_tixFilter.type);
+  else if(_tixFilter.mitre)qs='?mitre='+encodeURIComponent(_tixFilter.mitre);
+  else if(_tixFilter.severity)qs='?severity='+encodeURIComponent(_tixFilter.severity);
+  let fresh;
+  _tixFetching=true;
+  try{fresh=await api('/tickets'+qs);}catch(e){_tixFetching=false;return;}
+  _tixFetching=false;
+  _tixLastFetch=Date.now();
+  if(_cur!==scopeAtStart||(_cur!=='open'&&_cur!=='mine'))return;
+  if(!document.getElementById('tix-body'))return;
+  const oldById={};_tix.forEach(function(t){oldById[t.ticket_id]=t;});
+  const newcomers=fresh.filter(function(t){return !oldById[t.ticket_id];});
+  const statusChanged=fresh.some(function(t){return oldById[t.ticket_id]&&oldById[t.ticket_id].status!==t.status;});
+  _tix=fresh;
+  const vis=visibleRows();
+  const cnt=document.getElementById('tix-count');if(cnt)cnt.textContent=vis.length;
+  if(!newcomers.length){
+    if(statusChanged)filterTix();
+    return;
+  }
+  // CRITICAL: never run the DOM insertion synchronously here. If the user is mid-click,
+  // a synchronous block (filter + measure + insert + reflow) holds the main thread and the
+  // click waits behind it (the ~1s freeze). Defer to the next animation frame, and if the
+  // user starts acting before it runs, skip this cycle (the next refresh will catch up).
+  if(_pendingInsert)return;  // an insert is already scheduled
+  _pendingInsert=true;
+  requestAnimationFrame(function(){
+    _pendingInsert=false;
+    // Re-check: user may have switched pages or started interacting since we scheduled.
+    if(_cur!==scopeAtStart||(_cur!=='open'&&_cur!=='mine'))return;
+    if(_userActing){return;}  // user is interacting; do not steal the thread, retry next cycle
+    const body=document.getElementById('tix-body');if(!body)return;
+    const visNow=visibleRows();
+    // Precompute sort positions once (O(n)) instead of indexOf inside loops (O(n^2)).
+    const posById={};visNow.forEach(function(t,i){posById[t.ticket_id]=i;});
+    const showNow=newcomers.filter(function(t){return posById[t.ticket_id]!==undefined;});
+    if(!showNow.length)return;
+    const scroller=document.scrollingElement||document.documentElement;
+    const empty=body.querySelector('td.empty');if(empty&&empty.parentNode)empty.parentNode.remove();
+    // Anchor measurement: read layout ONCE before any mutation.
+    let anchorRow=null,anchorOffset=0;
+    const rows0=body.children;
+    for(let i=0;i<rows0.length;i++){
+      const r=rows0[i].getBoundingClientRect();
+      if(r.bottom>0){anchorRow=rows0[i];anchorOffset=r.top;break;}
+    }
+    // Build a fragment, then do all inserts (writes only, no interleaved reads = no thrashing).
+    showNow.forEach(function(t){
+      const pos=posById[t.ticket_id];
+      const tmp=document.createElement('tbody');tmp.innerHTML=tixRowHtml(t,true);
+      const tr=tmp.firstChild;
+      const existing=body.children;
+      let refNode=null;
+      for(let i=0;i<existing.length;i++){
+        const eid=existing[i].getAttribute('data-tid');
+        const ep=posById[eid];
+        if(ep!==undefined&&ep>pos){refNode=existing[i];break;}
+      }
+      body.insertBefore(tr,refNode);
+    });
+    // Single layout read AFTER all writes, then one scroll write to keep the view fixed.
+    if(anchorRow){
+      const delta=anchorRow.getBoundingClientRect().top-anchorOffset;
+      if(delta!==0)scroller.scrollTop+=delta;
+    }
+  });
+}
 function sc(v){if(v>=.9)return'var(--crit)';if(v>=.75)return'var(--high)';if(v>=.55)return'var(--med)';return'var(--muted)';}
 
 async function openTix(tid){
   const t=await api('/tickets/'+tid);
   const hashes=hashPills(t.file_hashes);
   const actions=(t.actions_taken||[]).map(function(a){
-    return '<div class="aitem"><div class="albl">'+(a.action||'?')+'</div>'+(a.detail||a.target||'')+'</div>';
+    return '<div class="aitem"><div class="albl">'+esc(a.action||'?')+'</div>'+esc(a.detail||a.target||'')+'</div>';
   }).join('')||'<div class="empty">No actions.</div>';
-  const factors=(t.risk_factors||[]).map(function(f){return '<div style="font-size:12px;margin-bottom:4px">- '+f+'</div>';}).join('');
+  const factors=(t.risk_factors||[]).map(function(f){return '<div style="font-size:12px;margin-bottom:4px">- '+esc(f)+'</div>';}).join('');
   document.getElementById('mtitle').textContent=t.ticket_id;
   document.getElementById('mbody').innerHTML=
     '<div class="frow"><div class="flbl">Severity</div><div><span class="badge '+t.severity+'">'+t.severity+'</span></div></div>'+
     '<div class="frow"><div class="flbl">Score</div><div class="score" style="color:'+sc(t.score)+'">'+(t.score||0).toFixed(4)+'</div></div>'+
-    '<div class="frow"><div class="flbl">Type</div><div><span class="cat-tag"><span class="cat-bar" style="background:'+catColor(t.signal_type)+'"></span><span class="stag">'+t.signal_type+'</span></span></div></div>'+
-    '<div class="frow"><div class="flbl">Host</div><div>'+(t.host||'-')+'</div></div>'+
-    '<div class="frow"><div class="flbl">MITRE</div><div>'+(t.mitre_technique||'-')+' <span style="color:var(--muted);font-size:11px">'+(t.mitre_tactic||'')+'</span></div></div>'+
-    '<div class="frow"><div class="flbl">Playbook</div><div style="color:var(--green)">'+(t.playbook||'-')+'</div></div>'+
-    '<div class="frow"><div class="flbl">Created</div><div style="font-size:12px">'+(t.created_at||'-')+'</div></div>'+
+    '<div class="frow"><div class="flbl">Type</div><div><span class="cat-tag"><span class="cat-bar" style="background:'+catColor(t.signal_type)+'"></span><span class="stag">'+esc(t.signal_type)+'</span></span></div></div>'+
+    '<div class="frow"><div class="flbl">Host</div><div>'+esc(t.host||'-')+'</div></div>'+
+    '<div class="frow"><div class="flbl">MITRE</div><div>'+esc(t.mitre_technique||'-')+' <span style="color:var(--muted);font-size:11px">'+esc(t.mitre_tactic||'')+'</span></div></div>'+
+    '<div class="frow"><div class="flbl">Playbook</div><div style="color:var(--green)">'+esc(t.playbook||'-')+'</div></div>'+
+    '<div class="frow"><div class="flbl">Created</div><div style="font-size:12px">'+esc(t.created_at||'-')+'</div></div>'+
     '<div class="divider"></div>'+
     '<div class="frow"><div class="flbl">File Hashes</div><div>'+hashes+'</div></div>'+
     '<div style="margin-bottom:14px"><div class="flbl" style="margin-bottom:6px">Risk Factors</div>'+(factors||'<em style="color:var(--muted)">None</em>')+'</div>'+
@@ -921,7 +1093,7 @@ async function openTix(tid){
       [['','unset'],['true_positive','true positive'],['false_positive','false positive'],['benign','benign'],['duplicate','duplicate']]
         .map(function(d){return '<option value="'+d[0]+'"'+((t.disposition||'')===d[0]?' selected':'')+'>'+d[1]+'</option>';}).join('')+
       '</select><span style="font-size:11px;color:var(--muted);margin-left:10px">Feeds future auto-triage and informs others.</span></div>'+
-    '<div style="margin-bottom:14px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span class="flbl">Notes'+(getDraft(t.ticket_id)?' <span style="color:var(--high)">(unsaved draft)</span>':'')+'</span><span style="display:flex;gap:8px"><button class="btn btn-g" style="padding:4px 10px;font-size:11px" onclick="insertTemplate()">Insert template</button><button class="btn btn-g" style="padding:4px 10px;font-size:11px" onclick="clearNote()">Clear</button></span></div><textarea id="m-notes" style="overflow:hidden" oninput="saveDraft(\\''+t.ticket_id+'\\',this.value);autoGrow(this)">'+(getDraft(t.ticket_id)||t.notes||'')+'</textarea></div>'+
+    '<div style="margin-bottom:14px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span class="flbl">Notes'+(getDraft(t.ticket_id)?' <span style="color:var(--high)">(unsaved draft)</span>':'')+'</span><span style="display:flex;gap:8px"><button class="btn btn-g" style="padding:4px 10px;font-size:11px" onclick="insertTemplate()">Insert template</button><button class="btn btn-g" style="padding:4px 10px;font-size:11px" onclick="clearNote()">Clear</button></span></div><textarea id="m-notes" style="overflow:hidden" oninput="saveDraft(\\''+t.ticket_id+'\\',this.value);autoGrow(this)">'+esc(getDraft(t.ticket_id)||t.notes||'')+'</textarea></div>'+
     '<div style="display:flex;gap:10px"><button class="btn btn-p" onclick="saveTix(\\''+t.ticket_id+'\\')">Save</button><button class="btn btn-g" onclick="closeModal()">Cancel</button></div>';
   _curTicket=t;
   document.getElementById('overlay').classList.add('open');
@@ -967,6 +1139,35 @@ async function renderSignals(el){
   _drawSignals(el);
 }
 
+// Periodic signals refresh that does NOT yank the view to the top and does NOT collapse
+// rows the analyst has expanded. Only repaints when the visible set actually changed,
+// then restores scroll position.
+async function refreshSignals(){
+  const el=document.getElementById('pcontent');if(!el)return;
+  const scopeAtStart=_cur;
+  let sigs;
+  try{sigs=await api('/signals');}catch(e){return;}
+  if(_cur!==scopeAtStart||_cur!=='signals')return;
+  let closed=new Set();
+  try{
+    const tix=await api('/tickets');
+    tix.forEach(function(t){if(t.status==='closed'&&t.signal_id)closed.add(t.signal_id);});
+  }catch(e){}
+  if(_cur!==scopeAtStart||_cur!=='signals')return;
+  const filtered=sigs.filter(function(s){return !closed.has(s.signal_id);});
+  // Signature = the ordered list of signal ids currently shown. No change -> do nothing.
+  const oldSig=_sigs.map(function(s){return s.signal_id;}).join('|');
+  const newSig=filtered.map(function(s){return s.signal_id;}).join('|');
+  if(oldSig===newSig)return;
+  const scroller=document.scrollingElement||document.documentElement;
+  const savedTop=scroller.scrollTop;
+  _sigs=filtered;
+  // Keep expansion state for signals that still exist (keyed by index is fragile, so we
+  // rebuild expansion against signal_id presence).
+  _drawSignals(el);
+  scroller.scrollTop=savedTop;  // restore the analyst's reading position
+}
+
 function _drawSignals(el){
   const body=_sigs.length?_sigs.map(function(s,i){
     const h=hashPills(s.file_hashes||{});
@@ -974,8 +1175,8 @@ function _drawSignals(el){
     const isOpen=!!_sigExpanded[i];
     const expRow=isOpen?
       '<tr class="sig-exp"><td colspan="7"><div class="exp-body">'+
-        '<div class="exp-full" style="margin-bottom:6px">'+exp+'</div>'+
-        (s.recommended_actions&&s.recommended_actions.length?'<div class="rec"><div class="flbl" style="margin-bottom:5px">Recommended actions</div>'+s.recommended_actions.map(function(a){return '<div class="rec-item">- '+a+'</div>';}).join('')+'</div>':'') +
+        '<div class="exp-full" style="margin-bottom:6px">'+esc(exp)+'</div>'+
+        (s.recommended_actions&&s.recommended_actions.length?'<div class="rec"><div class="flbl" style="margin-bottom:5px">Recommended actions</div>'+s.recommended_actions.map(function(a){return '<div class="rec-item">- '+esc(a)+'</div>';}).join('')+'</div>':'') +
         '<div class="rec"><div class="flbl" style="margin:10px 0 4px">Process tree</div>'+processTreeHtml(s.process_ancestors,s.process_self,s.process_children)+'</div>'+
         '<div style="margin-top:8px">'+h+'</div>'+
       '</div></td></tr>':'';
@@ -983,10 +1184,10 @@ function _drawSignals(el){
       '<td><span class="sig-name" title="Open the matching ticket" onclick="openTicketForSignal(event,\\''+(s.signal_id||'')+'\\')">'+(s.signal_id||'').substring(0,12)+'</span><span class="sig-copy" title="Copy signal ID" onclick="copyId(event,\\''+(s.signal_id||'')+'\\')">copy</span></td>'+
       '<td><span class="cat-tag"><span class="cat-bar" style="background:'+catColor(s.signal_type)+'"></span>'+abbrev(s.signal_type)+'</span></td>'+
       '<td class="score" style="color:'+sc(s.score)+'">'+(s.score||0).toFixed(2)+'</td>'+
-      '<td>'+((s.host&&s.host.hostname)||'-')+'</td>'+
-      '<td style="font-size:11px;font-family:Consolas,monospace">'+(s.mitre_technique||'-')+'</td>'+
+      '<td>'+esc((s.host&&s.host.hostname)||'-')+'</td>'+
+      '<td style="font-size:11px;font-family:Consolas,monospace">'+esc(s.mitre_technique||'-')+'</td>'+
       '<td>'+hashPills(s.file_hashes||{})+'</td>'+
-      '<td class="exp-cell"><span class="exp-preview">'+(exp||'<em style="color:var(--faint)">no explanation</em>')+'</span><span class="exp-toggle">'+(isOpen?' v':' >')+'</span></td></tr>'+expRow;
+      '<td class="exp-cell"><span class="exp-preview">'+(exp?esc(exp):'<em style="color:var(--faint)">no explanation</em>')+'</span><span class="exp-toggle">'+(isOpen?' v':' >')+'</span></td></tr>'+expRow;
   }).join(''):'<tr><td colspan="7" class="empty">Run the SIEM first.</td></tr>';
   el.innerHTML='<div class="tbl-wrap"><div class="tbl-hdr"><h3>Signals ('+_sigs.length+')</h3></div>'+
     '<table><thead><tr><th>ID</th><th>Type</th><th>Score</th><th>Host</th><th>MITRE</th><th>File Hashes</th><th>Explanation - click to expand</th></tr></thead>'+
@@ -1037,15 +1238,15 @@ async function loadBrowse(path){
   if(r.error){addLog(document.getElementById('lbox'),r.error,'e');return;}
   _browseData=r;
   const box=document.getElementById('browser');
-  const crumb=(r.crumbs||[]).map(function(c,i){return '<span onclick="navCrumb('+i+')">'+c.name+'</span>';}).join(' / ');
+  const crumb=(r.crumbs||[]).map(function(c,i){return '<span onclick="navCrumb('+i+')">'+esc(c.name)+'</span>';}).join(' / ');
   let html='<div class="crumb">'+(crumb||'/')+'</div>';
   if(r.parent!==null)
     html+='<div class="fentry" onclick="navParent()"><svg class="fic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg><span class="fn">..</span></div>';
   (r.entries||[]).forEach(function(e,i){
     if(e.is_dir)
-      html+='<div class="fentry" onclick="navEntry('+i+')"><svg class="fic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="fn">'+e.name+'</span></div>';
+      html+='<div class="fentry" onclick="navEntry('+i+')"><svg class="fic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="fn">'+esc(e.name)+'</span></div>';
     else
-      html+='<div class="fentry" id="fe'+i+'" onclick="navEntry('+i+')"><svg class="fic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="fn">'+e.name+'</span><span class="fsz">'+e.size+'</span></div>';
+      html+='<div class="fentry" id="fe'+i+'" onclick="navEntry('+i+')"><svg class="fic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="fn">'+esc(e.name)+'</span><span class="fsz">'+esc(e.size)+'</span></div>';
   });
   box.innerHTML=html;
 }
@@ -1144,7 +1345,15 @@ function applyShowcaseLock(){
   setInterval(function(){
     var ov=document.getElementById('overlay');
     if(ov&&ov.classList.contains('open'))return;
-    if(['dash','open','mine','signals'].indexOf(_cur)>-1)renderPage(_cur);
+    // Never refresh while a navigation/page switch is in flight (prevents race conditions
+    // where the auto-refresh reads a scope that is mid-change).
+    if(_navigating)return;
+    // Ticket lists: additive refresh, never a full re-render (preserves scroll and order).
+    if(_cur==='open'||_cur==='mine'){refreshTicketsAdditive();return;}
+    // Dashboard: re-render only if the ticket counts actually changed.
+    if(_cur==='dash'){maybeRefreshDash();return;}
+    // Signals: scroll-safe refresh that preserves scroll position and expanded rows.
+    if(_cur==='signals')refreshSignals();
   }, 7000);
 }
 

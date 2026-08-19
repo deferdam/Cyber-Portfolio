@@ -24,13 +24,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from flask import Flask, Response, jsonify, request, stream_with_context
+from flask import Flask, Response, jsonify, request, stream_with_context, g
 
 BASE    = Path(__file__).parent.parent.parent
 SRC_DIR = BASE / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 from core import vault
+from core import auth
 MODE      = os.environ.get("SIEM_MODE", "local").lower()
 IS_SHOWCASE = MODE == "showcase"
 IS_SERVER = MODE == "server"
@@ -107,6 +108,39 @@ def _within_scan_root(target: Path) -> bool:
 
 # -- Config --------------------------------------------------------------------
 
+@app.before_request
+def _resolve_principal():
+    # The single authentication seam. v10: resolves to the local operator and enforces
+    # nothing. v11 will read a verified session here and call auth.require_auth /
+    # require_role to gate sensitive routes.
+    g.principal = auth.current_principal(request, MODE)
+
+
+# Content-Security-Policy: self-contained app (no CDN). connect-src 'self' means a page
+# cannot exfiltrate to an external origin even if some script slipped through (anti-C2,
+# defense in depth behind output escaping); object/base/frame-ancestors are locked down.
+_CSP = ("default-src 'self'; script-src 'self' 'unsafe-inline'; "
+        "style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; "
+        "object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
+
+
+@app.after_request
+def _security_headers(resp):
+    resp.headers["Content-Security-Policy"] = _CSP
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    resp.headers["X-Frame-Options"] = "DENY"
+    resp.headers["Referrer-Policy"] = "no-referrer"
+    resp.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    return resp
+
+
+@app.route("/api/whoami")
+def api_whoami():
+    p = g.principal
+    return jsonify({"name": p.name, "role": p.role,
+                    "authenticated": p.authenticated, "mfa": p.mfa})
+
+
 @app.route("/api/config")
 def api_config():
     return jsonify({
@@ -165,16 +199,38 @@ def api_ticket(tid):
     return jsonify({"error": "not found"}), 404
 
 
+_ALLOWED_STATUS = {"open", "investigating", "resolved", "closed"}
+_ALLOWED_DISPOSITION = {"", "true_positive", "false_positive", "benign", "duplicate"}
+_MAX_NOTES = 5000
+_MAX_ASSIGNEE = 120
+
+
 @app.route("/api/tickets/<tid>", methods=["PATCH"])
 def api_ticket_update(tid):
     tickets = _read_jsonl(TICKETS)
     body    = request.get_json(silent=True) or {}
+
+    # Validate before touching the store. Only known fields, with checked values; this
+    # keeps unvalidated or oversized data out of the ticket store (defense in depth; XSS
+    # is independently neutralized at render time).
+    if "status" in body and body["status"] not in _ALLOWED_STATUS:
+        return jsonify({"error": "invalid status"}), 400
+    if "disposition" in body and body["disposition"] not in _ALLOWED_DISPOSITION:
+        return jsonify({"error": "invalid disposition"}), 400
+    clean = {}
+    if "status" in body:
+        clean["status"] = body["status"]
+    if "disposition" in body:
+        clean["disposition"] = body["disposition"]
+    if "assignee" in body:
+        clean["assignee"] = str(body["assignee"])[:_MAX_ASSIGNEE]
+    if "notes" in body:
+        clean["notes"] = str(body["notes"])[:_MAX_NOTES]
+
     updated = False
     for t in tickets:
         if t.get("ticket_id") == tid:
-            for field in ("status", "assignee", "notes", "disposition"):
-                if field in body:
-                    t[field] = body[field]
+            t.update(clean)
             t["updated_at"] = datetime.now(timezone.utc).isoformat()
             updated = True
             break
@@ -258,7 +314,9 @@ def api_browse():
     except PermissionError:
         return jsonify({"error": "permission denied"}), 403
     except Exception as exc:
-        return jsonify({"error": str(exc)}), 500
+        # Do not leak server filesystem structure or stack traces to an untrusted client.
+        msg = str(exc) if MODE != "server" else "could not read path"
+        return jsonify({"error": msg}), 500
 
 
 # -- Run pipeline (SSE) --------------------------------------------------------
@@ -283,7 +341,7 @@ def api_run_stream():
     elif MODE == "server" and not _within_scan_root(target):
         error = "input outside allowed root"
     elif not target.exists():
-        error = "input not found: " + str(target)
+        error = "input not found" if MODE == "server" else "input not found: " + str(target)
 
     if error:
         return Response(_sse("[!] " + error) + _sse("__DONE__"),
