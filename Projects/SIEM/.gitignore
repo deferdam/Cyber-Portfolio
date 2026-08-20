@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+*.db
+*.vault.salt
+data/ai_models/
+SIEM_V*.zip
