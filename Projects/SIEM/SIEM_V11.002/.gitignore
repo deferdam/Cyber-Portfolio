@@ -1,0 +1,6 @@
+data/
+*.db
+*.bootstrap_sealed
+__pycache__/
+*.pyc
+.vault.salt

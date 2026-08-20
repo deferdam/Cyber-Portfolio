@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini SIEM/SOAR | Documentation</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header>
+  <span class="brand">Mini SIEM/SOAR</span>
+  <a href="index.html" class="active">Home</a>
+  <a href="developer.html">Developer</a>
+  <a href="security.html">Security</a>
+  <a href="usage.html">Usage</a>
+</header>
+<main>
+  <h1>Mini SIEM/SOAR documentation</h1>
+  <p class="lead">A defensive, educational Sigma-based detection and SOAR ticketing
+  system. Authored by Damien Defer. This documentation set is the single source of
+  truth for the project: how it works, how it is built, how to use it, and how to
+  keep it secure as it grows toward multi-user.</p>
+
+  <div class="card">
+    <h3>Developer documentation</h3>
+    <p>Everything a new developer needs to read the code and contribute: the
+    pipeline, the module map, the data model, the reader contract to add a format,
+    the frontend SPA, the API, the invariants and the hard-won lessons.</p>
+    <a class="inline" href="developer.html">Open developer docs &rarr;</a>
+  </div>
+
+  <div class="card">
+    <h3>Security documentation</h3>
+    <p>The threat model for moving from a single local operator to a shared server,
+    plus the v10 hardening plan: admin control, ML safety, endpoint exposure,
+    encryption, and the analysis behind each decision.</p>
+    <a class="inline" href="security.html">Open security docs &rarr;</a>
+  </div>
+
+  <div class="card">
+    <h3>Usage documentation</h3>
+    <p>How to run the app, the difference between the launchers, and the matrix of
+    which file analyses are available in local versus multi mode.</p>
+    <a class="inline" href="usage.html">Open usage docs &rarr;</a>
+  </div>
+
+
+  <p class="lead" style="margin-top:24px">There is also an AI context prompt at
+  <code>docs/ai_context_prompt.md</code>. It is meant to be pasted into an AI
+  assistant so it gains full project context. It is deliberately not part of this
+  site.</p>
+
+  <footer>Mini SIEM/SOAR | local-first, defensive, educational. Generated for v10.4.</footer>
+</main>
+</body></html>
