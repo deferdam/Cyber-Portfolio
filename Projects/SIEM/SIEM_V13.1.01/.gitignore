@@ -1,0 +1,9 @@
+data/
+*.db
+*.bootstrap_sealed
+__pycache__/
+*.pyc
+.vault.salt
+server.crt
+server.key
+active_response.db

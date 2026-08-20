@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Usage | Mini SIEM/SOAR</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header>
+  <span class="brand">Mini SIEM/SOAR</span>
+  <a href="index.html">Home</a>
+  <a href="developer.html">Developer</a>
+  <a href="security.html">Security</a>
+  <a href="usage.html" class="active">Usage</a>
+</header>
+<main>
+  <h1>Usage documentation</h1>
+  <p class="lead">One command gets you a working app. The other scripts are optional
+  tools. Here is what each does and what works where.</p>
+
+  <h2>The launchers (all in <code>scripts/</code>)</h2>
+  <table>
+    <tr><th>Script</th><th>What it does</th><th>Run it?</th></tr>
+    <tr><td><code>start.sh</code> / <code>start.bat</code></td>
+        <td>Starts the app in local mode and opens the browser. Data already in
+        <code>out/large</code> shows immediately; you run new captures from the Run tab
+        inside the app. This is the single "launch everything" entry.</td>
+        <td>Yes, normally</td></tr>
+    <tr><td><code>docs.sh</code> / <code>docs.bat</code></td>
+        <td>Opens this HTML documentation in your browser.</td>
+        <td>When you need the docs</td></tr>
+    <tr><td><code>pipeline.sh</code> / <code>pipeline.bat</code></td>
+        <td>Optional. Runs the detection pipeline on a data file from the command line,
+        without the UI. The Run tab does the same thing.</td>
+        <td>Advanced only</td></tr>
+    <tr><td><code>run_tests.sh</code> / <code>run_tests.bat</code></td>
+        <td>Runs the whole test suite and prints PASS/FAIL per file and a total.</td>
+        <td>To verify a build</td></tr>
+    <tr><td><code>server.sh</code> / <code>server.bat</code></td>
+        <td>Placeholder. Multi-user / server mode is not implemented yet (v10). It
+        deliberately does not start a network server, since that would be unsafe without
+        auth.</td>
+        <td>Not yet</td></tr>
+  </table>
+
+  <div class="ok">
+  <p><strong>Why start is "everything at once".</strong> The app is the product. Viewing
+  tickets and running new analyses both happen inside it. You no longer choose between a
+  separate "run the pipeline" step and a separate "open the UI" step; start does the whole
+  thing and the browser opens by itself.</p>
+  </div>
+
+  <h2>run local versus run siem, the old confusion</h2>
+  <p>The previous scripts split two unrelated things: <code>run_local</code> started the web
+  app, while <code>run_siem</code> was a batch processor that turned a data file into tickets.
+  They are now <code>start</code> (the app, what you use) and <code>pipeline</code> (the
+  optional batch tool). The duplicate and platform-specific launchers at the project root
+  are gone; everything lives in <code>scripts/</code>.</p>
+
+  <h2>Why file analysis is local only</h2>
+  <p>Online, an analyst does not push a Wireshark capture or a Windows event log through a
+  shared web app; those artifacts live on the analyst workstation, and a regular user
+  neither has nor can produce them. Exposing a file browser and binary parsers on a server
+  adds path-traversal and parser-exploit risk for no operational gain. So the analyze-a-file
+  capability stays local.</p>
+
+  <h2>Format availability matrix</h2>
+  <table>
+    <tr><th>Format</th><th>Local</th><th>Multi (v10)</th><th>Parser</th></tr>
+    <tr><td>JSON / JSONL</td><td>yes</td><td>via feed</td><td>stdlib</td></tr>
+    <tr><td>Syslog</td><td>yes</td><td>via feed</td><td>stdlib</td></tr>
+    <tr><td>CSV (generic)</td><td>yes</td><td>no</td><td>stdlib</td></tr>
+    <tr><td>Snort alerts</td><td>yes</td><td>no</td><td>stdlib</td></tr>
+    <tr><td>Elastic / ECS</td><td>yes</td><td>no</td><td>stdlib</td></tr>
+    <tr><td>EVTX (Windows)</td><td>yes</td><td>no</td><td>python-evtx</td></tr>
+    <tr><td>PCAP / Wireshark</td><td>yes</td><td>no</td><td>dpkt</td></tr>
+  </table>
+  <p>In multi mode the file browser and run-on-file UI are hidden; JSON and syslog arrive
+  through controlled server-side feeds or the streaming capture, not analyst uploads. PCAP
+  and EVTX are local only and never exposed in multi, being the most security-sensitive.</p>
+
+  <h2>Live capture (v9)</h2>
+  <p>A special streaming mode follows a local file: new lines flow through the pipeline and
+  tickets appear in near real time. This is not a system agent; it is a file-tail streaming
+  ingest, available locally.</p>
+
+  <h2>Command line, for reference</h2>
+  <pre><code>PYTHONPATH=src python3 -m ingest.replay \
+  --input samples/demo_linux_attack.jsonl \
+  --out-dir out/large --format auto</code></pre>
+
+  <h2>Accounts and login (v11)</h2>
+  <p>The app supports real user accounts. In local mode, login stays OFF by default (your
+  single-operator convenience is preserved); set SIEM_REQUIRE_LOGIN=1 to turn it on. In
+  server mode, login is always required. The very first admin account is created either
+  via the CLI (<code>python launch.py create-admin</code>, no network involved) or through
+  a one-time web setup token shown on the server's own terminal output at first start: open
+  the app in a browser, and if no admin exists yet you land directly on a setup screen
+  asking for that token plus your chosen admin username and password, then are signed in
+  automatically once the account is created.</p>
+
+  <h2>Two-factor authentication (v11)</h2>
+  <p>Open the "Two-factor (MFA)" panel from the account menu to add a second factor:
+  either an authenticator app (Google Authenticator, Aegis, FreeOTP, scan the QR code or
+  enter the key manually) or a hardware security key (YubiKey or similar, via WebAuthn).
+  You can enroll more than one security key; name them so you can tell them apart, and
+  keep a backup key somewhere else in case you lose the primary one.</p>
+
+  <h2>Forgot your password? (v11)</h2>
+  <p>Run <code>python launch.py reset-admin-password</code>. If a security key is
+  enrolled on the account, you will be asked to touch it; this proves physical possession
+  of the key, not just access to the machine. If no key is enrolled, you confirm the reset
+  by typing an exact confirmation phrase instead.</p>
+
+  <h2>Login throttling (v11)</h2>
+  <p>After a failed login, the same account must wait briefly (about 2 seconds) before
+  another attempt is accepted, regardless of whether the next attempt would have been
+  correct. Past 5 failures, the account is locked out for a short period that
+  progressively doubles the more it keeps failing (roughly 30s, then 60s, then 120s,
+  and so on), rather than a single flat window. A successful login clears the slate.</p>
+
+  <h2>Recovery codes (v11)</h2>
+  <p>Once you have enabled an authenticator app or a security key, open the "Two-factor
+  (MFA)" panel and generate a set of 10 one-time recovery codes. Save them somewhere safe;
+  they are shown only once. If you ever lose access to your authenticator app or key at
+  login, enter one of these codes instead of the 6-digit code to sign in. Each code works
+  exactly once; generating a new set invalidates any codes you had before.</p>
+
+  <h2>Admin panel and dual control (v11)</h2>
+  <p>With a single admin, sensitive actions (creating accounts, changing roles, deleting
+  accounts, resetting another user's password) apply immediately. As soon as a second
+  admin exists, this switches automatically to four-eyes approval: a sensitive action
+  becomes a pending request that a DIFFERENT admin must approve before it takes effect.
+  An admin can never approve their own request. A "force logout" button next to each
+  account immediately kills every active session for that user; unlike the actions
+  above, this is not gated by four-eyes approval, since it is a protective, fully
+  reversible action (the user simply logs back in), and delaying it for approval would
+  defeat the point of an urgent incident response tool.</p>
+
+  <h2>Active response: banning IPs and quarantining files (v11)</h2>
+  <p>From the admin panel, an admin can ban an IP or quarantine a file. By default this
+  is INTERNAL ONLY: it never touches your firewall or file permissions, only this
+  module's own list (useful for tracking intent and testing). Real enforcement (an
+  actual Windows Firewall rule, or an actual read-only chmod) requires the operator to
+  restart the app with SIEM_ACTIVE_RESPONSE_REAL=1 set; this cannot be turned on from
+  inside the running app, on purpose. Bans expire automatically after 24 hours by
+  default (SIEM_BAN_HOURS to change it). The tool refuses to ban your own loopback
+  address or the IP of the session issuing the request, so you cannot lock yourself out.
+  Real firewall enforcement currently only works on Windows (netsh); Linux/macOS support
+  is planned for later.</p>
+
+  <h2>HTTPS / TLS (v11)</h2>
+  <p>Set SIEM_TLS=1 to serve over HTTPS even on loopback (mainly useful for testing
+  security-key behavior the same way it would work over a real network). HTTPS is
+  mandatory the moment the server is exposed beyond loopback (SIEM_ALLOW_PUBLIC=1); the
+  server refuses to start rather than send passwords over plain HTTP on a real network.
+  The certificate is self-signed, so your browser will show a one-time trust warning on
+  first connection; this protects the connection from eavesdropping, it does not prove
+  identity to a third party the way a certificate authority would.</p>
+
+  <h2>Weekly update check (v11)</h2>
+  <p>Once a week (Monday 17:00 by default) the app checks GitHub's own Releases page for
+  a newer version. It never downloads or installs anything automatically: if a newer
+  version exists, a link appears in the footer pointing you to the repository's Releases
+  page, where you can review and download it yourself.</p>
+
+  <footer>Usage documentation | Mini SIEM/SOAR v11.</footer>
+</main>
+</body></html>

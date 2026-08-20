@@ -1,0 +1,100 @@
+title: Suspicious PowerShell Persistence Patterns
+id: a6baf3ff-42ef-40d7-b7fb-9fed82629532
+description: >
+    Detect PowerShell techniques used to establish persistence:
+    hidden windows, startup registration, registry Run keys, scheduled tasks inline.
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+
+detection:
+    # Hidden / non-interactive window
+    # Hide execution from the user
+    selection_hidden:
+        ScriptBlockText|contains:
+            - '-WindowStyle Hidden'
+            - '-WindowStyle hidden'
+            - '-w hidden'
+            - '-w 1'
+            - '-NonInteractive'
+            - '-NoProfile'
+            - '-NoLogo'
+            - '-noni'
+
+    # Installation / automatic startup
+    # Binaries or scripts registering as a service or at startup
+    selection_install:
+        ScriptBlockText|contains:
+            - '--install'
+            - '-install'
+            - 'Install-Service'
+            - 'New-Service'
+            - 'sc create'
+            - 'sc.exe create'
+
+    # Registry Run / RunOnce (classic persistence)
+    # T1547.001 - Boot or Logon Autostart: Registry Run Keys
+    selection_registry_run:
+        ScriptBlockText|contains:
+            - 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
+            - 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Run'
+            - 'HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce'
+            - 'HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce'
+            - 'CurrentVersion\Run'
+            - 'Set-ItemProperty.*Run'
+            - 'New-ItemProperty.*Run'
+
+    # Startup folder
+    # T1547.001 - drop in the Startup folder
+    selection_startup_folder:
+        ScriptBlockText|contains:
+            - '\Start Menu\Programs\Startup'
+            - '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup'
+            - '$env:APPDATA\Microsoft\Windows\Start Menu'
+            - 'CommonStartup'
+            - 'SpecialFolder.Startup'
+
+    # Inline scheduled task (from PowerShell)
+    # T1053.005 - Scheduled Task via PS
+    selection_schtask_inline:
+        ScriptBlockText|contains:
+            - 'Register-ScheduledTask'
+            - 'New-ScheduledTaskAction'
+            - 'New-ScheduledTaskTrigger'
+            - 'schtasks /create'
+            - 'schtasks.exe /create'
+
+    # WMI subscription (advanced persistence)
+    # T1546.003 - Event Subscription
+    selection_wmi_subscription:
+        ScriptBlockText|contains:
+            - '__EventFilter'
+            - '__EventConsumer'
+            - '__FilterToConsumerBinding'
+            - 'CommandLineEventConsumer'
+            - 'ActiveScriptEventConsumer'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - Legitimate deployment scripts (SCCM, Ansible, Intune)
+    - Logiciels installeurs utilisant New-Service
+    - Monitoring tools registering at startup
+
+level: high
+
+fields:
+    - ScriptBlockText
+    - CommandLine
+
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.t1053.005
+    - attack.t1546.003
+    - attack.defense_evasion
+    - attack.t1564.003
