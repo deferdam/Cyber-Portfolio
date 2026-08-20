@@ -1,0 +1,43 @@
+title: Local AI Service Integrity
+id: c4d8f1a2-9b3e-4f6a-8d21-7e5b9a0c3f44
+description: >
+    Detect filesystem and process anomalies on local AI model serving
+    frameworks (Ollama, LM Studio, llama.cpp, vLLM, LocalAI).
+status: experimental
+author: Dams
+date: 2026-03-17
+logsource:
+    product: linux
+    service: auditd
+
+detection:
+    # Model file replacement
+    # AML.T0018 - Backdoor ML Model
+    selection_model_write:
+        CommandLine|contains:
+            - '.gguf'
+            - '.safetensors'
+            - 'pytorch_model.bin'
+            - '.ollama/models'
+            - 'LM Studio/models'
+
+    # Unexpected process binding known AI ports
+    # AML.T0012 - Valid Accounts (local pivot)
+    selection_ai_port_bind:
+        CommandLine|contains:
+            - ':11434'
+            - ':1234'
+            - ':8080'
+            - ':8000'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - 'Legitimate model download/update via ollama pull or framework updater'
+    - 'Framework restart binding to the same port'
+
+level: high
+
+tags:
+    - attack.persistence
+    - attack.initial_access
