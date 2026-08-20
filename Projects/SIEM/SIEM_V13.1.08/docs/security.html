@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security | Mini SIEM/SOAR</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header>
+  <span class="brand">Mini SIEM/SOAR</span>
+  <a href="index.html">Home</a>
+  <a href="developer.html">Developer</a>
+  <a href="security.html" class="active">Security</a>
+  <a href="usage.html">Usage</a>
+</header>
+<main>
+  <h1>Security documentation</h1>
+  <p class="lead">The core shift: in local mode the app trusts its single operator and
+  the local machine. In server mode it is reachable by several users over a network, it
+  holds accesses, and it becomes a target. Every implicit trust must become an explicit,
+  server-enforced control. This page is the threat model for that move and the v10
+  hardening plan.</p>
+
+  <h2>Posture by version</h2>
+  <ul>
+    <li><strong>v9 (local):</strong> file analysis stays on the analyst machine. Risky
+    binary parsers (pcap, evtx) never touch a server.</li>
+    <li><strong>v10 (server):</strong> read-only. The app may read, never mutate the host.
+    Ships only after the hardening below.</li>
+    <li><strong>v11:</strong> active response (ban IPs, set files read-only to quarantine
+    ransomware), gated behind v10 hardening.</li>
+  </ul>
+
+  <h2>1. Authentication and sessions</h2>
+  <ul>
+    <li>No auth exists today; anyone reaching the port has full access. Need login with
+    hashed passwords (argon2 or bcrypt), never plaintext.</li>
+    <li>Secure cookies (HttpOnly, Secure, SameSite), protection against session fixation
+    and hijacking, sensible expiry.</li>
+    <li>CSRF protection on state-changing endpoints once cookies are used.</li>
+    <li>Rate limiting and lockout against login brute force.</li>
+  </ul>
+
+  <h2>2. Authorization (the most important)</h2>
+  <ul>
+    <li><strong>Server-side scoping:</strong> "My tickets" currently filters in the
+    browser. In multi this must be enforced on the server by assignee equals the
+    authenticated user. A client filter is not a control.</li>
+    <li><strong>IDOR:</strong> ticket reads and updates must check ownership or role.
+    Guessable ids without a check leak or mutate other users' tickets.</li>
+    <li><strong>Vertical escalation:</strong> manager and CISO actions (template editing)
+    must be checked on the server, not merely hidden in the UI.</li>
+  </ul>
+
+  <h2>3. Privilege / mode integrity (the privilege glitch)</h2>
+  <div class="danger">
+  <p>The local versus server mode must be set by a trusted server-side config, never by a
+  client header or query param. If the server can be tricked into local mode, it exposes
+  the local code paths: no auth, file browser, binary parsers. That is a full bypass.
+  Confining pcap and evtx to local is what makes this containable.</p>
+  </div>
+
+  <h2>4. Input validation and injection</h2>
+  <ul>
+    <li><strong>Path traversal:</strong> the local file browser must resolve real paths,
+    reject <code>..</code> and symlink escapes, and stay confined to a root. Removing it
+    from the server removes this risk there.</li>
+    <li><strong>Stored XSS:</strong> the SPA builds HTML by concatenation with raw values
+    (notes, host, command_line). In multi, one user's note could inject script that runs
+    in another's session. Escape all such values on render before multi ships.</li>
+    <li><strong>Template injection:</strong> note-template substitution is a plain string
+    replace, never an eval-like render.</li>
+    <li><strong>Parser abuse:</strong> oversized records, deeply nested JSON, archive
+    bombs. Apply size and depth limits, stream, isolate per record.</li>
+    <li><strong>Binary parsers (pcap, evtx):</strong> memory-safety and RCE risk in
+    third-party libraries. Confined to local, never on the server.</li>
+  </ul>
+
+  <h2>5. Data at rest and in transit</h2>
+  <ul>
+    <li><strong>At rest:</strong> tickets are plaintext JSONL. Encrypt at rest so raw disk
+    access reveals nothing. Key custody options to evaluate: a physical USB key holding
+    the key, or a VeraCrypt-style container. Tension: security versus fast operator access.</li>
+    <li><strong>In transit:</strong> plain HTTP over a LAN allows sniffing and MITM,
+    including credential capture. Require TLS. (Clipboard copy also needs a secure context,
+    so it is blocked on plain http over an IP.)</li>
+    <li><strong>Secrets:</strong> OAuth tokens for mail must be encrypted, never in
+    plaintext config, never logged.</li>
+    <li>The app now binds to <code>127.0.0.1</code> by default. It must never be exposed
+    to a network without the controls above.</li>
+  </ul>
+
+  <h2>6. Concurrency and integrity</h2>
+  <ul>
+    <li>The ticket store appends to a JSONL file; concurrent writers corrupt it. Multi
+    needs a real datastore or strict locking.</li>
+    <li>Two operators on one ticket cause last-write-wins overwrites. Need optimistic
+    concurrency (a version field) or locking.</li>
+    <li>Note drafts live in browser localStorage, per machine; they do not follow a user
+    across devices in multi. Acceptable, but documented.</li>
+  </ul>
+
+  <h2>7. Availability and accountability</h2>
+  <ul>
+    <li>Unauthenticated heavy endpoints (run-stream, ingestion) allow resource exhaustion.
+    Authenticate, rate limit, cap file sizes and connection counts.</li>
+    <li>Append-only, tamper-evident audit log of who changed status or disposition and
+    when. It also feeds the "inform others" goal and future auto-triage.</li>
+  </ul>
+
+  <h2>8. Admin panel and access control (v10)</h2>
+  <ul>
+    <li>Dedicated admin tab to create and manage users, with a dashboard of all people,
+    their roles and accesses.</li>
+    <li>Two admins maximum, both with full access.</li>
+    <li>Four-eyes control: sensitive actions (create user, create admin, change role or
+    access) require approval by the second admin. The approver must differ from the
+    requester, enforced on the server, and every request and decision is audit-logged.</li>
+  </ul>
+  <div class="warn">
+  <p><strong>Open risk to resolve.</strong> Two-admins-max is a single point of failure: if
+  one is unavailable, the approval queue deadlocks. A break-glass recovery path is required.
+  Dual control should apply to sensitive actions only; on routine actions it is too heavy.</p>
+  </div>
+
+  <h2>9. Machine learning auto-triage safety (v10)</h2>
+  <ul>
+    <li><strong>Confidentiality:</strong> model artifact and training data behind admin
+    auth; the model can memorize sensitive ticket content, so protect it.</li>
+    <li><strong>Anti-poisoning (the hard problem):</strong> do not auto-retrain on raw
+    labels. Track label provenance per user, rate-limit one user's influence, review
+    training data, monitor label-distribution drift, keep a human in the loop.</li>
+    <li><strong>Anti-saturation:</strong> rate-limit inference, cap input size.</li>
+    <li><strong>Access:</strong> none without the admin role; reached from the admin panel.</li>
+  </ul>
+
+  <h2>10. Endpoint exposure (v10)</h2>
+  <div class="warn">
+  <p>Naming sensitive routes unpredictably and hiding URLs is security through obscurity:
+  a secondary layer only, never a primary control. URLs leak (logs, history, referrers).
+  A static 6-character code shared among admins is a weak sole gate (shared secret,
+  leakage, brute force without strict rate limiting). Prefer per-user MFA (TOTP). Keep an
+  obscure path or a code only as defense in depth on top of real authentication and
+  server-side authorization, never instead of them.</p>
+  </div>
+
+  <h2>11. AI input safety (v10)</h2>
+  <p>Mails and ticket content fed to any model are untrusted text. Never interpret or
+  execute them; pass them through a validating parser. Parsing alone does not stop prompt
+  injection, so also separate instructions from data in the prompt and filter the output.</p>
+
+  <h2>12. Mail integration (v10)</h2>
+  <ul>
+    <li>Read professional mailboxes only, never personal, even when a user connects both.
+    Minimize OAuth scope (read-only, specific labels).</li>
+    <li>A machine aggregating all employees' mailboxes is a large centralized risk. Verify
+    encryption end to end and access control before considering it.</li>
+  </ul>
+
+  <h2>13. Deployment hygiene</h2>
+  <p>No Flask debug mode in production (the Werkzeug console is RCE). Manage the secret key.
+  Lock down CORS. No default credentials.</p>
+
+  <footer>Security documentation | Mini SIEM/SOAR. Threat model for the multi-user move.</footer>
+</main>
+</body></html>

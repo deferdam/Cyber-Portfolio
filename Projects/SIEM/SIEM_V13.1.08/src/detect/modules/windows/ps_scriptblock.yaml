@@ -1,0 +1,113 @@
+title: Suspicious PowerShell Script Block
+id: 67c2b434-343f-4a46-873f-ef5705c13fc8
+description: Detect suspicious PowerShell patterns via Script Block Logging (EventID 4104)
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+
+detection:
+    # Encoded / obfuscated execution
+    selection_encoded:
+        ScriptBlockText|contains:
+            - '-EncodedCommand'
+            - '-enc '
+            - '-ec '
+
+    selection_obfuscation:
+        ScriptBlockText|contains:
+            - '`I`E`X'
+            - '`i`e`x'
+            - "'+'"
+            - '[char]'
+            - '-join'
+
+    # Download / in-memory execution
+    selection_iex:
+        ScriptBlockText|contains:
+            - 'Invoke-Expression'
+            - 'IEX '
+            - 'IEX('
+
+    selection_download:
+        ScriptBlockText|contains:
+            - 'DownloadString'
+            - 'DownloadFile'
+            - 'Invoke-WebRequest'
+            - 'Invoke-RestMethod'
+            - 'Start-BitsTransfer'
+            - 'curl '
+
+    selection_webclient:
+        ScriptBlockText|contains:
+            - 'Net.WebClient'
+            - 'WebClient'
+            - 'System.Net.Http.HttpClient'
+
+    # AMSI / defense bypass
+    selection_amsi_bypass:
+        ScriptBlockText|contains:
+            - 'amsiInitFailed'
+            - 'AmsiScanBuffer'
+            - 'amsi.dll'
+            - '[Ref].Assembly.GetType'
+            - 'System.Management.Automation.AmsiUtils'
+
+    selection_exec_bypass:
+        ScriptBlockText|contains:
+            - '-ExecutionPolicy Bypass'
+            - '-Exec Bypass'
+            - 'Set-ExecutionPolicy Unrestricted'
+            - 'Set-ExecutionPolicy Bypass'
+
+    # Identity reconnaissance
+    selection_recon_identity:
+        ScriptBlockText|contains:
+            - 'whoami'
+            - 'whoami /all'
+            - '[System.Security.Principal.WindowsIdentity]::GetCurrent()'
+            - '$env:USERNAME'
+            - '$env:USERDOMAIN'
+
+    # Environment reconnaissance
+    selection_recon_enum:
+        ScriptBlockText|contains:
+            - 'net user'
+            - 'net localgroup'
+            - 'Get-LocalUser'
+            - 'Get-ADUser'
+            - 'Get-ADGroupMember'
+            - 'Get-Process'
+            - 'Get-Service'
+            - 'ipconfig'
+            - 'systeminfo'
+            - 'nltest'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - Legitimate admin scripts using WebClient or IEX
+    - Scheduled system-inventory tasks
+    - SCCM/Intune deployment tools
+
+level: high
+
+fields:
+    - ScriptBlockText
+    - CommandLine
+    - ScriptBlockId
+    - Path
+
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.t1027
+    - attack.t1562.001
+    - attack.discovery
+    - attack.t1087
+    - attack.t1087.001
+    - attack.t1087.002

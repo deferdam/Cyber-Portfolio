@@ -1,0 +1,36 @@
+:root{
+  --bg:#0d0f10; --s1:#16181a; --s2:#1d2023; --border:#2a2e32;
+  --text:#e6e7e8; --muted:#9aa0a6; --faint:#6b7177;
+  --green:#3fb950; --red:#f85149; --orange:#d29922; --blue:#58a6ff;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.65;}
+header{position:sticky;top:0;background:rgba(13,15,16,.95);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;z-index:10;}
+header .brand{font-weight:700;color:var(--green);letter-spacing:.3px;}
+header a{color:var(--muted);text-decoration:none;font-size:14px;padding:4px 2px;border-bottom:2px solid transparent;}
+header a:hover{color:var(--text);}
+header a.active{color:var(--text);border-bottom-color:var(--green);}
+main{max-width:920px;margin:0 auto;padding:30px 28px 80px;}
+h1{font-size:26px;margin:8px 0 4px;}
+h2{font-size:19px;margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+h3{font-size:15px;margin:22px 0 8px;color:var(--blue);}
+p,li{color:var(--text);}
+.lead{color:var(--muted);font-size:15px;}
+code{background:var(--s2);padding:1px 6px;border-radius:5px;font-family:'Consolas',monospace;font-size:13px;color:var(--green);}
+pre{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:14px 16px;overflow-x:auto;}
+pre code{background:none;color:var(--text);padding:0;}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14px;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--s2);color:var(--muted);font-weight:600;}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:14px 0;}
+.tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;border:1px solid var(--border);color:var(--muted);}
+.warn{border-left:3px solid var(--orange);padding-left:14px;color:var(--text);}
+.danger{border-left:3px solid var(--red);padding-left:14px;}
+.ok{border-left:3px solid var(--green);padding-left:14px;}
+ul{padding-left:22px;}
+li{margin:4px 0;}
+a.inline{color:var(--blue);}
+.kbd{font-family:Consolas,monospace;font-size:12px;color:var(--muted);}
+footer{color:var(--faint);font-size:12px;border-top:1px solid var(--border);margin-top:40px;padding-top:16px;}

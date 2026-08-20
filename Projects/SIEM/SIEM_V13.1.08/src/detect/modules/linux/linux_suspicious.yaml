@@ -1,0 +1,133 @@
+title: Suspicious Linux Commands
+id: 253a1a18-e13a-4154-84b5-21ad28eacb75
+description: >
+    Detect suspicious Linux shell commands: dangerous chmod/chown,
+    cron job manipulation, curl/wget pipe-to-shell, reverse shells,
+    credential file access.
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: linux
+    service: syslog
+
+detection:
+    # dangerous chmod
+    # T1222.002 - File and Directory Permissions Modification: Linux
+    # chmod +s = setuid/setgid - allows execution as the owner
+    selection_chmod_suspicious:
+        CommandLine|contains:
+            - 'chmod +s'
+            - 'chmod 4755'
+            - 'chmod 4777'
+            - 'chmod 6755'
+            - 'chmod 777'
+            - 'chmod a+x /tmp'
+            - 'chmod a+x /dev/shm'
+
+    # chown to root
+    selection_chown_root:
+        CommandLine|contains:
+            - 'chown root:'
+            - 'chown 0:0'
+            - 'chown root /bin/bash'
+            - 'chown root /tmp'
+
+    # Malicious cron
+    # T1053.003 - Scheduled Task/Job: Cron
+    selection_cron_suspicious:
+        CommandLine|contains:
+            - 'crontab -'
+            - '* * * * * curl'
+            - '* * * * * wget'
+            - '* * * * * bash'
+            - '* * * * * python'
+            - '/etc/cron.d/'
+            - '/etc/cron.daily/'
+            - 'echo.*crontab'
+
+    # Download + pipe execution (infection one-liner)
+    # T1059.004 - Command and Scripting Interpreter: Unix Shell
+    selection_pipe_exec:
+        CommandLine|contains:
+            - '| bash'
+            - '| sh'
+            - '| python'
+            - '|bash'
+            - '|sh'
+            - '|python3'
+            - 'fetch.*|.*sh'
+
+    # Reverse shell
+    # T1059.004
+    selection_reverse_shell:
+        CommandLine|contains:
+            - 'bash -i >& /dev/tcp'
+            - 'bash -i >&'
+            - '/dev/tcp/'
+            - 'nc -e /bin/bash'
+            - 'nc -e /bin/sh'
+            - 'ncat -e'
+            - 'python.*socket.*connect'
+            - 'python.*pty'
+            - 'socat.*EXEC'
+
+    # Write to /etc/passwd or /etc/shadow
+    # T1098 - Account Manipulation
+    selection_passwd_manipulation:
+        CommandLine|contains:
+            - '/etc/passwd'
+            - '/etc/shadow'
+            - 'openssl passwd'
+            - 'useradd -o -u 0'
+            - 'adduser.*uid 0'
+
+    # Defense evasion
+    # T1562.001 - Impair Defenses
+    selection_disable_defenses:
+        CommandLine|contains:
+            - 'setenforce 0'
+            - 'systemctl stop firewalld'
+            - 'systemctl disable firewalld'
+            - 'ufw disable'
+            - 'iptables -F'
+            - 'service iptables stop'
+            - 'auditctl -e 0'
+
+    # Exfiltration / staging
+    # T1074 - Data Staged
+    selection_staging:
+        CommandLine|contains:
+            - 'tar.*|.*nc'
+            - 'tar czf /tmp/'
+            - 'dd if=/dev/.*of=/tmp'
+            - 'base64 /etc/shadow'
+            - 'base64 /etc/passwd'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - chmod +x by a developer on their own scripts
+    - Legitimate cron jobs for backup or monitoring
+    - Curl pipe in a controlled CI/CD environment (Docker, Ansible)
+
+level: medium
+
+fields:
+    - CommandLine
+    - Image
+    - User
+    - ParentImage
+
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.persistence
+    - attack.t1053.003
+    - attack.privilege_escalation
+    - attack.t1222.002
+    - attack.t1548
+    - attack.credential_access
+    - attack.t1098
+    - attack.defense_evasion
+    - attack.t1562.001

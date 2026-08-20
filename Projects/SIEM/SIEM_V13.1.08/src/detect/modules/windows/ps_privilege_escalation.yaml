@@ -1,0 +1,104 @@
+title: Suspicious PowerShell Privilege Escalation and Account Manipulation
+id: f790a117-f375-4ab8-bf28-22e081086784
+description: >
+    Detect PowerShell commands used to escalate privileges or manipulate accounts:
+    adding users to admin groups (local and domain), creating accounts,
+    UAC bypass techniques.
+status: experimental
+author: Dams
+date: 2026-02-22
+logsource:
+    product: windows
+    service: powershell
+    EventID: 4104
+
+detection:
+    # Add to the local Administrators group
+    # T1098 - Account Manipulation
+    selection_local_admin_add:
+        ScriptBlockText|contains:
+            - 'net localgroup administrators'
+            - 'net localgroup "Administrators"'
+            - 'Add-LocalGroupMember -Group "Administrators"'
+            - 'Add-LocalGroupMember -Group Administrators'
+            - 'net localgroup administrateurs'
+
+    # Add to the Domain Admins group
+    # T1098 - Account Manipulation (domain)
+    selection_domain_admin_add:
+        ScriptBlockText|contains:
+            - 'Add-ADGroupMember'
+            - 'Add-ADGroupMember.*Domain Admins'
+            - 'net group "Domain Admins"'
+            - 'net group "Enterprise Admins"'
+            - 'net group /domain'
+
+    # Local account creation
+    # T1136.001 - Create Account: Local Account
+    selection_create_account:
+        ScriptBlockText|contains:
+            - 'net user /add'
+            - 'New-LocalUser'
+            - 'New-ADUser'
+            - 'net user.*password'
+            - 'dsadd user'
+
+    # UAC Bypass
+    # T1548.002 - Abuse Elevation Control Mechanism: Bypass UAC
+    selection_uac_bypass:
+        ScriptBlockText|contains:
+            - 'fodhelper'
+            - 'eventvwr'
+            - 'computerdefaults'
+            - 'sdclt'
+            - 'cmstp'
+            - 'bypassuac'
+            - 'BypassUAC'
+            - 'UACMe'
+
+    # Token manipulation / impersonation
+    # T1134 - Access Token Manipulation
+    selection_token_manipulation:
+        ScriptBlockText|contains:
+            - 'ImpersonateLoggedOnUser'
+            - 'DuplicateToken'
+            - 'OpenProcessToken'
+            - 'AdjustTokenPrivileges'
+            - 'SeDebugPrivilege'
+            - 'SeTcbPrivilege'
+
+    # Credentials dump
+    # T1003 - OS Credential Dumping
+    selection_credential_dump:
+        ScriptBlockText|contains:
+            - 'Invoke-Mimikatz'
+            - 'sekurlsa'
+            - 'lsadump'
+            - 'Get-Credential'
+            - 'ConvertTo-SecureString'
+            - 'LSASS'
+            - 'procdump.*lsass'
+            - 'MiniDumpWriteDump'
+
+    condition: 1 of selection_*
+
+falsepositives:
+    - Account-management scripts run by system administrators
+    - Automated onboarding process (batch account creation)
+    - Legitimate IAM tools
+
+level: high
+
+fields:
+    - ScriptBlockText
+    - CommandLine
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+    - attack.t1134
+    - attack.persistence
+    - attack.t1098
+    - attack.t1136.001
+    - attack.credential_access
+    - attack.t1003

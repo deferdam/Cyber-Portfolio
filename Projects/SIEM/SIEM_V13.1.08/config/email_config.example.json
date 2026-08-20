@@ -1,0 +1,28 @@
+{
+  "_comment": "Copy to email_config.json. Never commit credentials.",
+  "poll_interval_seconds": 300,
+  "output_path": "email_alerts.jsonl",
+  "seen_ids_dir": ".",
+  "accounts": [
+    {
+      "name": "corp-imap",
+      "protocol": "imap",
+      "host": "imap.example.com",
+      "port": 993,
+      "ssl": true,
+      "username": "siem@example.com",
+      "password_env": "SIEM_IMAP_PASSWORD",
+      "mailbox": "INBOX",
+      "mark_seen": false
+    },
+    {
+      "name": "corp-pop3",
+      "protocol": "pop3",
+      "host": "pop.example.com",
+      "port": 995,
+      "ssl": true,
+      "username": "siem@example.com",
+      "password_env": "SIEM_POP3_PASSWORD"
+    }
+  ]
+}
