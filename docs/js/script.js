@@ -83,7 +83,7 @@ const I18N = {
     proj_malware_desc: "Configuration C2 chiffrée, notes de déchiffrement XOR, apprentissage YARA basique.",
     proj_yara_title: "Règles YARA (apprentissage)",
     proj_yara_desc: "Petites signatures défensives construites à partir des notes d’analyse.",
-    proj_siem_title: "Mini SIEM",
+    proj_siem_title: "SOAR",
     detect: "Ingestion de logs Sysmon / PowerShell Script Block (Event ID 4104). Matching sur règles Sigma. Score de risque 0–100 par agrégation pondérée d'indicateurs comportementaux.",
     response: "Sortie JSON structurée avec classification (Execution / Persistence / Privilege Escalation). Limitations assumées : condition 1 of selection*, faux positifs connus sur scripts admin légitimes.",
   
@@ -141,10 +141,10 @@ const I18N = {
     doc_note: "Cette page pointe vers le Markdown correspondant dans le dépôt. Aucun binaire n’est hébergé.",
 
     // siem
-    siem_card_title: "Mini SIEM - Sigma Engine",
-    siem_card_desc: "Moteur de détection comportemental : PowerShell, LOTL, ransomware, persistance, élévation de privilèges. v3 stable - v4 en cours.",
-    siem_title: "Mini SIEM",
-    siem_lead: "Moteur de détection comportementale construit en Python. Pas de signatures par hash - comportements purs : obfuscation PowerShell, binaires LOTL, activité ransomware, mécanismes de persistance, élévation de privilèges et commandes Linux suspectes. Environnement lab uniquement. Périmètre défensif.",
+    siem_card_title: "SOAR - Moteur de détection & réponse",
+    siem_card_desc: "Plateforme SIEM/SOAR en Python : détection comportementale (Sigma), orchestration SOAR, multi-utilisateur avec MFA, et triage IA déterministe. De v1 à v13.",
+    siem_title: "SOAR",
+    siem_lead: "Plateforme SIEM/SOAR en Python. Pas de signatures par hash - comportements purs : obfuscation PowerShell, binaires LOTL, activité ransomware, mécanismes de persistance, élévation de privilèges et commandes Linux suspectes. Environnement lab uniquement. Périmètre défensif.",
     siem_scope_title: "Architecture",
     siem_arch_b1: "Ingestion multi-format - Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
     siem_arch_b2: "Moteur 3 couches - Signature / Comportementale / Corrélation - avec isolation d'erreurs par couche",
@@ -159,7 +159,23 @@ const I18N = {
     siem_v4_title: "v4 - Persistance + Privesc + Linux",
     siem_v4_desc: "Chargeur Sigma multi-fichiers. Persistance (registry Run, WMI sub), élévation de privilèges (UAC bypass, Mimikatz), détection Linux (chmod +s, reverse shell).",
   siem_v5_title: "v5 - Pipeline Linux complet",
-  siem_v5_desc: "Détection auditd au niveau kernel, auth PAM/SSH, outils offensifs (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. Dispatch conditionnel par OS."
+  siem_v5_desc: "Détection auditd au niveau kernel, auth PAM/SSH, outils offensifs (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. Dispatch conditionnel par OS.",
+    siem_v6_title: "v6 - Enrichissement & baseline IA",
+    siem_v6_desc: "Enrichissement des signaux, déduplication, et baseline statistique pour le scoring d'anomalies. Suite de tests d'intégration.",
+    siem_v7_title: "v7 - Détection email & phishing",
+    siem_v7_desc: "Détection sur emails : pièces jointes malveillantes, indicateurs de phishing, parsing des messages.",
+    siem_v8_title: "v8 - SOAR & dashboard web",
+    siem_v8_desc: "Couche SOAR : playbooks, orchestrateur, tickets, actions de réponse. Serveur web Flask + interface SPA.",
+    siem_v9_title: "v9 - Ingestion multi-source & showcase",
+    siem_v9_desc: "Lecteurs CSV, Elastic ECS, Windows EVTX, PCAP, Snort. Mode showcase avec streaming des tickets.",
+    siem_v10_title: "v10 - Durcissement serveur & sécurité",
+    siem_v10_desc: "Chiffrement au repos (Fernet), défense injection, anti-C2 (pas de SSRF, CSP), hôte read-only. Fondations d'authentification.",
+    siem_v11_title: "v11 - Multi-utilisateur & MFA",
+    siem_v11_desc: "Comptes (argon2id), sessions, MFA TOTP + FIDO2/WebAuthn (YubiKey), panneau admin four-eyes, TLS, réponse active.",
+    siem_v12_title: "v12 - Triage IA & sécurité IA",
+    siem_v12_desc: "Classifieur déterministe (Naive Bayes), échelle d'autonomie graduée, provenance anti-empoisonnement, container de tickets IA. L'IA ne décide jamais seule d'une action.",
+    siem_v13_title: "v13 - App desktop & entraînement IA",
+    siem_v13_desc: "Application desktop PySide6. Corpus d'entraînement 100+ cas (MITRE ATT&CK), biais de rappel cost-sensitive réglable, filet anti-faux-négatif à haute confiance.",
   },
 
   en: {
@@ -252,10 +268,10 @@ const I18N = {
     doc_note: "This page links to the corresponding Markdown in the repository. No binaries are hosted.",
 
     // siem
-    siem_card_title: "Mini SIEM - Sigma Engine",
-    siem_card_desc: "Behavioral detection engine: PowerShell, LOTL, ransomware, persistence, privilege escalation. v3 stable - v4 current.",
-    siem_title: "Mini SIEM",
-    siem_lead: "Sigma-based behavioral detection engine built in Python. No hash signatures - pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.",
+    siem_card_title: "SOAR - Detection & Response Engine",
+    siem_card_desc: "Python SIEM/SOAR platform: behavioral detection (Sigma), SOAR orchestration, multi-user auth with MFA, and a deterministic AI triage layer. From v1 to v13.",
+    siem_title: "SOAR",
+    siem_lead: "Python SIEM/SOAR platform. No hash signatures - pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.",
     siem_scope_title: "Architecture",
     siem_arch_b1: "Multi-format log ingestion - Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
     siem_arch_b2: "3-layer engine - Signature / Behavioral / Correlation - with per-layer error isolation",
@@ -270,7 +286,23 @@ const I18N = {
     siem_v4_title: "v4 - Persistence + Privesc + Linux",
     siem_v4_desc: "Multi-file Sigma loader. Persistence (registry Run, WMI sub), privilege escalation (UAC bypass, Mimikatz), Linux command detection (chmod +s, reverse shell).",
     siem_v5_title: "v5 - Full Linux Pipeline",
-    siem_v5_desc: "Auditd kernel-level detection, PAM/SSH auth, offensive tools (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. OS-conditional engine."
+    siem_v5_desc: "Auditd kernel-level detection, PAM/SSH auth, offensive tools (bloodhound, chisel, lazagne), kernel exploits (DirtyCow, Dirty Pipe), container escape. OS-conditional engine.",
+    siem_v6_title: "v6 - Enrichment & AI baseline",
+    siem_v6_desc: "Signal enrichment, deduplication, and statistical baseline anomaly scoring. Integration test suite.",
+    siem_v7_title: "v7 - Email & phishing detection",
+    siem_v7_desc: "Email detection: malicious attachments, phishing indicators, message parsing.",
+    siem_v8_title: "v8 - SOAR & web dashboard",
+    siem_v8_desc: "SOAR layer: playbooks, orchestrator, tickets, response actions. Flask web server + SPA dashboard.",
+    siem_v9_title: "v9 - Multi-source ingestion & showcase",
+    siem_v9_desc: "CSV, Elastic ECS, Windows EVTX, PCAP, Snort readers. Showcase mode with ticket streaming.",
+    siem_v10_title: "v10 - Server hardening & security",
+    siem_v10_desc: "Encryption at rest (Fernet), injection defense, anti-C2 (no SSRF, CSP), read-only host posture. Authentication foundations.",
+    siem_v11_title: "v11 - Multi-user & MFA",
+    siem_v11_desc: "Accounts (argon2id), sessions, TOTP + FIDO2/WebAuthn MFA (YubiKey), four-eyes admin panel, TLS, active response.",
+    siem_v12_title: "v12 - AI triage & AI security",
+    siem_v12_desc: "Deterministic classifier (Naive Bayes), graduated autonomy ladder, anti-poisoning provenance, AI ticket container. The AI never acts on its own.",
+    siem_v13_title: "v13 - Desktop app & AI training",
+    siem_v13_desc: "PySide6 desktop app. 100+ case training corpus (MITRE ATT&CK), tunable cost-sensitive recall bias, and a safety net against high-confidence false negatives.",
   }
 };
 
