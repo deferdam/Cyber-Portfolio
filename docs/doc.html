@@ -206,6 +206,7 @@ const PROJECT_BRIEFS = {
       // if EN requested and path ends with ".md" but not ".en.md", convert.
       if (lang === "en") {
         if (path.endsWith(".en.md")) return path;
+        if (path.endsWith("_en.md")) return path;   // newer naming: already English
         if (path.endsWith(".md")) return path.replace(/\.md$/, ".en.md");
         // if it doesn't end with .md, we leave it (your docs might be html)
         return path;

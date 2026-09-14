@@ -6,7 +6,7 @@ const buttons = document.querySelectorAll("[data-nav]");
 function showPage(key) {
   pages.forEach(p => p.classList.toggle("is-active", p.dataset.page === key));
   buttons.forEach(b => b.classList.toggle("is-active", b.dataset.nav === key));
-  document.body.classList.toggle("menu-open", isMenuOpen);
+  document.body.classList.remove("menu-open");
   window.scrollTo(0, 0);
 
   // Close sidebar on mobile after navigation
@@ -144,13 +144,14 @@ const I18N = {
     siem_card_title: "SOAR - Moteur de détection & réponse",
     siem_card_desc: "Plateforme SIEM/SOAR en Python : détection comportementale (Sigma), orchestration SOAR, multi-utilisateur avec MFA, et triage IA déterministe. De v1 à v13.",
     siem_title: "SOAR",
-    siem_lead: "Plateforme SIEM/SOAR en Python. Pas de signatures par hash - comportements purs : obfuscation PowerShell, binaires LOTL, activité ransomware, mécanismes de persistance, élévation de privilèges et commandes Linux suspectes. Environnement lab uniquement. Périmètre défensif.",
+    siem_lead: "Plateforme SIEM/SOAR en Python (v13.4). Détection purement comportementale, sans signatures par hash : obfuscation PowerShell, binaires LOTL, ransomware, persistance, élévation de privilèges, commandes Linux et intégrité des services d'IA locale (MITRE ATLAS). Triage IA déterministe qui escalade vers une revue humaine et n'agit jamais seul. Livrée en app web Flask (SPA embarquée) et app desktop PySide6, avec cinq variantes produit sur une même base de code. Environnement lab uniquement. Périmètre défensif.",
     siem_scope_title: "Architecture",
     siem_arch_b1: "Ingestion multi-format - Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
     siem_arch_b2: "Moteur 3 couches - Signature / Comportementale / Corrélation - avec isolation d'erreurs par couche",
     siem_arch_b3: "Règles Sigma YAML par domaine - chargeur multi-fichiers, chemins résolus relatifs au module",
     siem_arch_b4: "Tagging MITRE ATT&CK sur chaque Signal - tactique + technique",
     siem_arch_b5: "Score de risque 0–100, sortie JSON structurée",
+    siem_arch_b6: "Cinq variantes produit sur une même base de code (SIEM_PROFILE), axe orthogonal au mode de déploiement - un profil ne fait que réduire la surface ; une source hors-profil est refusée côté moteur",
     siem_versions_title: "Versions",
     siem_v1_title: "v1 - Sigma Engine",
     siem_v1_desc: "Première version fonctionnelle. Détection Script Block PowerShell + scoring comportemental ransomware. Fichier YAML unique.",
@@ -174,8 +175,8 @@ const I18N = {
     siem_v11_desc: "Comptes (argon2id), sessions, MFA TOTP + FIDO2/WebAuthn (YubiKey), panneau admin four-eyes, TLS, réponse active.",
     siem_v12_title: "v12 - Triage IA & sécurité IA",
     siem_v12_desc: "Classifieur déterministe (Naive Bayes), échelle d'autonomie graduée, provenance anti-empoisonnement, container de tickets IA. L'IA ne décide jamais seule d'une action.",
-    siem_v13_title: "v13 - App desktop & entraînement IA",
-    siem_v13_desc: "Application desktop PySide6. Corpus d'entraînement 100+ cas (MITRE ATT&CK), biais de rappel cost-sensitive réglable, filet anti-faux-négatif à haute confiance.",
+    siem_v13_title: "v13.4 - Split produit & triage IA",
+    siem_v13_desc: "Triage déterministe Naive Bayes (TP/FP/bénin) qui escalade vers revue humaine sans jamais relabelliser ; app desktop PySide6 + SPA Flask ; cinq variantes produit (SIEM Local/Réseau/Multi, SOAR Local/Multi) filtrées par un registre de profils validé au démarrage. 1 100+ tests automatisés.",
   },
 
   en: {
@@ -271,13 +272,14 @@ const I18N = {
     siem_card_title: "SOAR - Detection & Response Engine",
     siem_card_desc: "Python SIEM/SOAR platform: behavioral detection (Sigma), SOAR orchestration, multi-user auth with MFA, and a deterministic AI triage layer. From v1 to v13.",
     siem_title: "SOAR",
-    siem_lead: "Python SIEM/SOAR platform. No hash signatures - pure behavior: PowerShell obfuscation, LOTL binaries, ransomware activity, persistence mechanisms, privilege escalation, and suspicious Linux commands. Lab environment only. Defensive scope.",
+    siem_lead: "Python SIEM/SOAR platform (v13.4). Pure behavioral detection, no hash signatures: PowerShell obfuscation, LOTL binaries, ransomware, persistence, privilege escalation, Linux commands, and local-AI-service integrity (MITRE ATLAS). Deterministic AI triage that escalates to human review and never acts on its own. Delivered as a Flask web app (embedded SPA) and a PySide6 desktop app, with five product variants from one codebase. Lab environment only. Defensive scope.",
     siem_scope_title: "Architecture",
     siem_arch_b1: "Multi-format log ingestion - Windows Event Logs, Sysmon, PowerShell 4104, RFC 3164/5424, CEF, NXLog, Winlogbeat",
     siem_arch_b2: "3-layer engine - Signature / Behavioral / Correlation - with per-layer error isolation",
     siem_arch_b3: "Sigma YAML rules per domain - multi-file loader, paths resolved relative to module",
     siem_arch_b4: "MITRE ATT&CK tagging on every Signal - tactic + technique",
     siem_arch_b5: "Risk score 0–100, structured JSON alert output",
+    siem_arch_b6: "Five product variants from one codebase (SIEM_PROFILE), orthogonal to deployment mode - a profile only reduces attack surface; out-of-profile sources are refused engine-side",
     siem_versions_title: "Versions",
     siem_v1_title: "v1 - Sigma Engine",
     siem_v1_desc: "First working version. PowerShell Script Block detection + ransomware behavioral scoring. Single YAML rule file.",
@@ -301,8 +303,8 @@ const I18N = {
     siem_v11_desc: "Accounts (argon2id), sessions, TOTP + FIDO2/WebAuthn MFA (YubiKey), four-eyes admin panel, TLS, active response.",
     siem_v12_title: "v12 - AI triage & AI security",
     siem_v12_desc: "Deterministic classifier (Naive Bayes), graduated autonomy ladder, anti-poisoning provenance, AI ticket container. The AI never acts on its own.",
-    siem_v13_title: "v13 - Desktop app & AI training",
-    siem_v13_desc: "PySide6 desktop app. 100+ case training corpus (MITRE ATT&CK), tunable cost-sensitive recall bias, and a safety net against high-confidence false negatives.",
+    siem_v13_title: "v13.4 - Product split & AI triage",
+    siem_v13_desc: "Deterministic Naive Bayes triage (TP/FP/benign) that escalates to review and never relabels; PySide6 desktop app + Flask SPA; five product variants (SIEM Local/Network/Multi, SOAR Local/Multi) gated by a declarative profile registry validated at startup. 1,100+ automated tests.",
   }
 };
 

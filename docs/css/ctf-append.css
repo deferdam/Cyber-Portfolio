@@ -1,0 +1,113 @@
+/* ============================================================= *
+ * CTF layer - append to the END of css/style.css
+ * ============================================================= */
+
+/* Mode toggle in the sidebar */
+.mode-switch {
+  display: flex;
+  gap: .4rem;
+  margin: .6rem 0 1rem;
+}
+.mode-switch .mode-btn {
+  flex: 1;
+  padding: .4rem .6rem;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: transparent;
+  color: inherit;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  opacity: .7;
+}
+.mode-switch .mode-btn.is-active {
+  opacity: 1;
+  border-color: #e63946;
+  box-shadow: inset 0 0 0 1px #e63946;
+}
+
+/* CTF root: hidden by default, shown only in CTF mode.
+ * Portfolio pages hidden while CTF is active. Portfolio nodes stay in the
+ * DOM at all times (invariant I1). */
+#ctf-root { display: none; }
+.main.ctf-active [data-page] { display: none !important; }
+.main.ctf-active #ctf-root { display: block; }
+
+/* Challenge 05 target: present in DOM, hidden on screen. */
+.ctf-ghost { display: none; }
+
+/* CTF challenge UI */
+.ctf-input-row {
+  display: flex;
+  gap: .5rem;
+  margin: 1rem 0 .5rem;
+  flex-wrap: wrap;
+}
+.ctf-input {
+  flex: 1;
+  min-width: 220px;
+  padding: .55rem .7rem;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, .25);
+  color: inherit;
+  font-family: monospace;
+}
+.ctf-input:focus { outline: none; border-color: #e63946; }
+.ctf-feedback { color: #e63946; min-height: 1.2em; font-family: monospace; }
+.ctf-hint-btn {
+  margin-top: .4rem;
+  background: none;
+  border: none;
+  color: #8ab4ff;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+}
+.ctf-hint { margin-top: .4rem; }
+
+/* ============================================================= *
+ * CTF v2 - categories, exercises, solved (green) states
+ * ============================================================= */
+
+/* Progress / status pills */
+.pill {
+  display: inline-block;
+  font-size: .72rem;
+  line-height: 1;
+  padding: .22em .5em;
+  border-radius: 999px;
+  vertical-align: middle;
+  font-family: monospace;
+}
+.pill-dim {
+  border: 1px solid rgba(255, 255, 255, .22);
+  color: rgba(255, 255, 255, .7);
+}
+.pill-green {
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+  background: rgba(46, 204, 113, .10);
+}
+
+/* Solved / complete cards turn green */
+.ctf-card.is-solved {
+  border-color: #2ecc71 !important;
+  box-shadow: inset 0 0 0 1px rgba(46, 204, 113, .55);
+}
+.ctf-card.is-solved .card-title { color: #2ecc71; }
+
+/* Solved reveal callout */
+.callout.is-solved {
+  border-color: #2ecc71;
+  box-shadow: inset 0 0 0 1px rgba(46, 204, 113, .45);
+}
+.callout.is-solved .callout-title { color: #2ecc71; }
+
+/* Download button for stego assets */
+.ctf-download { display: inline-block; margin: .2rem 0 .8rem; }
+
+/* Pointer cursor on all CTF interactive elements + clickable cards */
+#ctf-root button,
+#ctf-root a { cursor: pointer; }
+.ctf-card { cursor: pointer; }

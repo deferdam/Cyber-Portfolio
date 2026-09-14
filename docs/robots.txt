@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /Cyber-Portfolio/s3cr3t-soc.html
+# CTF hint: a Disallow line is a signpost, not access control.

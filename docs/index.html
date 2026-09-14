@@ -6,9 +6,11 @@
   <title>Damien D. - Cybersecurity Portfolio</title>
 
   <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/ctf-append.css" />
 </head>
 
 <body>
+  <!-- SOC recon starts here. Client code is public. DEFER{view_source_is_recon} -->
   <div class="layout">
     <div class="lang-float" aria-label="Language switch">
         <button class="lang-btn" data-lang="fr" aria-label="Français" title="Français">
@@ -43,6 +45,10 @@
         <button class="menu-item" data-nav="soc" data-i18n="nav_soc">SOC Labs</button>
         <button class="menu-item" data-nav="tryhackme" data-i18n="nav_thm">TryHackMe</button>
         <button class="menu-item" data-nav="contact" data-i18n="nav_contact">Contact</button>
+        <div class="mode-switch" role="group" aria-label="View mode">
+          <button class="mode-btn is-active" data-mode="portfolio">Portfolio</button>
+          <button class="mode-btn" data-mode="ctf">CTF</button>
+        </div>
       </nav>
 
       <div class="contacts">
@@ -80,7 +86,7 @@
       <!-- OVERVIEW -->
       <section class="page is-active" data-page="overview">
         <header class="hero">
-          <h1 data-i18n="title">Cybersecurity Portfolio</h1>
+          <h1 data-i18n="title" data-transmission="REVGRVJ7YmFzZTY0X2lzX25vdF9jcnlwdG99">Cybersecurity Portfolio</h1>
           <p class="lead" data-i18n="overview_lead">
           I focus on Blue Team fundamentals: malware triage, detection-oriented analysis, and SOC workflows. I maintain an isolated lab (Windows/Linux/Parrot) and publish structured write-ups and tooling notes.
           </p>
@@ -183,6 +189,7 @@
             <li data-i18n="siem_arch_b3">Sigma YAML rules per domain - multi-file loader, paths resolved relative to module</li>
             <li data-i18n="siem_arch_b4">MITRE ATT&amp;CK tagging on every Signal - tactic + technique</li>
             <li data-i18n="siem_arch_b5">Risk score 0–100, structured JSON alert output</li>
+            <li data-i18n="siem_arch_b6">Five product variants from one codebase (SIEM_PROFILE), orthogonal to deployment mode - a profile only reduces attack surface; out-of-profile sources are refused engine-side</li>
           </ul>
         </div>
 
@@ -374,7 +381,7 @@
 
           <article class="card no-thumb">
             <div class="card-body">
-              <div class="card-title" data-i18n="siem_v13_title">v13 - Desktop app &amp; AI training</div>
+              <div class="card-title" data-i18n="siem_v13_title">v13.4 - Product split &amp; AI triage</div>
               <div class="card-desc" data-i18n="siem_v13_desc">PySide6 desktop app. 100+ case training corpus (MITRE ATT&amp;CK), tunable cost-sensitive recall bias, and a safety net against high-confidence false negatives.</div>
               <div class="card-actions"></div>
               <a class="card-link"
@@ -548,6 +555,7 @@
             data-proj="tryhackme"
             data-i18n="open_progress">Ouvrir les notes de progression</a>
         </div>
+      </section>
 
       <!-- CONTACT -->
       <section class="page" data-page="contact">
@@ -568,9 +576,13 @@
         </div>
       </section>
 
+      <span class="ctf-ghost" aria-hidden="true">DEFER{display_none_hides_nothing}</span>
+      <!-- CTF layer (optional, non-gating). Built by js/ctf.js. -->
+      <section class="page" id="ctf-root" aria-label="CTF"></section>
     </main>
   </div>
 
   <script src="./js/script.js"></script>
+  <script src="./js/ctf.js"></script>
 </body>
 </html>
